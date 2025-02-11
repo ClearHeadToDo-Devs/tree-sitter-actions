@@ -16,12 +16,14 @@ module.exports = grammar({
 
     action: $ => seq(
         $.state,
-        $.name
+        $.name,
+        optional($.description)
     ),
 
     state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
 
     name: $ => /[^$!*+@%>]+/,
+    description: $ => seq('$', /[^!$*+@%>]+/),
 
     not_started: $ => ' ',
     completed: $ => 'x',

@@ -8,6 +8,10 @@
       "required": true,
       "types": [
         {
+          "type": "description",
+          "named": true
+        },
+        {
           "type": "name",
           "named": true
         },
@@ -33,6 +37,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "description",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "state",
@@ -64,6 +73,10 @@
         }
       ]
     }
+  },
+  {
+    "type": "$",
+    "named": false
   },
   {
     "type": "(",

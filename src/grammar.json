@@ -19,6 +19,18 @@
         {
           "type": "SYMBOL",
           "name": "name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "description"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -63,6 +75,19 @@
     "name": {
       "type": "PATTERN",
       "value": "[^$!*+@%>]+"
+    },
+    "description": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "$"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^!$*+@%>]+"
+        }
+      ]
     },
     "not_started": {
       "type": "STRING",

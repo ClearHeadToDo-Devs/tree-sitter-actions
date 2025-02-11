@@ -87,7 +87,7 @@ Otherwise, this is one of the more encompassing fields where users are allowed t
 
 however, do note the point above about using names as secondary keys so if something is going to be really long, save it for the description section below
 
-### Description (Required)
+### Description (optional)
 
 The name fields status as a secondary key means that it is sometimes necessary to denote a longer description for an action
 

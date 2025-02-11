@@ -1,5 +1,5 @@
 =============
-Basic Actions
+Basic Action
 =============
 ( ) test
 
@@ -10,3 +10,18 @@ Basic Actions
     (state 
     	(not_started))
     (name)))
+
+================
+With Description
+================
+(x) long $ with description
+
+---
+
+
+(action_list
+  (action
+    (state 
+    	(completed))
+    (name)
+    (description)))
