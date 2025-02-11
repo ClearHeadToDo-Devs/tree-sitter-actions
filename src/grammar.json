@@ -1,0 +1,100 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
+  "name": "actions",
+  "rules": {
+    "action_list": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "action"
+      }
+    },
+    "action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "state"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "name"
+        }
+      ]
+    },
+    "state": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "not_started"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "completed"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "in_progress"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "blocked"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cancelled"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "name": {
+      "type": "PATTERN",
+      "value": "[^$!*+@%>]+"
+    },
+    "not_started": {
+      "type": "STRING",
+      "value": " "
+    },
+    "completed": {
+      "type": "STRING",
+      "value": "x"
+    },
+    "in_progress": {
+      "type": "STRING",
+      "value": "-"
+    },
+    "blocked": {
+      "type": "STRING",
+      "value": "="
+    },
+    "cancelled": {
+      "type": "STRING",
+      "value": "_"
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": [],
+  "reserved": {}
+}

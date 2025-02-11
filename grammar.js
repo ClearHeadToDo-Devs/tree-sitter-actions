@@ -12,6 +12,21 @@ module.exports = grammar({
 
   rules: {
     // TODO: add the actual grammar rules
-    source_file: $ => "hello"
+    action_list: $ => repeat($.action),
+
+    action: $ => seq(
+        $.state,
+        $.name
+    ),
+
+    state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
+
+    name: $ => /[^$!*+@%>]+/,
+
+    not_started: $ => ' ',
+    completed: $ => 'x',
+    in_progress: $ => '-',
+    blocked: $ => '=',
+    cancelled: $ => '_'
   }
 });

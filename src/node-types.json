@@ -1,0 +1,100 @@
+[
+  {
+    "type": "action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "state",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "action_list",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "action",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "state",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "blocked",
+          "named": true
+        },
+        {
+          "type": "cancelled",
+          "named": true
+        },
+        {
+          "type": "completed",
+          "named": true
+        },
+        {
+          "type": "in_progress",
+          "named": true
+        },
+        {
+          "type": "not_started",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "blocked",
+    "named": true
+  },
+  {
+    "type": "cancelled",
+    "named": true
+  },
+  {
+    "type": "completed",
+    "named": true
+  },
+  {
+    "type": "in_progress",
+    "named": true
+  },
+  {
+    "type": "name",
+    "named": true
+  },
+  {
+    "type": "not_started",
+    "named": true
+  }
+]

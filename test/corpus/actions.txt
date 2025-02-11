@@ -1,0 +1,12 @@
+=============
+Basic Actions
+=============
+( ) test
+
+---
+
+(action_list
+  (action
+    (state 
+    	(not_started))
+    (name)))
