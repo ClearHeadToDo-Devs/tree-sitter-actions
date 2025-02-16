@@ -24,6 +24,10 @@
           "named": true
         },
         {
+          "type": "id",
+          "named": true
+        },
+        {
           "type": "name",
           "named": true
         },
@@ -184,6 +188,25 @@
     "type": "hour",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "id",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_icon",
+          "named": true
+        },
+        {
+          "type": "uuid",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "in_progress",
@@ -373,6 +396,10 @@
     "named": true
   },
   {
+    "type": "id_icon",
+    "named": true
+  },
+  {
     "type": "name",
     "named": true
   },
@@ -394,6 +421,10 @@
   },
   {
     "type": "time_designator",
+    "named": true
+  },
+  {
+    "type": "uuid",
     "named": true
   },
   {

@@ -21,7 +21,8 @@ module.exports = grammar({
         optional($.story),
         optional($.context_list),
         optional($.do_date_or_time),
-        optional($.completed_date)
+        optional($.completed_date),
+        optional($.id)
     ),
 
 
@@ -33,13 +34,13 @@ module.exports = grammar({
     cancelled: $ => '_',
 
     //name is anything but reserved chars
-    name: $ => /[^$!*+@%>]+/,
+    name: $ => /[^$!*+@%>#-]+/,
     // description is same as name except description char is okay
-    description: $ => seq($.desc_icon, /[^!*+@%>]+/),
+    description: $ => seq($.desc_icon, /[^!*+@%>#]+/),
     desc_icon: $ => '$',
     priority: $ => seq($.priority_icon,/[0-9]+/),
     priority_icon: $ => '!',
-    story: $ => seq($.story_icon, /[^+@%>]+/),
+    story: $ => seq($.story_icon, /[^+@%>#]+/),
     story_icon: $ => '*',
 
     context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
@@ -63,6 +64,11 @@ module.exports = grammar({
     minute: $ => /[0-9]{2}/,
 
     duration: $ => seq($.duration_designator, /[0-9]+/),
-    duration_designator: $ => 'D'
+    duration_designator: $ => 'D',
+
+    //expects uuid v7
+    id: $ => seq($.id_icon, $.uuid),
+    id_icon: $ => '#',
+    uuid: $ => /[0-9a-f]{32}/
   }
 });

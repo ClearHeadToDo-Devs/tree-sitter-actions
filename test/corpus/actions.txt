@@ -126,6 +126,23 @@ with completed date
      (hour)
      (minute))))))
 
+=======
+With Id
+=======
+(x) id test #01951111cfa6718db303d7107f4005b3
+
+---
+
+
+(action_list
+ (action
+  (state 
+   (completed))
+  (name)
+  (id
+   (id_icon)
+   (uuid))))
+
 ===============
 With Everything
 ===============

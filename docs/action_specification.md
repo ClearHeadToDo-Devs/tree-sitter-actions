@@ -14,6 +14,7 @@ This specification will lay out the formal specifications for the `actions` file
 
 This specification will attempt to maintain backwards compatibility. That is, we will only add backwards-compatible changes to prevent implement's from dealing with breaking changes in the specification.
 
+this means that there are currently no plans to add a top-level 'version' structure as we want to make sure that an action list made today will still be parsable 10 years from now, even if there are new features that have been added in that time.
 
 ## plaintext implications
 
@@ -151,6 +152,14 @@ Started with the `%` character, this helps to determine the date/time the action
 
 follows the same rules as the Do-Date covered above
 
+## Id
+for this we are going to be using the v7 of the UUID standard.
+
+the icon for this is `#` but is optional as we want to support the ability to create actions WITHOUT forcing the user to add a uuid manually before it is interpretted
+
+### Implications
+here, we are trying to leave the door open for applications to go in later and update this whole thing with automated tools such as the cli that will be able to review and update these ids after the user has created the initial version of the structure
+
 # Examples
 
 As we have laid out above, we have quite an array of options when it comes to how much or how little information to give.
@@ -187,5 +196,3 @@ Finally, we will do a showcase of the format for those actions with child action
 ```actions
 ( ) Parent Action >( ) Child Action
 ```
-
-
