@@ -6,10 +6,10 @@ Basic Action
 ---
 
 (action_list
-  (action
-    (state 
-    	(not_started))
-    (name)))
+ (action
+  (state 
+   (not_started))
+  (name)))
 
 ================
 With Description
@@ -20,11 +20,11 @@ With Description
 
 
 (action_list
-  (action
-    (state 
-    	(completed))
-    (name)
-    (description)))
+ (action
+  (state 
+   (completed))
+  (name)
+  (description)))
 
 ================
 With Priority
@@ -35,11 +35,11 @@ With Priority
 
 
 (action_list
-  (action
-    (state 
-    	(completed))
-    (name)
-    (priority)))
+ (action
+  (state 
+   (completed))
+  (name)
+  (priority)))
 
 ================
 With Story
@@ -50,11 +50,11 @@ With Story
 
 
 (action_list
-  (action
-    (state 
-    	(completed))
-    (name)
-    (story)))
+ (action
+  (state 
+   (completed))
+  (name)
+  (story)))
 
 ============
 with context
@@ -64,13 +64,13 @@ with context
 ---
 
 (action_list
-  (action
-    (state 
-    	(completed))
-    (name)
-    (context_list
-    	(middle_context)
-	(tail_context))))
+ (action
+  (state 
+   (completed))
+  (name)
+  (context_list
+   (middle_context)
+   (tail_context))))
 
 ============
 with do-date
@@ -81,19 +81,19 @@ with do-date
 
 
 (action_list
-  (action
-    (state 
-    	(completed))
-    (name)
-    (do_date_or_time
-    	(date
-		(year)
-		(month)
-		(day)
-		(time
-			(hour)
-			(minute)
-			(duration))))))
+ (action
+  (state 
+   (completed))
+  (name)
+  (do_date_or_time
+   (date
+    (year)
+    (month)
+    (day)
+    (time
+     (hour)
+     (minute)
+     (duration))))))
 
 ===============
 With Everything
@@ -104,22 +104,22 @@ With Everything
 
 
 (action_list
-  (action
-    (state 
-    	(completed))
-    (name)
-    (description)
-    (priority)
-    (story)
-    (context_list
-    (middle_context)
-    (tail_context))
-    (do_date_or_time
-    	(date
-		(year)
-		(month)
-		(day)
-			(time
-			(hour)
-			(minute)
-				(duration))))))
+ (action
+  (state 
+   (completed))
+  (name)
+  (description)
+  (priority)
+  (story)
+  (context_list
+   (middle_context)
+   (tail_context))
+  (do_date_or_time
+   (date
+    (year)
+    (month)
+    (day)
+    (time
+     (hour)
+     (minute)
+     (duration))))))

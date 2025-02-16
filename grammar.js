@@ -43,6 +43,7 @@ module.exports = grammar({
     tail_context: $ => /[a-zA-Z0-9\-_]+/,
 
     do_date_or_time: $ => seq('@', choice($.date, $.time)),
+    completed_date_or_time: $ => seq('%', $.date),
 
     date: $ => seq(seq($.year,'-',$.month,'-',$.day), optional($.time)),
     year: $ => /[0-9]{4}/,
