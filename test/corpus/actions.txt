@@ -73,6 +73,24 @@ with context
     	(middle_context)
 	(tail_context))))
 
+============
+with do-date
+============
+(x) context test @2019-01-01
+
+---
+
+
+(action_list
+  (action
+    (state 
+    	(completed))
+    (name)
+    (do_date_or_time
+    	(date
+		(year)
+		(month)
+		(day)))))
 
 ===============
 With Everything

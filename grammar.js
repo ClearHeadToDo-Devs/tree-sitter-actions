@@ -19,7 +19,8 @@ module.exports = grammar({
         optional($.description),
         optional($.priority),
         optional($.story),
-        optional($.context_list)
+        optional($.context_list),
+        optional($.do_date_or_time)
     ),
 
 
@@ -39,6 +40,19 @@ module.exports = grammar({
 
     context_list: $ => seq('+', repeat1(choice($.middle_context, $.tail_context))),
     middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, ','),
-    tail_context: $ => /[a-zA-Z0-9\-_]+/
+    tail_context: $ => /[a-zA-Z0-9\-_]+/,
+
+    do_date_or_time: $ => seq('@', choice($.date, $.time)),
+
+    date: $ => seq(seq($.year,'-',$.month,'-',$.day), optional($.time)),
+    year: $ => /[0-9]{4}/,
+    month: $ => /[0-9]{2}/,
+    day: $ => /[0-9]{2}/,
+
+    time: $ => seq('T', seq($.hour,'-',$.minute), optional($.duration)),
+    hour: $ => /[0-9]{2}/,
+    minute: $ => /[0-9]{2}/,
+
+    duration: $ => seq('D', /[0-9]+/),
   }
 });
