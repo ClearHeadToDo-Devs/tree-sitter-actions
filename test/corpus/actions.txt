@@ -95,10 +95,38 @@ with do-date
      (minute)
      (duration))))))
 
+===================
+with completed date
+===================
+(x) context test %2019-01-01T12:01AM
+
+---
+
+
+(action_list
+ (action
+  (state 
+   (completed))
+  (name)
+  (completed_date
+   (date
+    (year)
+    (month)
+    (day)
+    (time
+     (hour)
+     (minute))))))
+
 ===============
 With Everything
 ===============
-(x) priority and description $ descriptions !1 * Test Story +test_context,another-context @2019-01-01T12:01AMD120
+(x) priority and description 
+$ descriptions 
+!1 
+* Test Story 
++test_context,another-context 
+@2019-01-01T12:01AMD120
+%2019-03-01T02:01AM
 
 ---
 
@@ -122,4 +150,12 @@ With Everything
     (time
      (hour)
      (minute)
-     (duration))))))
+     (duration))))
+     (completed_date
+   (date
+    (year)
+    (month)
+    (day)
+    (time
+     (hour)
+     (minute))))))

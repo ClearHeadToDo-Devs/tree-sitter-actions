@@ -8,6 +8,10 @@
       "required": true,
       "types": [
         {
+          "type": "completed_date",
+          "named": true
+        },
+        {
           "type": "context_list",
           "named": true
         },
@@ -48,6 +52,21 @@
       "types": [
         {
           "type": "action",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "completed_date",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "date",
           "named": true
         }
       ]
@@ -233,6 +252,10 @@
   },
   {
     "type": "$",
+    "named": false
+  },
+  {
+    "type": "%",
     "named": false
   },
   {

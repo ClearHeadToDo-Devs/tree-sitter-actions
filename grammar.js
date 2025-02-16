@@ -20,7 +20,8 @@ module.exports = grammar({
         optional($.priority),
         optional($.story),
         optional($.context_list),
-        optional($.do_date_or_time)
+        optional($.do_date_or_time),
+        optional($.completed_date)
     ),
 
 
@@ -43,7 +44,7 @@ module.exports = grammar({
     tail_context: $ => /[a-zA-Z0-9\-_]+/,
 
     do_date_or_time: $ => seq('@', choice($.date, $.time)),
-    completed_date_or_time: $ => seq('%', $.date),
+    completed_date: $ => seq('%', $.date),
 
     date: $ => seq(seq($.year,'-',$.month,'-',$.day), optional($.time)),
     year: $ => /[0-9]{4}/,
