@@ -63,7 +63,6 @@ with context
 
 ---
 
-
 (action_list
   (action
     (state 
@@ -76,7 +75,7 @@ with context
 ============
 with do-date
 ============
-(x) context test @2019-01-01
+(x) context test @2019-01-01T12:01AMD120
 
 ---
 
@@ -90,12 +89,16 @@ with do-date
     	(date
 		(year)
 		(month)
-		(day)))))
+		(day)
+		(time
+			(hour)
+			(minute)
+			(duration))))))
 
 ===============
 With Everything
 ===============
-(x) priority and description $ descriptions !1 * Test Story +test_context,another-context
+(x) priority and description $ descriptions !1 * Test Story +test_context,another-context @2019-01-01T12:01AMD120
 
 ---
 
@@ -110,4 +113,13 @@ With Everything
     (story)
     (context_list
     (middle_context)
-    (tail_context))))
+    (tail_context))
+    (do_date_or_time
+    	(date
+		(year)
+		(month)
+		(day)
+			(time
+			(hour)
+			(minute)
+				(duration))))))

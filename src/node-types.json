@@ -260,7 +260,15 @@
     "named": false
   },
   {
+    "type": ":",
+    "named": false
+  },
+  {
     "type": "@",
+    "named": false
+  },
+  {
+    "type": "AM",
     "named": false
   },
   {
@@ -268,7 +276,15 @@
     "named": false
   },
   {
+    "type": "PM",
+    "named": false
+  },
+  {
     "type": "T",
+    "named": false
+  },
+  {
+    "type": "am",
     "named": false
   },
   {
@@ -290,6 +306,10 @@
   {
     "type": "not_started",
     "named": true
+  },
+  {
+    "type": "pm",
+    "named": false
   },
   {
     "type": "year",

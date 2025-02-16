@@ -49,7 +49,7 @@ module.exports = grammar({
     month: $ => /[0-9]{2}/,
     day: $ => /[0-9]{2}/,
 
-    time: $ => seq('T', seq($.hour,'-',$.minute), optional($.duration)),
+    time: $ => seq('T', seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM')), optional($.duration)),
     hour: $ => /[0-9]{2}/,
     minute: $ => /[0-9]{2}/,
 

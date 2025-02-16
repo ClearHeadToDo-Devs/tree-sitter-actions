@@ -316,11 +316,40 @@
             },
             {
               "type": "STRING",
-              "value": "-"
+              "value": ":"
             },
             {
               "type": "SYMBOL",
               "name": "minute"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "am"
+                },
+                {
+                  "type": "STRING",
+                  "value": "pm"
+                },
+                {
+                  "type": "STRING",
+                  "value": "AM"
+                },
+                {
+                  "type": "STRING",
+                  "value": "PM"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
             }
           ]
         },
