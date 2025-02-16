@@ -35,15 +35,21 @@ module.exports = grammar({
     //name is anything but reserved chars
     name: $ => /[^$!*+@%>]+/,
     // description is same as name except description char is okay
-    description: $ => seq('$', /[^!*+@%>]+/),
-    priority: $ => seq('!',/[0-9]+/),
-    story: $ => seq('*', /[^+@%>]+/),
+    description: $ => seq($.desc_icon, /[^!*+@%>]+/),
+    desc_icon: $ => '$',
+    priority: $ => seq($.priority_icon,/[0-9]+/),
+    priority_icon: $ => '!',
+    story: $ => seq($.story_icon, /[^+@%>]+/),
+    story_icon: $ => '*',
 
-    context_list: $ => seq('+', repeat1(choice($.middle_context, $.tail_context))),
-    middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, ','),
+    context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
+    context_icon: $ => '+',
+    middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, $.context_separator),
+    context_separator: $ => ',',
     tail_context: $ => /[a-zA-Z0-9\-_]+/,
 
-    do_date_or_time: $ => seq('@', choice($.date, $.time)),
+    do_date_or_time: $ => seq($.do_date_icon, choice($.date, $.time)),
+    do_date_icon: $ => '@',
     completed_date: $ => seq('%', $.date),
 
     date: $ => seq(seq($.year,'-',$.month,'-',$.day), optional($.time)),
@@ -51,10 +57,12 @@ module.exports = grammar({
     month: $ => /[0-9]{2}/,
     day: $ => /[0-9]{2}/,
 
-    time: $ => seq('T', seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM')), optional($.duration)),
+    time: $ => seq($.time_designator, seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM')), optional($.duration)),
+    time_designator: $ => ('T'),
     hour: $ => /[0-9]{2}/,
     minute: $ => /[0-9]{2}/,
 
-    duration: $ => seq('D', /[0-9]+/),
+    duration: $ => seq($.duration_designator, /[0-9]+/),
+    duration_designator: $ => 'D'
   }
 });

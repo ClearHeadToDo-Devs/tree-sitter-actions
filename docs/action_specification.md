@@ -166,12 +166,14 @@ the ease of parsing should allow most editors to automatically hide the ID, givi
 As we saw, many optional pieces of context can be added so here is an example of an action that has much more of these optional parameters:
 
 ```actions
-- (x)Go to the store for chicken
+(x) Go to the store for chicken
 $ Make sure you get the stuff from the butcher directly
-!1 *Run Errands
+!1 
+*Run Errands
 +Driving,Store,Market
 @2025-01-19T08:30D30
 %2025-01-19T10:30
+#214342414342413424
 ```
 
 The succinct way to read this is that one had an action to go to the store on January 19th, 2025 as a part of their running errands project. 
@@ -183,8 +185,7 @@ Finally, it was part of the Driving, Store, and Market contexts and contains ext
 
 Finally, we will do a showcase of the format for those actions with child actions:
 ```actions
--( ) Parent Action --( ) Child Action
+( ) Parent Action >( ) Child Action
 ```
-Notice how the UUIDs cluster at the end, this allows the document to remain more readable as the ids will often be clustered at the end of the document and naturally flow into one-another
 
 

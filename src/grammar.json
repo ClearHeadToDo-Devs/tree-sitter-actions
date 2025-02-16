@@ -159,8 +159,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "$"
+          "type": "SYMBOL",
+          "name": "desc_icon"
         },
         {
           "type": "PATTERN",
@@ -168,12 +168,16 @@
         }
       ]
     },
+    "desc_icon": {
+      "type": "STRING",
+      "value": "$"
+    },
     "priority": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "!"
+          "type": "SYMBOL",
+          "name": "priority_icon"
         },
         {
           "type": "PATTERN",
@@ -181,12 +185,16 @@
         }
       ]
     },
+    "priority_icon": {
+      "type": "STRING",
+      "value": "!"
+    },
     "story": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "*"
+          "type": "SYMBOL",
+          "name": "story_icon"
         },
         {
           "type": "PATTERN",
@@ -194,12 +202,16 @@
         }
       ]
     },
+    "story_icon": {
+      "type": "STRING",
+      "value": "*"
+    },
     "context_list": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "+"
+          "type": "SYMBOL",
+          "name": "context_icon"
         },
         {
           "type": "REPEAT1",
@@ -219,6 +231,10 @@
         }
       ]
     },
+    "context_icon": {
+      "type": "STRING",
+      "value": "+"
+    },
     "middle_context": {
       "type": "SEQ",
       "members": [
@@ -227,10 +243,14 @@
           "value": "[a-zA-Z0-9\\-_]+"
         },
         {
-          "type": "STRING",
-          "value": ","
+          "type": "SYMBOL",
+          "name": "context_separator"
         }
       ]
+    },
+    "context_separator": {
+      "type": "STRING",
+      "value": ","
     },
     "tail_context": {
       "type": "PATTERN",
@@ -240,8 +260,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "@"
+          "type": "SYMBOL",
+          "name": "do_date_icon"
         },
         {
           "type": "CHOICE",
@@ -257,6 +277,10 @@
           ]
         }
       ]
+    },
+    "do_date_icon": {
+      "type": "STRING",
+      "value": "@"
     },
     "completed_date": {
       "type": "SEQ",
@@ -329,8 +353,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "T"
+          "type": "SYMBOL",
+          "name": "time_designator"
         },
         {
           "type": "SEQ",
@@ -392,6 +416,10 @@
         }
       ]
     },
+    "time_designator": {
+      "type": "STRING",
+      "value": "T"
+    },
     "hour": {
       "type": "PATTERN",
       "value": "[0-9]{2}"
@@ -404,14 +432,18 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "D"
+          "type": "SYMBOL",
+          "name": "duration_designator"
         },
         {
           "type": "PATTERN",
           "value": "[0-9]+"
         }
       ]
+    },
+    "duration_designator": {
+      "type": "STRING",
+      "value": "D"
     }
   },
   "extras": [

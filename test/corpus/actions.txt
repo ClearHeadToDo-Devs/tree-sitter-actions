@@ -24,7 +24,8 @@ With Description
   (state 
    (completed))
   (name)
-  (description)))
+  (description
+  	(desc_icon))))
 
 ================
 With Priority
@@ -39,7 +40,8 @@ With Priority
   (state 
    (completed))
   (name)
-  (priority)))
+  (priority
+  	(priority_icon))))
 
 ================
 With Story
@@ -54,7 +56,8 @@ With Story
   (state 
    (completed))
   (name)
-  (story)))
+  (story
+  	(story_icon))))
 
 ============
 with context
@@ -69,7 +72,9 @@ with context
    (completed))
   (name)
   (context_list
-   (middle_context)
+   (context_icon)
+   (middle_context
+    (context_separator))
    (tail_context))))
 
 ============
@@ -86,14 +91,17 @@ with do-date
    (completed))
   (name)
   (do_date_or_time
+   (do_date_icon)
    (date
     (year)
     (month)
     (day)
     (time
+     (time_designator)
      (hour)
      (minute)
-     (duration))))))
+     (duration
+      (duration_designator)))))))
 
 ===================
 with completed date
@@ -114,6 +122,7 @@ with completed date
     (month)
     (day)
     (time
+     (time_designator)
      (hour)
      (minute))))))
 
@@ -136,26 +145,35 @@ $ descriptions
   (state 
    (completed))
   (name)
-  (description)
-  (priority)
-  (story)
+  (description
+   (desc_icon))
+  (priority
+   (priority_icon))
+  (story
+   (story_icon))
   (context_list
-   (middle_context)
+   (context_icon)
+   (middle_context
+     (context_separator))
    (tail_context))
   (do_date_or_time
+   (do_date_icon)
    (date
     (year)
     (month)
     (day)
     (time
+     (time_designator)
      (hour)
      (minute)
-     (duration))))
+     (duration
+      (duration_designator)))))
      (completed_date
    (date
     (year)
     (month)
     (day)
     (time
+     (time_designator)
      (hour)
      (minute))))))

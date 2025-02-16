@@ -25,26 +25,26 @@ enum ts_symbol_identifiers {
   sym_blocked = 6,
   sym_cancelled = 7,
   sym_name = 8,
-  anon_sym_DOLLAR = 9,
-  aux_sym_description_token1 = 10,
-  anon_sym_BANG = 11,
-  aux_sym_priority_token1 = 12,
-  anon_sym_STAR = 13,
-  aux_sym_story_token1 = 14,
-  anon_sym_PLUS = 15,
+  aux_sym_description_token1 = 9,
+  sym_desc_icon = 10,
+  aux_sym_priority_token1 = 11,
+  sym_priority_icon = 12,
+  aux_sym_story_token1 = 13,
+  sym_story_icon = 14,
+  sym_context_icon = 15,
   aux_sym_middle_context_token1 = 16,
-  anon_sym_COMMA = 17,
-  anon_sym_AT = 18,
+  sym_context_separator = 17,
+  sym_do_date_icon = 18,
   anon_sym_PERCENT = 19,
   sym_year = 20,
   aux_sym_month_token1 = 21,
-  anon_sym_T = 22,
-  anon_sym_COLON = 23,
-  anon_sym_am = 24,
-  anon_sym_pm = 25,
-  anon_sym_AM = 26,
-  anon_sym_PM = 27,
-  anon_sym_D = 28,
+  anon_sym_COLON = 22,
+  anon_sym_am = 23,
+  anon_sym_pm = 24,
+  anon_sym_AM = 25,
+  anon_sym_PM = 26,
+  sym_time_designator = 27,
+  sym_duration_designator = 28,
   sym_action_list = 29,
   sym_action = 30,
   sym_state = 31,
@@ -78,26 +78,26 @@ static const char * const ts_symbol_names[] = {
   [sym_blocked] = "blocked",
   [sym_cancelled] = "cancelled",
   [sym_name] = "name",
-  [anon_sym_DOLLAR] = "$",
   [aux_sym_description_token1] = "description_token1",
-  [anon_sym_BANG] = "!",
+  [sym_desc_icon] = "desc_icon",
   [aux_sym_priority_token1] = "priority_token1",
-  [anon_sym_STAR] = "*",
+  [sym_priority_icon] = "priority_icon",
   [aux_sym_story_token1] = "story_token1",
-  [anon_sym_PLUS] = "+",
+  [sym_story_icon] = "story_icon",
+  [sym_context_icon] = "context_icon",
   [aux_sym_middle_context_token1] = "middle_context_token1",
-  [anon_sym_COMMA] = ",",
-  [anon_sym_AT] = "@",
+  [sym_context_separator] = "context_separator",
+  [sym_do_date_icon] = "do_date_icon",
   [anon_sym_PERCENT] = "%",
   [sym_year] = "year",
   [aux_sym_month_token1] = "month_token1",
-  [anon_sym_T] = "T",
   [anon_sym_COLON] = ":",
   [anon_sym_am] = "am",
   [anon_sym_pm] = "pm",
   [anon_sym_AM] = "AM",
   [anon_sym_PM] = "PM",
-  [anon_sym_D] = "D",
+  [sym_time_designator] = "time_designator",
+  [sym_duration_designator] = "duration_designator",
   [sym_action_list] = "action_list",
   [sym_action] = "action",
   [sym_state] = "state",
@@ -131,26 +131,26 @@ static const TSSymbol ts_symbol_map[] = {
   [sym_blocked] = sym_blocked,
   [sym_cancelled] = sym_cancelled,
   [sym_name] = sym_name,
-  [anon_sym_DOLLAR] = anon_sym_DOLLAR,
   [aux_sym_description_token1] = aux_sym_description_token1,
-  [anon_sym_BANG] = anon_sym_BANG,
+  [sym_desc_icon] = sym_desc_icon,
   [aux_sym_priority_token1] = aux_sym_priority_token1,
-  [anon_sym_STAR] = anon_sym_STAR,
+  [sym_priority_icon] = sym_priority_icon,
   [aux_sym_story_token1] = aux_sym_story_token1,
-  [anon_sym_PLUS] = anon_sym_PLUS,
+  [sym_story_icon] = sym_story_icon,
+  [sym_context_icon] = sym_context_icon,
   [aux_sym_middle_context_token1] = aux_sym_middle_context_token1,
-  [anon_sym_COMMA] = anon_sym_COMMA,
-  [anon_sym_AT] = anon_sym_AT,
+  [sym_context_separator] = sym_context_separator,
+  [sym_do_date_icon] = sym_do_date_icon,
   [anon_sym_PERCENT] = anon_sym_PERCENT,
   [sym_year] = sym_year,
   [aux_sym_month_token1] = aux_sym_month_token1,
-  [anon_sym_T] = anon_sym_T,
   [anon_sym_COLON] = anon_sym_COLON,
   [anon_sym_am] = anon_sym_am,
   [anon_sym_pm] = anon_sym_pm,
   [anon_sym_AM] = anon_sym_AM,
   [anon_sym_PM] = anon_sym_PM,
-  [anon_sym_D] = anon_sym_D,
+  [sym_time_designator] = sym_time_designator,
+  [sym_duration_designator] = sym_duration_designator,
   [sym_action_list] = sym_action_list,
   [sym_action] = sym_action,
   [sym_state] = sym_state,
@@ -211,45 +211,45 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = true,
   },
-  [anon_sym_DOLLAR] = {
-    .visible = true,
-    .named = false,
-  },
   [aux_sym_description_token1] = {
     .visible = false,
     .named = false,
   },
-  [anon_sym_BANG] = {
+  [sym_desc_icon] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [aux_sym_priority_token1] = {
     .visible = false,
     .named = false,
   },
-  [anon_sym_STAR] = {
+  [sym_priority_icon] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [aux_sym_story_token1] = {
     .visible = false,
     .named = false,
   },
-  [anon_sym_PLUS] = {
+  [sym_story_icon] = {
     .visible = true,
-    .named = false,
+    .named = true,
+  },
+  [sym_context_icon] = {
+    .visible = true,
+    .named = true,
   },
   [aux_sym_middle_context_token1] = {
     .visible = false,
     .named = false,
   },
-  [anon_sym_COMMA] = {
+  [sym_context_separator] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
-  [anon_sym_AT] = {
+  [sym_do_date_icon] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [anon_sym_PERCENT] = {
     .visible = true,
@@ -261,10 +261,6 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
   [aux_sym_month_token1] = {
     .visible = false,
-    .named = false,
-  },
-  [anon_sym_T] = {
-    .visible = true,
     .named = false,
   },
   [anon_sym_COLON] = {
@@ -287,9 +283,13 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = false,
   },
-  [anon_sym_D] = {
+  [sym_time_designator] = {
     .visible = true,
-    .named = false,
+    .named = true,
+  },
+  [sym_duration_designator] = {
+    .visible = true,
+    .named = true,
   },
   [sym_action_list] = {
     .visible = true,
@@ -460,29 +460,29 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
   switch (state) {
     case 0:
       if (eof) ADVANCE(17);
-      if (lookahead == '!') ADVANCE(30);
-      if (lookahead == '$') ADVANCE(27);
+      if (lookahead == '!') ADVANCE(31);
+      if (lookahead == '$') ADVANCE(29);
       if (lookahead == '%') ADVANCE(39);
       if (lookahead == '(') ADVANCE(18);
       if (lookahead == ')') ADVANCE(19);
-      if (lookahead == '*') ADVANCE(32);
+      if (lookahead == '*') ADVANCE(34);
       if (lookahead == '+') ADVANCE(35);
       if (lookahead == ',') ADVANCE(37);
       if (lookahead == '-') ADVANCE(22);
-      if (lookahead == ':') ADVANCE(43);
+      if (lookahead == ':') ADVANCE(42);
       if (lookahead == '=') ADVANCE(23);
       if (lookahead == '@') ADVANCE(38);
       if (lookahead == 'A') ADVANCE(2);
       if (lookahead == 'D') ADVANCE(48);
       if (lookahead == 'P') ADVANCE(3);
-      if (lookahead == 'T') ADVANCE(42);
+      if (lookahead == 'T') ADVANCE(47);
       if (lookahead == '_') ADVANCE(24);
       if (lookahead == 'a') ADVANCE(5);
       if (lookahead == 'p') ADVANCE(6);
       if (lookahead == 'x') ADVANCE(21);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') SKIP(0)
-      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(31);
+      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(30);
       END_STATE();
     case 1:
       if (lookahead == ' ') ADVANCE(20);
@@ -493,22 +493,22 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (('\t' <= lookahead && lookahead <= '\r')) SKIP(1)
       END_STATE();
     case 2:
-      if (lookahead == 'M') ADVANCE(46);
+      if (lookahead == 'M') ADVANCE(45);
       END_STATE();
     case 3:
-      if (lookahead == 'M') ADVANCE(47);
+      if (lookahead == 'M') ADVANCE(46);
       END_STATE();
     case 4:
-      if (lookahead == 'T') ADVANCE(42);
+      if (lookahead == 'T') ADVANCE(47);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') SKIP(4)
       if (('0' <= lookahead && lookahead <= '9')) ADVANCE(15);
       END_STATE();
     case 5:
-      if (lookahead == 'm') ADVANCE(44);
+      if (lookahead == 'm') ADVANCE(43);
       END_STATE();
     case 6:
-      if (lookahead == 'm') ADVANCE(45);
+      if (lookahead == 'm') ADVANCE(44);
       END_STATE();
     case 7:
       if (('\t' <= lookahead && lookahead <= '\r') ||
@@ -529,28 +529,28 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 9:
       if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(28);
+          lookahead == ' ') ADVANCE(27);
       if (lookahead != 0 &&
           lookahead != '!' &&
           lookahead != '%' &&
           lookahead != '*' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(29);
+          lookahead != '@') ADVANCE(28);
       END_STATE();
     case 10:
       if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(33);
+          lookahead == ' ') ADVANCE(32);
       if (lookahead != 0 &&
           lookahead != '%' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(34);
+          lookahead != '@') ADVANCE(33);
       END_STATE();
     case 11:
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') SKIP(11)
-      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(31);
+      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(30);
       END_STATE();
     case 12:
       if (('0' <= lookahead && lookahead <= '9')) ADVANCE(40);
@@ -628,60 +628,60 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '@') ADVANCE(26);
       END_STATE();
     case 27:
-      ACCEPT_TOKEN(anon_sym_DOLLAR);
+      ACCEPT_TOKEN(aux_sym_description_token1);
+      if (('\t' <= lookahead && lookahead <= '\r') ||
+          lookahead == ' ') ADVANCE(27);
+      if (lookahead != 0 &&
+          lookahead != '!' &&
+          lookahead != '%' &&
+          lookahead != '*' &&
+          lookahead != '+' &&
+          lookahead != '>' &&
+          lookahead != '@') ADVANCE(28);
       END_STATE();
     case 28:
       ACCEPT_TOKEN(aux_sym_description_token1);
-      if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(28);
       if (lookahead != 0 &&
           lookahead != '!' &&
           lookahead != '%' &&
           lookahead != '*' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(29);
+          lookahead != '@') ADVANCE(28);
       END_STATE();
     case 29:
-      ACCEPT_TOKEN(aux_sym_description_token1);
-      if (lookahead != 0 &&
-          lookahead != '!' &&
-          lookahead != '%' &&
-          lookahead != '*' &&
-          lookahead != '+' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(29);
+      ACCEPT_TOKEN(sym_desc_icon);
       END_STATE();
     case 30:
-      ACCEPT_TOKEN(anon_sym_BANG);
+      ACCEPT_TOKEN(aux_sym_priority_token1);
+      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(30);
       END_STATE();
     case 31:
-      ACCEPT_TOKEN(aux_sym_priority_token1);
-      if (('0' <= lookahead && lookahead <= '9')) ADVANCE(31);
+      ACCEPT_TOKEN(sym_priority_icon);
       END_STATE();
     case 32:
-      ACCEPT_TOKEN(anon_sym_STAR);
+      ACCEPT_TOKEN(aux_sym_story_token1);
+      if (('\t' <= lookahead && lookahead <= '\r') ||
+          lookahead == ' ') ADVANCE(32);
+      if (lookahead != 0 &&
+          lookahead != '%' &&
+          lookahead != '+' &&
+          lookahead != '>' &&
+          lookahead != '@') ADVANCE(33);
       END_STATE();
     case 33:
       ACCEPT_TOKEN(aux_sym_story_token1);
-      if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(33);
       if (lookahead != 0 &&
           lookahead != '%' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(34);
+          lookahead != '@') ADVANCE(33);
       END_STATE();
     case 34:
-      ACCEPT_TOKEN(aux_sym_story_token1);
-      if (lookahead != 0 &&
-          lookahead != '%' &&
-          lookahead != '+' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(34);
+      ACCEPT_TOKEN(sym_story_icon);
       END_STATE();
     case 35:
-      ACCEPT_TOKEN(anon_sym_PLUS);
+      ACCEPT_TOKEN(sym_context_icon);
       END_STATE();
     case 36:
       ACCEPT_TOKEN(aux_sym_middle_context_token1);
@@ -692,10 +692,10 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(36);
       END_STATE();
     case 37:
-      ACCEPT_TOKEN(anon_sym_COMMA);
+      ACCEPT_TOKEN(sym_context_separator);
       END_STATE();
     case 38:
-      ACCEPT_TOKEN(anon_sym_AT);
+      ACCEPT_TOKEN(sym_do_date_icon);
       END_STATE();
     case 39:
       ACCEPT_TOKEN(anon_sym_PERCENT);
@@ -707,25 +707,25 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(aux_sym_month_token1);
       END_STATE();
     case 42:
-      ACCEPT_TOKEN(anon_sym_T);
-      END_STATE();
-    case 43:
       ACCEPT_TOKEN(anon_sym_COLON);
       END_STATE();
-    case 44:
+    case 43:
       ACCEPT_TOKEN(anon_sym_am);
       END_STATE();
-    case 45:
+    case 44:
       ACCEPT_TOKEN(anon_sym_pm);
       END_STATE();
-    case 46:
+    case 45:
       ACCEPT_TOKEN(anon_sym_AM);
       END_STATE();
-    case 47:
+    case 46:
       ACCEPT_TOKEN(anon_sym_PM);
       END_STATE();
+    case 47:
+      ACCEPT_TOKEN(sym_time_designator);
+      END_STATE();
     case 48:
-      ACCEPT_TOKEN(anon_sym_D);
+      ACCEPT_TOKEN(sym_duration_designator);
       END_STATE();
     default:
       return false;
@@ -810,23 +810,23 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_DASH] = ACTIONS(1),
     [sym_blocked] = ACTIONS(1),
     [sym_cancelled] = ACTIONS(1),
-    [anon_sym_DOLLAR] = ACTIONS(1),
-    [anon_sym_BANG] = ACTIONS(1),
+    [sym_desc_icon] = ACTIONS(1),
     [aux_sym_priority_token1] = ACTIONS(1),
-    [anon_sym_STAR] = ACTIONS(1),
-    [anon_sym_PLUS] = ACTIONS(1),
-    [anon_sym_COMMA] = ACTIONS(1),
-    [anon_sym_AT] = ACTIONS(1),
+    [sym_priority_icon] = ACTIONS(1),
+    [sym_story_icon] = ACTIONS(1),
+    [sym_context_icon] = ACTIONS(1),
+    [sym_context_separator] = ACTIONS(1),
+    [sym_do_date_icon] = ACTIONS(1),
     [anon_sym_PERCENT] = ACTIONS(1),
     [sym_year] = ACTIONS(1),
     [aux_sym_month_token1] = ACTIONS(1),
-    [anon_sym_T] = ACTIONS(1),
     [anon_sym_COLON] = ACTIONS(1),
     [anon_sym_am] = ACTIONS(1),
     [anon_sym_pm] = ACTIONS(1),
     [anon_sym_AM] = ACTIONS(1),
     [anon_sym_PM] = ACTIONS(1),
-    [anon_sym_D] = ACTIONS(1),
+    [sym_time_designator] = ACTIONS(1),
+    [sym_duration_designator] = ACTIONS(1),
   },
   [1] = {
     [sym_action_list] = STATE(64),
@@ -841,15 +841,15 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
 static const uint16_t ts_small_parse_table[] = {
   [0] = 13,
     ACTIONS(9), 1,
-      anon_sym_DOLLAR,
+      sym_desc_icon,
     ACTIONS(11), 1,
-      anon_sym_BANG,
+      sym_priority_icon,
     ACTIONS(13), 1,
-      anon_sym_STAR,
+      sym_story_icon,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(3), 1,
@@ -869,13 +869,13 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [41] = 11,
     ACTIONS(11), 1,
-      anon_sym_BANG,
+      sym_priority_icon,
     ACTIONS(13), 1,
-      anon_sym_STAR,
+      sym_story_icon,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(4), 1,
@@ -893,11 +893,11 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [76] = 9,
     ACTIONS(13), 1,
-      anon_sym_STAR,
+      sym_story_icon,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(9), 1,
@@ -913,11 +913,11 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [105] = 9,
     ACTIONS(13), 1,
-      anon_sym_STAR,
+      sym_story_icon,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(12), 1,
@@ -933,7 +933,7 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [134] = 4,
     ACTIONS(29), 1,
-      anon_sym_D,
+      sym_duration_designator,
     STATE(39), 1,
       sym_duration,
     ACTIONS(25), 3,
@@ -955,7 +955,7 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(31), 4,
       ts_builtin_sym_end,
       anon_sym_LPAREN,
-      anon_sym_AT,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [167] = 1,
     ACTIONS(35), 8,
@@ -966,12 +966,12 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_pm,
       anon_sym_AM,
       anon_sym_PM,
-      anon_sym_D,
+      sym_duration_designator,
   [178] = 7,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(14), 1,
@@ -993,13 +993,13 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(39), 4,
       ts_builtin_sym_end,
       anon_sym_LPAREN,
-      anon_sym_AT,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [216] = 7,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(17), 1,
@@ -1013,9 +1013,9 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [239] = 7,
     ACTIONS(15), 1,
-      anon_sym_PLUS,
+      sym_context_icon,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(15), 1,
@@ -1031,14 +1031,14 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(44), 7,
       ts_builtin_sym_end,
       anon_sym_LPAREN,
-      anon_sym_BANG,
-      anon_sym_STAR,
-      anon_sym_PLUS,
-      anon_sym_AT,
+      sym_priority_icon,
+      sym_story_icon,
+      sym_context_icon,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [272] = 5,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(32), 1,
@@ -1050,7 +1050,7 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [289] = 5,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(34), 1,
@@ -1073,7 +1073,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_cancelled,
   [321] = 5,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(28), 1,
@@ -1085,7 +1085,7 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_LPAREN,
   [338] = 5,
     ACTIONS(17), 1,
-      anon_sym_AT,
+      sym_do_date_icon,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
     STATE(30), 1,
@@ -1099,18 +1099,18 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(54), 6,
       ts_builtin_sym_end,
       anon_sym_LPAREN,
-      anon_sym_STAR,
-      anon_sym_PLUS,
-      anon_sym_AT,
+      sym_story_icon,
+      sym_context_icon,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [364] = 2,
     ACTIONS(58), 1,
-      anon_sym_COMMA,
+      sym_context_separator,
     ACTIONS(56), 5,
       ts_builtin_sym_end,
       anon_sym_LPAREN,
       aux_sym_middle_context_token1,
-      anon_sym_AT,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [375] = 4,
     ACTIONS(60), 1,
@@ -1127,7 +1127,7 @@ static const uint16_t ts_small_parse_table[] = {
       ts_builtin_sym_end,
       anon_sym_LPAREN,
       aux_sym_middle_context_token1,
-      anon_sym_AT,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [397] = 4,
     ACTIONS(5), 1,
@@ -1141,7 +1141,7 @@ static const uint16_t ts_small_parse_table[] = {
       aux_sym_action_list_repeat1,
   [411] = 3,
     ACTIONS(71), 1,
-      anon_sym_T,
+      sym_time_designator,
     STATE(38), 1,
       sym_time,
     ACTIONS(69), 3,
@@ -1150,7 +1150,7 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_PERCENT,
   [423] = 3,
     ACTIONS(29), 1,
-      anon_sym_D,
+      sym_duration_designator,
     STATE(37), 1,
       sym_duration,
     ACTIONS(73), 3,
@@ -1161,12 +1161,12 @@ static const uint16_t ts_small_parse_table[] = {
     ACTIONS(75), 5,
       ts_builtin_sym_end,
       anon_sym_LPAREN,
-      anon_sym_PLUS,
-      anon_sym_AT,
+      sym_context_icon,
+      sym_do_date_icon,
       anon_sym_PERCENT,
   [443] = 3,
     ACTIONS(71), 1,
-      anon_sym_T,
+      sym_time_designator,
     ACTIONS(77), 1,
       sym_year,
     STATE(36), 2,
@@ -1201,7 +1201,7 @@ static const uint16_t ts_small_parse_table[] = {
       ts_builtin_sym_end,
       anon_sym_LPAREN,
       anon_sym_PERCENT,
-      anon_sym_T,
+      sym_time_designator,
   [494] = 3,
     ACTIONS(19), 1,
       anon_sym_PERCENT,
