@@ -25,3 +25,34 @@ With Description
     	(completed))
     (name)
     (description)))
+
+================
+With Priority
+================
+(x) priority !1
+
+---
+
+
+(action_list
+  (action
+    (state 
+    	(completed))
+    (name)
+    (priority)))
+
+===============
+With Everything
+===============
+(x) priority and description $descriptions !1
+
+---
+
+
+(action_list
+  (action
+    (state 
+    	(completed))
+    (name)
+    (description)
+    (priority)))

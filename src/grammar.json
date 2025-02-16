@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "actions",
   "rules": {
     "action_list": {
@@ -26,6 +25,18 @@
             {
               "type": "SYMBOL",
               "name": "description"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "priority"
             },
             {
               "type": "BLANK"
@@ -72,23 +83,6 @@
         }
       ]
     },
-    "name": {
-      "type": "PATTERN",
-      "value": "[^$!*+@%>]+"
-    },
-    "description": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "$"
-        },
-        {
-          "type": "PATTERN",
-          "value": "[^!$*+@%>]+"
-        }
-      ]
-    },
     "not_started": {
       "type": "STRING",
       "value": " "
@@ -108,6 +102,36 @@
     "cancelled": {
       "type": "STRING",
       "value": "_"
+    },
+    "name": {
+      "type": "PATTERN",
+      "value": "[^$!*+@%>]+"
+    },
+    "description": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "$"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^!*+@%>]+"
+        }
+      ]
+    },
+    "priority": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "!"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[0-9]+"
+        }
+      ]
     }
   },
   "extras": [
@@ -120,6 +144,5 @@
   "precedences": [],
   "externals": [],
   "inline": [],
-  "supertypes": [],
-  "reserved": {}
+  "supertypes": []
 }

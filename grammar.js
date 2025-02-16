@@ -11,24 +11,28 @@ module.exports = grammar({
   name: "actions",
 
   rules: {
-    // TODO: add the actual grammar rules
     action_list: $ => repeat($.action),
 
     action: $ => seq(
         $.state,
         $.name,
-        optional($.description)
+        optional($.description),
+        optional($.priority)
     ),
 
+
     state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
-
-    name: $ => /[^$!*+@%>]+/,
-    description: $ => seq('$', /[^!$*+@%>]+/),
-
     not_started: $ => ' ',
     completed: $ => 'x',
     in_progress: $ => '-',
     blocked: $ => '=',
-    cancelled: $ => '_'
+    cancelled: $ => '_',
+
+    //name is anything but reserved chars
+    name: $ => /[^$!*+@%>]+/,
+    // description is same as name except description char is okay
+    description: $ => seq('$', /[^!*+@%>]+/),
+    priority: $ => seq('!',/[0-9]+/),
+    
   }
 });

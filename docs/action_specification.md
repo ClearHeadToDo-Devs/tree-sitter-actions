@@ -32,7 +32,6 @@ With that said, it is also a use-case that these files are able to be read by a 
 Finally, in terms of rules-processing, we take the approach of newer markdown formats like neorg which deemphasize the importance of whitespace to denote depth.
 Instead, we use explicit characters or a sequence of characters to make the act of parsing this work cleaner
 
-
 # Structure
 
 As denoted, each file can be understood as a list of actions that the person intends to take.
@@ -152,7 +151,6 @@ Started with the `%` character, this helps to determine the date/time the action
 
 follows the same rules as the Do-Date covered above
 
-
 # Examples
 
 As we have laid out above, we have quite an array of options when it comes to how much or how little information to give.
@@ -188,3 +186,5 @@ Finally, we will do a showcase of the format for those actions with child action
 -( ) Parent Action --( ) Child Action
 ```
 Notice how the UUIDs cluster at the end, this allows the document to remain more readable as the ids will often be clustered at the end of the document and naturally flow into one-another
+
+

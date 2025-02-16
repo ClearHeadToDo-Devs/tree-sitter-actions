@@ -16,6 +16,10 @@
           "named": true
         },
         {
+          "type": "priority",
+          "named": true
+        },
+        {
           "type": "state",
           "named": true
         }
@@ -25,7 +29,6 @@
   {
     "type": "action_list",
     "named": true,
-    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -40,6 +43,11 @@
   },
   {
     "type": "description",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "priority",
     "named": true,
     "fields": {}
   },
@@ -73,6 +81,10 @@
         }
       ]
     }
+  },
+  {
+    "type": "!",
+    "named": false
   },
   {
     "type": "$",
