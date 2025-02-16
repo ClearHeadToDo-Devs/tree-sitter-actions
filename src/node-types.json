@@ -8,6 +8,10 @@
       "required": true,
       "types": [
         {
+          "type": "context_list",
+          "named": true
+        },
+        {
           "type": "description",
           "named": true
         },
@@ -21,6 +25,10 @@
         },
         {
           "type": "state",
+          "named": true
+        },
+        {
+          "type": "story",
           "named": true
         }
       ]
@@ -42,7 +50,31 @@
     }
   },
   {
+    "type": "context_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "middle_context",
+          "named": true
+        },
+        {
+          "type": "tail_context",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "description",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "middle_context",
     "named": true,
     "fields": {}
   },
@@ -83,6 +115,16 @@
     }
   },
   {
+    "type": "story",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "tail_context",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -96,6 +138,18 @@
   },
   {
     "type": ")",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": ",",
     "named": false
   },
   {

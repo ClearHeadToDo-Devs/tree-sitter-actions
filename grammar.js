@@ -17,7 +17,9 @@ module.exports = grammar({
         $.state,
         $.name,
         optional($.description),
-        optional($.priority)
+        optional($.priority),
+        optional($.story),
+        optional($.context_list)
     ),
 
 
@@ -33,6 +35,10 @@ module.exports = grammar({
     // description is same as name except description char is okay
     description: $ => seq('$', /[^!*+@%>]+/),
     priority: $ => seq('!',/[0-9]+/),
-    
+    story: $ => seq('*', /[^+@%>]+/),
+
+    context_list: $ => seq('+', repeat1(choice($.middle_context, $.tail_context))),
+    middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, ','),
+    tail_context: $ => /[a-zA-Z0-9\-_]+/
   }
 });

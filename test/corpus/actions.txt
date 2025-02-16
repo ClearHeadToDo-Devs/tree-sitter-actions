@@ -41,10 +41,43 @@ With Priority
     (name)
     (priority)))
 
+================
+With Story
+================
+(x) story test *Parent Story
+
+---
+
+
+(action_list
+  (action
+    (state 
+    	(completed))
+    (name)
+    (story)))
+
+============
+with context
+============
+(x) context test +test_context,another_context
+
+---
+
+
+(action_list
+  (action
+    (state 
+    	(completed))
+    (name)
+    (context_list
+    	(middle_context)
+	(tail_context))))
+
+
 ===============
 With Everything
 ===============
-(x) priority and description $descriptions !1
+(x) priority and description $ descriptions !1 * Test Story +test_context,another-context
 
 ---
 
@@ -55,4 +88,8 @@ With Everything
     	(completed))
     (name)
     (description)
-    (priority)))
+    (priority)
+    (story)
+    (context_list
+    (middle_context)
+    (tail_context))))

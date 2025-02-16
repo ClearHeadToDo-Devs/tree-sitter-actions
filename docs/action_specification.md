@@ -40,10 +40,10 @@ ordering matters here so each part is intended to be done in sequence to again m
 
 ## Depth (Required)
 
-Every child action starts with atleast one `-` character. Children of a parent action can be denoted by `--` and so-on down to the official limit of 5 levels of depth.
+Every child action starts with atleast one `>` character. Children of a parent action can be denoted by `>>` and so-on down to the official limit of 5 levels of depth.
 6 levels was chosen to conform with standard markdown conventions
 
-all other symbols will be valid for child actions, and parsing should still be easy since they will all be preceded by the progression of `-` characters
+all other symbols will be valid for child actions, and parsing should still be easy since they will all be preceded by the progression of `>` characters
 
 
 ### Adding Children
@@ -80,7 +80,7 @@ The list of special characters that need to be escaped are below:
 - `+` - Reserved for contexts
 - `@` - Reserved for Do-Date-Time
 - `%` - Reserved for Completed Date
-- `>` - Reserved for ID
+- `>` - Reserved for Children
 
 Otherwise, this is one of the more encompassing fields where users are allowed to write as much as they like, even newlines
 
