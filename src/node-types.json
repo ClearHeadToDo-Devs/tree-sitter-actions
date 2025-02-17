@@ -222,6 +222,10 @@
         {
           "type": "double_great_grandchild_icon",
           "named": true
+        },
+        {
+          "type": "leaf_action_list",
+          "named": true
         }
       ]
     }
@@ -360,6 +364,40 @@
     "type": "in_progress",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "leaf_action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "core_action",
+          "named": true
+        },
+        {
+          "type": "leaf_icon",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "leaf_action_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "leaf_action",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "middle_context",
@@ -635,6 +673,10 @@
   },
   {
     "type": "id_icon",
+    "named": true
+  },
+  {
+    "type": "leaf_icon",
     "named": true
   },
   {

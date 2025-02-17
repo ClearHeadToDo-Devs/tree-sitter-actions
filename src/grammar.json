@@ -154,12 +154,48 @@
         {
           "type": "SYMBOL",
           "name": "core_action"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "leaf_action_list"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "double_great_grandchild_icon": {
       "type": "STRING",
       "value": ">>>>"
+    },
+    "leaf_action_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "leaf_action"
+      }
+    },
+    "leaf_action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "leaf_icon"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "core_action"
+        }
+      ]
+    },
+    "leaf_icon": {
+      "type": "STRING",
+      "value": ">>>>>"
     },
     "core_action": {
       "type": "SEQ",
