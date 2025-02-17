@@ -12,59 +12,6 @@ Basic Action
     (not_started))
    (name))))
 
-=================
-With Child Action
-=================
-( ) root test
-> ( ) child action
->> ( ) grandchild action
->>> ( ) great grandchild action
->>>> ( ) double-great grandchild action
->>>>> ( ) Leaf action
-
----
-
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))
-  (child_action_list
-   (child_action
-    (child_icon)
-    (core_action
-     (state 
-      (not_started))
-     (name))
-    (grandchild_action_list
-     (grandchild_action
-      (grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-    (great_grandchild_action_list
-     (great_grandchild_action
-      (great_grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-    (double_great_grandchild_action_list
-     (double_great_grandchild_action
-      (double_great_grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-    (leaf_action_list
-     (leaf_action
-      (leaf_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))))))))))))))
 
 ================
 With Description
@@ -234,6 +181,60 @@ With Id with dash
      (uuid_variant_random)
      (uuid_random))))))
 
+=============
+With Children
+=============
+( ) root test
+> ( ) child action
+>> ( ) grandchild action
+>>> ( ) great grandchild action
+>>>> ( ) double-great grandchild action
+>>>>> ( ) Leaf action
+
+---
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (not_started))
+   (name))
+  (child_action_list
+   (child_action
+    (child_icon)
+    (core_action
+     (state 
+      (not_started))
+     (name))
+    (grandchild_action_list
+     (grandchild_action
+      (grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (great_grandchild_action_list
+     (great_grandchild_action
+      (great_grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (double_great_grandchild_action_list
+     (double_great_grandchild_action
+      (double_great_grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (leaf_action_list
+     (leaf_action
+      (leaf_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))))))))))))))
+
 ===============
 With Everything
 ===============
@@ -245,6 +246,11 @@ $ descriptions
 @2019-01-01T12:01AMD120
 %2019-03-01T02:01AM
 #01951111cfa6718db303d7107f4005b3
+> ( ) child action
+>> ( ) grandchild action
+>>> ( ) great grandchild action
+>>>> ( ) double-great grandchild action
+>>>>> ( ) Leaf action
 ---
 
 (action_list
@@ -293,4 +299,39 @@ $ descriptions
 	  (uuid_time_mid)
 	  (uuid_version_random)
 	  (uuid_variant_random)
-	  (uuid_random))))))
+	  (uuid_random))))
+  (child_action_list
+   (child_action
+    (child_icon)
+    (core_action
+     (state 
+      (not_started))
+     (name))
+    (grandchild_action_list
+     (grandchild_action
+      (grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (great_grandchild_action_list
+     (great_grandchild_action
+      (great_grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (double_great_grandchild_action_list
+     (double_great_grandchild_action
+      (double_great_grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (leaf_action_list
+     (leaf_action
+      (leaf_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))))))))))))))
