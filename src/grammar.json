@@ -237,14 +237,18 @@
           "name": "priority_icon"
         },
         {
-          "type": "PATTERN",
-          "value": "[0-9]+"
+          "type": "SYMBOL",
+          "name": "priority_number"
         }
       ]
     },
     "priority_icon": {
       "type": "STRING",
       "value": "!"
+    },
+    "priority_number": {
+      "type": "PATTERN",
+      "value": "[0-9]+"
     },
     "story": {
       "type": "SEQ",

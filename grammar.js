@@ -49,8 +49,9 @@ module.exports = grammar({
     // description is same as name except description char is okay
     description: $ => seq($.desc_icon, /[^!*+@%>#]+/),
     desc_icon: $ => '$',
-    priority: $ => seq($.priority_icon,/[0-9]+/),
+    priority: $ => seq($.priority_icon, $.priority_number),
     priority_icon: $ => '!',
+    priority_number: $ => /[0-9]+/,
     story: $ => seq($.story_icon, /[^+@%>#]+/),
     story_icon: $ => '*',
 

@@ -8,9 +8,9 @@ Basic Action
 (action_list
  (root_action
   (core_action
-  (state 
-   (not_started))
-  (name))))
+   (state 
+    (not_started))
+   (name))))
 
 =================
 With Child Action
@@ -23,16 +23,16 @@ With Child Action
 (action_list
  (root_action
   (core_action
-  (state 
-   (not_started))
-  (name))
-  (child_action_list
-   (child_action
-   (child_icon)
-    (core_action
    (state 
     (not_started))
-   (name))))))
+   (name))
+  (child_action_list
+   (child_action
+    (child_icon)
+    (core_action
+     (state 
+      (not_started))
+     (name))))))
 
 ================
 With Description
@@ -44,12 +44,12 @@ With Description
 
 (action_list
  (root_action
-   (core_action
-  (state 
-   (completed))
-  (name)
-  (description
-   (desc_icon)))))
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (description
+    (desc_icon)))))
 
 ================
 With Priority
@@ -62,11 +62,12 @@ With Priority
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (priority
-   (priority_icon)))))
+   (state 
+    (completed))
+   (name)
+   (priority
+    (priority_icon)
+    (priority_number)))))
 
 ================
 With Story
@@ -79,11 +80,11 @@ With Story
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (story
-   (story_icon)))))
+   (state 
+    (completed))
+   (name)
+   (story
+    (story_icon)))))
 
 ============
 with context
@@ -94,15 +95,15 @@ with context
 
 (action_list
  (root_action
- (core_action
-  (state 
-   (completed))
-  (name)
-  (context_list
-   (context_icon)
-   (middle_context
-    (context_separator))
-   (tail_context)))))
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (context_list
+    (context_icon)
+    (middle_context
+     (context_separator))
+    (tail_context)))))
 
 ============
 with do-date
@@ -115,21 +116,21 @@ with do-date
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (do_date_or_time
-   (do_date_icon)
-   (date
-    (year)
-    (month)
-    (day)
-    (time
-     (time_designator)
-     (hour)
-     (minute)
-     (duration
-      (duration_designator))))))))
+   (state 
+    (completed))
+   (name)
+   (do_date_or_time
+    (do_date_icon)
+    (date
+     (year)
+     (month)
+     (day)
+     (time
+      (time_designator)
+      (hour)
+      (minute)
+      (duration
+       (duration_designator))))))))
 
 ===================
 with completed date
@@ -142,18 +143,18 @@ with completed date
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (completed_date
-   (date
-    (year)
-    (month)
-    (day)
-    (time
-     (time_designator)
-     (hour)
-     (minute)))))))
+   (state 
+    (completed))
+   (name)
+   (completed_date
+    (date
+     (year)
+     (month)
+     (day)
+     (time
+      (time_designator)
+      (hour)
+      (minute)))))))
 
 ===============
 With Id no dash
@@ -166,17 +167,17 @@ With Id no dash
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (id
-   (id_icon)
-   (uuid
-    (uuid_time_high)
-    (uuid_time_mid)
-    (uuid_version_random)
-    (uuid_variant_random)
-    (uuid_random))))))
+   (state 
+    (completed))
+   (name)
+   (id
+    (id_icon)
+    (uuid
+     (uuid_time_high)
+     (uuid_time_mid)
+     (uuid_version_random)
+     (uuid_variant_random)
+     (uuid_random))))))
 
 =================
 With Id with dash
@@ -189,17 +190,17 @@ With Id with dash
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (id
-   (id_icon)
-   (uuid
-    (uuid_time_high)
-    (uuid_time_mid)
-    (uuid_version_random)
-    (uuid_variant_random)
-    (uuid_random))))))
+   (state 
+    (completed))
+   (name)
+   (id
+    (id_icon)
+    (uuid
+     (uuid_time_high)
+     (uuid_time_mid)
+     (uuid_version_random)
+     (uuid_variant_random)
+     (uuid_random))))))
 
 ===============
 With Everything
@@ -217,41 +218,42 @@ $ descriptions
 (action_list
  (root_action
   (core_action
-  (state 
-   (completed))
-  (name)
-  (description
-   (desc_icon))
-  (priority
-   (priority_icon))
-  (story
-   (story_icon))
-  (context_list
-   (context_icon)
-   (middle_context
-    (context_separator))
-   (tail_context))
-  (do_date_or_time
-   (do_date_icon)
-   (date
-    (year)
-    (month)
-    (day)
-    (time
-     (time_designator)
-     (hour)
-     (minute)
-     (duration
-      (duration_designator)))))
-  (completed_date
-   (date
-    (year)
-    (month)
-    (day)
-    (time
-     (time_designator)
-     (hour)
-     (minute))))
+   (state 
+    (completed))
+   (name)
+   (description
+    (desc_icon))
+   (priority
+    (priority_icon)
+    (priority_number))
+   (story
+    (story_icon))
+   (context_list
+    (context_icon)
+    (middle_context
+     (context_separator))
+    (tail_context))
+   (do_date_or_time
+    (do_date_icon)
+    (date
+     (year)
+     (month)
+     (day)
+     (time
+      (time_designator)
+      (hour)
+      (minute)
+      (duration
+       (duration_designator)))))
+   (completed_date
+    (date
+     (year)
+     (month)
+     (day)
+     (time
+      (time_designator)
+      (hour)
+      (minute))))
 	(id
 	 (id_icon)
 	 (uuid
