@@ -19,6 +19,7 @@ With Child Action
 > ( ) child action
 >> ( ) grandchild action
 >>> ( ) great grandchild action
+>>>> ( ) double-great grandchild action
 
 ---
 
@@ -48,7 +49,14 @@ With Child Action
       (core_action
        (state 
 	(not_started))
-       (name))))))))))
+       (name))
+    (double_great_grandchild_action_list
+     (double_great_grandchild_action
+      (double_great_grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))))))))))))
 
 ================
 With Description

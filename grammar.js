@@ -38,9 +38,18 @@ module.exports = grammar({
 
     great_grandchild_action: $ => seq(
       $.great_grandchild_icon,
-      $.core_action
+      $.core_action,
+      optional($.double_great_grandchild_action_list)
     ),
     great_grandchild_icon: $ => '>>>',
+
+    double_great_grandchild_action_list: $ => repeat1($.double_great_grandchild_action),
+
+    double_great_grandchild_action: $ => seq(
+      $.double_great_grandchild_icon,
+      $.core_action
+    ),
+    double_great_grandchild_icon: $ => '>>>>',
 
     core_action: $ => seq(
         $.state,

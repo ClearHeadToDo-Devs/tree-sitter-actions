@@ -208,6 +208,40 @@
     }
   },
   {
+    "type": "double_great_grandchild_action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "core_action",
+          "named": true
+        },
+        {
+          "type": "double_great_grandchild_icon",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "double_great_grandchild_action_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "double_great_grandchild_action",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "duration",
     "named": true,
     "fields": {},
@@ -270,6 +304,10 @@
       "types": [
         {
           "type": "core_action",
+          "named": true
+        },
+        {
+          "type": "double_great_grandchild_action_list",
           "named": true
         },
         {
@@ -577,6 +615,10 @@
   },
   {
     "type": "do_date_icon",
+    "named": true
+  },
+  {
+    "type": "double_great_grandchild_icon",
     "named": true
   },
   {

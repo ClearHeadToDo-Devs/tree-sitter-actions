@@ -118,12 +118,48 @@
         {
           "type": "SYMBOL",
           "name": "core_action"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "double_great_grandchild_action_list"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "great_grandchild_icon": {
       "type": "STRING",
       "value": ">>>"
+    },
+    "double_great_grandchild_action_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "double_great_grandchild_action"
+      }
+    },
+    "double_great_grandchild_action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "double_great_grandchild_icon"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "core_action"
+        }
+      ]
+    },
+    "double_great_grandchild_icon": {
+      "type": "STRING",
+      "value": ">>>>"
     },
     "core_action": {
       "type": "SEQ",
