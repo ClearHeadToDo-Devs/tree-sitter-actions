@@ -98,8 +98,9 @@ module.exports = grammar({
 
     context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
     context_icon: $ => '+',
-    middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, $._context_separator),
-    _context_separator: $ => ',',
+    middle_context: $ => seq($.context_text, $.context_separator),
+    context_text: $ => /[a-zA-Z0-9\-_]+/,
+    context_separator: $ => ',',
     tail_context: $ => /[a-zA-Z0-9\-_]+/,
 
     do_date_or_time: $ => seq($.do_date_icon, choice($.date, $.time)),

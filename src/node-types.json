@@ -91,6 +91,11 @@
     }
   },
   {
+    "type": "context_text",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "core_action",
     "named": true,
     "fields": {},
@@ -406,7 +411,21 @@
   {
     "type": "middle_context",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "context_separator",
+          "named": true
+        },
+        {
+          "type": "context_text",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "minute",
@@ -639,6 +658,10 @@
   },
   {
     "type": "context_icon",
+    "named": true
+  },
+  {
+    "type": "context_separator",
     "named": true
   },
   {

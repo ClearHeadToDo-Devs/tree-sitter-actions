@@ -452,16 +452,20 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "[a-zA-Z0-9\\-_]+"
+          "type": "SYMBOL",
+          "name": "context_text"
         },
         {
           "type": "SYMBOL",
-          "name": "_context_separator"
+          "name": "context_separator"
         }
       ]
     },
-    "_context_separator": {
+    "context_text": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9\\-_]+"
+    },
+    "context_separator": {
       "type": "STRING",
       "value": ","
     },
