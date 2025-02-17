@@ -332,6 +332,82 @@
     }
   },
   {
+    "type": "uuid",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "uuid_random",
+          "named": true
+        },
+        {
+          "type": "uuid_time_high",
+          "named": true
+        },
+        {
+          "type": "uuid_time_mid",
+          "named": true
+        },
+        {
+          "type": "uuid_variant_random",
+          "named": true
+        },
+        {
+          "type": "uuid_version_random",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "uuid_time_mid",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "uuid_chunk",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "uuid_variant_random",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "uuid_chunk",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "uuid_version_random",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "uuid_chunk",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "%",
     "named": false
   },
@@ -424,7 +500,15 @@
     "named": true
   },
   {
-    "type": "uuid",
+    "type": "uuid_chunk",
+    "named": true
+  },
+  {
+    "type": "uuid_random",
+    "named": true
+  },
+  {
+    "type": "uuid_time_high",
     "named": true
   },
   {

@@ -475,8 +475,101 @@
       "value": "#"
     },
     "uuid": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "uuid_time_high"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "uuid_time_mid"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "uuid_version_random"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "uuid_variant_random"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "uuid_random"
+        }
+      ]
+    },
+    "uuid_time_high": {
       "type": "PATTERN",
-      "value": "[0-9a-f]{32}"
+      "value": "[0-9a-f]{8}"
+    },
+    "uuid_time_mid": {
+      "type": "SYMBOL",
+      "name": "uuid_chunk"
+    },
+    "uuid_version_random": {
+      "type": "SYMBOL",
+      "name": "uuid_chunk"
+    },
+    "uuid_variant_random": {
+      "type": "SYMBOL",
+      "name": "uuid_chunk"
+    },
+    "uuid_random": {
+      "type": "PATTERN",
+      "value": "[0-9a-f]{12}"
+    },
+    "uuid_chunk": {
+      "type": "PATTERN",
+      "value": "[0-9a-f]{4}"
     }
   },
   "extras": [
