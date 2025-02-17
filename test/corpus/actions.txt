@@ -7,9 +7,10 @@ Basic Action
 
 (action_list
  (root_action
+  (core_action
   (state 
    (not_started))
-  (name)))
+  (name))))
 
 =================
 With Child Action
@@ -21,15 +22,17 @@ With Child Action
 
 (action_list
  (root_action
+  (core_action
   (state 
    (not_started))
-  (name)
+  (name))
   (child_action_list
    (child_action
    (child_icon)
+    (core_action
    (state 
     (not_started))
-   (name)))))
+   (name))))))
 
 ================
 With Description
@@ -41,11 +44,12 @@ With Description
 
 (action_list
  (root_action
+   (core_action
   (state 
    (completed))
   (name)
   (description
-   (desc_icon))))
+   (desc_icon)))))
 
 ================
 With Priority
@@ -57,11 +61,12 @@ With Priority
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
   (priority
-   (priority_icon))))
+   (priority_icon)))))
 
 ================
 With Story
@@ -73,11 +78,12 @@ With Story
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
   (story
-   (story_icon))))
+   (story_icon)))))
 
 ============
 with context
@@ -88,6 +94,7 @@ with context
 
 (action_list
  (root_action
+ (core_action
   (state 
    (completed))
   (name)
@@ -95,7 +102,7 @@ with context
    (context_icon)
    (middle_context
     (context_separator))
-   (tail_context))))
+   (tail_context)))))
 
 ============
 with do-date
@@ -107,6 +114,7 @@ with do-date
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
@@ -121,7 +129,7 @@ with do-date
      (hour)
      (minute)
      (duration
-      (duration_designator)))))))
+      (duration_designator))))))))
 
 ===================
 with completed date
@@ -133,6 +141,7 @@ with completed date
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
@@ -144,7 +153,7 @@ with completed date
     (time
      (time_designator)
      (hour)
-     (minute))))))
+     (minute)))))))
 
 ===============
 With Id no dash
@@ -156,6 +165,7 @@ With Id no dash
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
@@ -169,7 +179,7 @@ With Id no dash
      (uuid_chunk))
     (uuid_variant_random
      (uuid_chunk))
-    (uuid_random)))))
+    (uuid_random))))))
 
 =================
 With Id with dash
@@ -181,6 +191,7 @@ With Id with dash
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
@@ -194,7 +205,7 @@ With Id with dash
      (uuid_chunk))
     (uuid_variant_random
      (uuid_chunk))
-    (uuid_random)))))
+    (uuid_random))))))
 
 ===============
 With Everything
@@ -211,6 +222,7 @@ $ descriptions
 
 (action_list
  (root_action
+  (core_action
   (state 
    (completed))
   (name)
@@ -256,4 +268,4 @@ $ descriptions
 	   (uuid_chunk))
 	  (uuid_variant_random
 	   (uuid_chunk))
-	  (uuid_random)))))
+	  (uuid_random))))))

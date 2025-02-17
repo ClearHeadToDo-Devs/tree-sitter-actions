@@ -27,39 +27,7 @@
           "named": true
         },
         {
-          "type": "completed_date",
-          "named": true
-        },
-        {
-          "type": "context_list",
-          "named": true
-        },
-        {
-          "type": "description",
-          "named": true
-        },
-        {
-          "type": "do_date_or_time",
-          "named": true
-        },
-        {
-          "type": "id",
-          "named": true
-        },
-        {
-          "type": "name",
-          "named": true
-        },
-        {
-          "type": "priority",
-          "named": true
-        },
-        {
-          "type": "state",
-          "named": true
-        },
-        {
-          "type": "story",
+          "type": "core_action",
           "named": true
         }
       ]
@@ -113,6 +81,53 @@
         },
         {
           "type": "tail_context",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "core_action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "completed_date",
+          "named": true
+        },
+        {
+          "type": "context_list",
+          "named": true
+        },
+        {
+          "type": "description",
+          "named": true
+        },
+        {
+          "type": "do_date_or_time",
+          "named": true
+        },
+        {
+          "type": "id",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "priority",
+          "named": true
+        },
+        {
+          "type": "state",
+          "named": true
+        },
+        {
+          "type": "story",
           "named": true
         }
       ]
@@ -285,39 +300,7 @@
           "named": true
         },
         {
-          "type": "completed_date",
-          "named": true
-        },
-        {
-          "type": "context_list",
-          "named": true
-        },
-        {
-          "type": "description",
-          "named": true
-        },
-        {
-          "type": "do_date_or_time",
-          "named": true
-        },
-        {
-          "type": "id",
-          "named": true
-        },
-        {
-          "type": "name",
-          "named": true
-        },
-        {
-          "type": "priority",
-          "named": true
-        },
-        {
-          "type": "state",
-          "named": true
-        },
-        {
-          "type": "story",
+          "type": "core_action",
           "named": true
         }
       ]

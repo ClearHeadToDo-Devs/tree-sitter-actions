@@ -13,95 +13,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "state"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "name"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "description"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "priority"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "story"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "context_list"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "do_date_or_time"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "completed_date"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "id"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "name": "core_action"
         },
         {
           "type": "CHOICE",
@@ -133,6 +45,19 @@
         },
         {
           "type": "SYMBOL",
+          "name": "core_action"
+        }
+      ]
+    },
+    "child_icon": {
+      "type": "STRING",
+      "value": ">"
+    },
+    "core_action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
           "name": "state"
         },
         {
@@ -224,10 +149,6 @@
           ]
         }
       ]
-    },
-    "child_icon": {
-      "type": "STRING",
-      "value": ">"
     },
     "state": {
       "type": "SEQ",

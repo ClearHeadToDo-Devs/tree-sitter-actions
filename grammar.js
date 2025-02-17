@@ -13,6 +13,18 @@ module.exports = grammar({
   rules: {
     action_list: $ => repeat($.root_action),
     root_action: $ => seq(
+        $.core_action,
+        optional($.child_action_list)
+    ),
+    child_action_list: $ => repeat1($.child_action),
+
+    child_action: $ => seq(
+      $.child_icon,
+      $.core_action
+    ),
+    child_icon: $ => '>',
+
+    core_action: $ => seq(
         $.state,
         $.name,
         optional($.description),
@@ -22,23 +34,7 @@ module.exports = grammar({
         optional($.do_date_or_time),
         optional($.completed_date),
         optional($.id),
-        optional($.child_action_list)
     ),
-    child_action_list: $ => repeat1($.child_action),
-
-    child_action: $ => seq(
-        $.child_icon,
-        $.state,
-        $.name,
-        optional($.description),
-        optional($.priority),
-        optional($.story),
-        optional($.context_list),
-        optional($.do_date_or_time),
-        optional($.completed_date),
-        optional($.id)
-    ),
-    child_icon: $ => '>',
 
 
     state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
