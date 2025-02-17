@@ -82,11 +82,11 @@ module.exports = grammar({
     id_icon: $ => '#',
     uuid: $ => seq($.uuid_time_high, optional('-'), $.uuid_time_mid, optional('-'), $.uuid_version_random, optional('-'),$.uuid_variant_random, optional('-'),$.uuid_random),
     uuid_time_high : $ => /[0-9a-f]{8}/,
-    uuid_time_mid: $ => $.uuid_chunk,
-    uuid_version_random: $ => $.uuid_chunk,
-    uuid_variant_random: $ => $.uuid_chunk,
+    uuid_time_mid: $ => $._uuid_chunk,
+    uuid_version_random: $ => $._uuid_chunk,
+    uuid_variant_random: $ => $._uuid_chunk,
     uuid_random: $ => /[0-9a-f]{12}/,
 
-    uuid_chunk: $ => /[0-9a-f]{4}/,
+    _uuid_chunk: $ => /[0-9a-f]{4}/,
   }
 });

@@ -173,12 +173,9 @@ With Id no dash
    (id_icon)
    (uuid
     (uuid_time_high)
-    (uuid_time_mid
-     (uuid_chunk))
-    (uuid_version_random
-     (uuid_chunk))
-    (uuid_variant_random
-     (uuid_chunk))
+    (uuid_time_mid)
+    (uuid_version_random)
+    (uuid_variant_random)
     (uuid_random))))))
 
 =================
@@ -199,12 +196,9 @@ With Id with dash
    (id_icon)
    (uuid
     (uuid_time_high)
-    (uuid_time_mid
-     (uuid_chunk))
-    (uuid_version_random
-     (uuid_chunk))
-    (uuid_variant_random
-     (uuid_chunk))
+    (uuid_time_mid)
+    (uuid_version_random)
+    (uuid_variant_random)
     (uuid_random))))))
 
 ===============
@@ -262,10 +256,7 @@ $ descriptions
 	 (id_icon)
 	 (uuid
 	  (uuid_time_high)
-	  (uuid_time_mid
-	   (uuid_chunk))
-	  (uuid_version_random
-	   (uuid_chunk))
-	  (uuid_variant_random
-	   (uuid_chunk))
+	  (uuid_time_mid)
+	  (uuid_version_random)
+	  (uuid_variant_random)
 	  (uuid_random))))))

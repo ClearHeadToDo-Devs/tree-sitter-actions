@@ -418,47 +418,17 @@
   {
     "type": "uuid_time_mid",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "uuid_chunk",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "uuid_variant_random",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "uuid_chunk",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "uuid_version_random",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "uuid_chunk",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "%",
@@ -554,10 +524,6 @@
   },
   {
     "type": "time_designator",
-    "named": true
-  },
-  {
-    "type": "uuid_chunk",
     "named": true
   },
   {
