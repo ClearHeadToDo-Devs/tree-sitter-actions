@@ -6,10 +6,30 @@ Basic Action
 ---
 
 (action_list
- (action
+ (root_action
   (state 
    (not_started))
   (name)))
+
+=================
+With Child Action
+=================
+( ) test
+> ( ) child
+
+---
+
+(action_list
+ (root_action
+  (state 
+   (not_started))
+  (name)
+  (child_action_list
+   (child_action
+   (child_icon)
+   (state 
+    (not_started))
+   (name)))))
 
 ================
 With Description
@@ -20,12 +40,12 @@ With Description
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
   (description
-  	(desc_icon))))
+   (desc_icon))))
 
 ================
 With Priority
@@ -36,12 +56,12 @@ With Priority
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
   (priority
-  	(priority_icon))))
+   (priority_icon))))
 
 ================
 With Story
@@ -52,12 +72,12 @@ With Story
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
   (story
-  	(story_icon))))
+   (story_icon))))
 
 ============
 with context
@@ -67,7 +87,7 @@ with context
 ---
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
@@ -86,7 +106,7 @@ with do-date
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
@@ -112,7 +132,7 @@ with completed date
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
@@ -135,7 +155,7 @@ With Id no dash
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
@@ -160,7 +180,7 @@ With Id with dash
 
 
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
@@ -179,7 +199,7 @@ With Id with dash
 ===============
 With Everything
 ===============
-(x) priority and description 
+(x) Mega Action
 $ descriptions 
 !1 
 * Test Story 
@@ -189,9 +209,8 @@ $ descriptions
 #01951111cfa6718db303d7107f4005b3
 ---
 
-
 (action_list
- (action
+ (root_action
   (state 
    (completed))
   (name)
@@ -204,7 +223,7 @@ $ descriptions
   (context_list
    (context_icon)
    (middle_context
-     (context_separator))
+    (context_separator))
    (tail_context))
   (do_date_or_time
    (do_date_icon)
@@ -218,7 +237,7 @@ $ descriptions
      (minute)
      (duration
       (duration_designator)))))
-     (completed_date
+  (completed_date
    (date
     (year)
     (month)
@@ -227,14 +246,14 @@ $ descriptions
      (time_designator)
      (hour)
      (minute))))
-  (id
-   (id_icon)
-   (uuid
-    (uuid_time_high)
-    (uuid_time_mid
-     (uuid_chunk))
-    (uuid_version_random
-     (uuid_chunk))
-    (uuid_variant_random
-     (uuid_chunk))
-    (uuid_random)))))
+	(id
+	 (id_icon)
+	 (uuid
+	  (uuid_time_high)
+	  (uuid_time_mid
+	   (uuid_chunk))
+	  (uuid_version_random
+	   (uuid_chunk))
+	  (uuid_variant_random
+	   (uuid_chunk))
+	  (uuid_random)))))

@@ -11,9 +11,23 @@ module.exports = grammar({
   name: "actions",
 
   rules: {
-    action_list: $ => repeat($.action),
+    action_list: $ => repeat($.root_action),
+    root_action: $ => seq(
+        $.state,
+        $.name,
+        optional($.description),
+        optional($.priority),
+        optional($.story),
+        optional($.context_list),
+        optional($.do_date_or_time),
+        optional($.completed_date),
+        optional($.id),
+        optional($.child_action_list)
+    ),
+    child_action_list: $ => repeat1($.child_action),
 
-    action: $ => seq(
+    child_action: $ => seq(
+        $.child_icon,
         $.state,
         $.name,
         optional($.description),
@@ -24,6 +38,7 @@ module.exports = grammar({
         optional($.completed_date),
         optional($.id)
     ),
+    child_icon: $ => '>',
 
 
     state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
@@ -34,7 +49,7 @@ module.exports = grammar({
     cancelled: $ => '_',
 
     //name is anything but reserved chars
-    name: $ => /[^$!*+@%>#-]+/,
+    name: $ => /[^$!*+@%>#]+/,
     // description is same as name except description char is okay
     description: $ => seq($.desc_icon, /[^!*+@%>#]+/),
     desc_icon: $ => '$',

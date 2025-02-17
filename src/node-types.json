@@ -1,12 +1,31 @@
 [
   {
-    "type": "action",
+    "type": "action_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "root_action",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "child_action",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "child_icon",
+          "named": true
+        },
         {
           "type": "completed_date",
           "named": true
@@ -47,15 +66,15 @@
     }
   },
   {
-    "type": "action_list",
+    "type": "child_action_list",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "action",
+          "type": "child_action",
           "named": true
         }
       ]
@@ -254,6 +273,57 @@
     }
   },
   {
+    "type": "root_action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "child_action_list",
+          "named": true
+        },
+        {
+          "type": "completed_date",
+          "named": true
+        },
+        {
+          "type": "context_list",
+          "named": true
+        },
+        {
+          "type": "description",
+          "named": true
+        },
+        {
+          "type": "do_date_or_time",
+          "named": true
+        },
+        {
+          "type": "id",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "priority",
+          "named": true
+        },
+        {
+          "type": "state",
+          "named": true
+        },
+        {
+          "type": "story",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "state",
     "named": true,
     "fields": {},
@@ -445,6 +515,10 @@
   },
   {
     "type": "cancelled",
+    "named": true
+  },
+  {
+    "type": "child_icon",
     "named": true
   },
   {
