@@ -46,12 +46,84 @@
         {
           "type": "SYMBOL",
           "name": "core_action"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "grandchild_action_list"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "child_icon": {
       "type": "STRING",
       "value": ">"
+    },
+    "grandchild_action_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "grandchild_action"
+      }
+    },
+    "grandchild_action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "grandchild_icon"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "core_action"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "great_grandchild_action_list"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "grandchild_icon": {
+      "type": "STRING",
+      "value": ">>"
+    },
+    "great_grandchild_action_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "great_grandchild_action"
+      }
+    },
+    "great_grandchild_action": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "great_grandchild_icon"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "core_action"
+        }
+      ]
+    },
+    "great_grandchild_icon": {
+      "type": "STRING",
+      "value": ">>>"
     },
     "core_action": {
       "type": "SEQ",

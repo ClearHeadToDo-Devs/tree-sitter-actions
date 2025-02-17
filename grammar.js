@@ -20,9 +20,27 @@ module.exports = grammar({
 
     child_action: $ => seq(
       $.child_icon,
-      $.core_action
+      $.core_action,
+      optional($.grandchild_action_list)
     ),
     child_icon: $ => '>',
+
+    grandchild_action_list: $ => repeat1($.grandchild_action),
+
+    grandchild_action: $ => seq(
+      $.grandchild_icon,
+      $.core_action,
+      optional($.great_grandchild_action_list)
+    ),
+    grandchild_icon: $ => '>>',
+
+    great_grandchild_action_list: $ => repeat1($.great_grandchild_action),
+
+    great_grandchild_action: $ => seq(
+      $.great_grandchild_icon,
+      $.core_action
+    ),
+    great_grandchild_icon: $ => '>>>',
 
     core_action: $ => seq(
         $.state,
@@ -89,5 +107,5 @@ module.exports = grammar({
     uuid_random: $ => /[0-9a-f]{12}/,
 
     _uuid_chunk: $ => /[0-9a-f]{4}/,
-  }
+  },
 });

@@ -15,8 +15,10 @@ Basic Action
 =================
 With Child Action
 =================
-( ) test
-> ( ) child
+( ) root test
+> ( ) child action
+>> ( ) grandchild action
+>>> ( ) great grandchild action
 
 ---
 
@@ -32,7 +34,21 @@ With Child Action
     (core_action
      (state 
       (not_started))
-     (name))))))
+     (name))
+    (grandchild_action_list
+     (grandchild_action
+      (grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))
+    (great_grandchild_action_list
+     (great_grandchild_action
+      (great_grandchild_icon)
+      (core_action
+       (state 
+	(not_started))
+       (name))))))))))
 
 ================
 With Description
