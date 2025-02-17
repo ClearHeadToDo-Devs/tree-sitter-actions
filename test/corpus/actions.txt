@@ -28,7 +28,8 @@ With Description
     (completed))
    (name)
    (description
-    (desc_icon)))))
+    (desc_icon)
+    (description_text)))))
 
 ================
 With Priority
@@ -63,7 +64,8 @@ With Story
     (completed))
    (name)
    (story
-    (story_icon)))))
+    (story_icon)
+    (story_name)))))
 
 ============
 with context
@@ -80,8 +82,7 @@ with context
    (name)
    (context_list
     (context_icon)
-    (middle_context
-     (context_separator))
+    (middle_context)
     (tail_context)))))
 
 ============
@@ -260,16 +261,17 @@ $ descriptions
     (completed))
    (name)
    (description
-    (desc_icon))
+    (desc_icon)
+    (description_text))
    (priority
     (priority_icon)
     (priority_number))
    (story
-    (story_icon))
+    (story_icon)
+    (story_name))
    (context_list
     (context_icon)
-    (middle_context
-     (context_separator))
+    (middle_context)
     (tail_context))
    (do_date_or_time
     (do_date_icon)

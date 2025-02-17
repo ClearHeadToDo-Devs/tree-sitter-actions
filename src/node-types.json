@@ -174,11 +174,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "desc_icon",
+          "named": true
+        },
+        {
+          "type": "description_text",
           "named": true
         }
       ]
@@ -402,17 +406,7 @@
   {
     "type": "middle_context",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "context_separator",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "minute",
@@ -503,11 +497,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "story_icon",
+          "named": true
+        },
+        {
+          "type": "story_name",
           "named": true
         }
       ]
@@ -644,11 +642,11 @@
     "named": true
   },
   {
-    "type": "context_separator",
+    "type": "desc_icon",
     "named": true
   },
   {
-    "type": "desc_icon",
+    "type": "description_text",
     "named": true
   },
   {
@@ -697,6 +695,10 @@
   },
   {
     "type": "story_icon",
+    "named": true
+  },
+  {
+    "type": "story_name",
     "named": true
   },
   {

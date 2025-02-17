@@ -364,14 +364,18 @@
           "name": "desc_icon"
         },
         {
-          "type": "PATTERN",
-          "value": "[^!*+@%>#]+"
+          "type": "SYMBOL",
+          "name": "description_text"
         }
       ]
     },
     "desc_icon": {
       "type": "STRING",
       "value": "$"
+    },
+    "description_text": {
+      "type": "PATTERN",
+      "value": "[^!*+@%>#]+"
     },
     "priority": {
       "type": "SEQ",
@@ -402,14 +406,18 @@
           "name": "story_icon"
         },
         {
-          "type": "PATTERN",
-          "value": "[^+@%>#]+"
+          "type": "SYMBOL",
+          "name": "story_name"
         }
       ]
     },
     "story_icon": {
       "type": "STRING",
       "value": "*"
+    },
+    "story_name": {
+      "type": "PATTERN",
+      "value": "[^+@%>#]+"
     },
     "context_list": {
       "type": "SEQ",
@@ -449,11 +457,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "context_separator"
+          "name": "_context_separator"
         }
       ]
     },
-    "context_separator": {
+    "_context_separator": {
       "type": "STRING",
       "value": ","
     },

@@ -30,15 +30,15 @@ enum ts_symbol_identifiers {
   sym_blocked = 11,
   sym_cancelled = 12,
   sym_name = 13,
-  aux_sym_description_token1 = 14,
-  sym_desc_icon = 15,
+  sym_desc_icon = 14,
+  sym_description_text = 15,
   sym_priority_icon = 16,
   aux_sym_priority_number_token1 = 17,
-  aux_sym_story_token1 = 18,
-  sym_story_icon = 19,
+  sym_story_icon = 18,
+  sym_story_name = 19,
   sym_context_icon = 20,
   aux_sym_middle_context_token1 = 21,
-  sym_context_separator = 22,
+  sym__context_separator = 22,
   sym_do_date_icon = 23,
   anon_sym_PERCENT = 24,
   sym_year = 25,
@@ -114,15 +114,15 @@ static const char * const ts_symbol_names[] = {
   [sym_blocked] = "blocked",
   [sym_cancelled] = "cancelled",
   [sym_name] = "name",
-  [aux_sym_description_token1] = "description_token1",
   [sym_desc_icon] = "desc_icon",
+  [sym_description_text] = "description_text",
   [sym_priority_icon] = "priority_icon",
   [aux_sym_priority_number_token1] = "priority_number_token1",
-  [aux_sym_story_token1] = "story_token1",
   [sym_story_icon] = "story_icon",
+  [sym_story_name] = "story_name",
   [sym_context_icon] = "context_icon",
   [aux_sym_middle_context_token1] = "middle_context_token1",
-  [sym_context_separator] = "context_separator",
+  [sym__context_separator] = "_context_separator",
   [sym_do_date_icon] = "do_date_icon",
   [anon_sym_PERCENT] = "%",
   [sym_year] = "year",
@@ -198,15 +198,15 @@ static const TSSymbol ts_symbol_map[] = {
   [sym_blocked] = sym_blocked,
   [sym_cancelled] = sym_cancelled,
   [sym_name] = sym_name,
-  [aux_sym_description_token1] = aux_sym_description_token1,
   [sym_desc_icon] = sym_desc_icon,
+  [sym_description_text] = sym_description_text,
   [sym_priority_icon] = sym_priority_icon,
   [aux_sym_priority_number_token1] = aux_sym_priority_number_token1,
-  [aux_sym_story_token1] = aux_sym_story_token1,
   [sym_story_icon] = sym_story_icon,
+  [sym_story_name] = sym_story_name,
   [sym_context_icon] = sym_context_icon,
   [aux_sym_middle_context_token1] = aux_sym_middle_context_token1,
-  [sym_context_separator] = sym_context_separator,
+  [sym__context_separator] = sym__context_separator,
   [sym_do_date_icon] = sym_do_date_icon,
   [anon_sym_PERCENT] = anon_sym_PERCENT,
   [sym_year] = sym_year,
@@ -324,11 +324,11 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = true,
   },
-  [aux_sym_description_token1] = {
-    .visible = false,
-    .named = false,
-  },
   [sym_desc_icon] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_description_text] = {
     .visible = true,
     .named = true,
   },
@@ -340,11 +340,11 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = false,
   },
-  [aux_sym_story_token1] = {
-    .visible = false,
-    .named = false,
-  },
   [sym_story_icon] = {
+    .visible = true,
+    .named = true,
+  },
+  [sym_story_name] = {
     .visible = true,
     .named = true,
   },
@@ -356,8 +356,8 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = false,
   },
-  [sym_context_separator] = {
-    .visible = true,
+  [sym__context_separator] = {
+    .visible = false,
     .named = true,
   },
   [sym_do_date_icon] = {
@@ -743,11 +743,11 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (eof) ADVANCE(41);
       if (lookahead == '!') ADVANCE(59);
       if (lookahead == '#') ADVANCE(78);
-      if (lookahead == '$') ADVANCE(58);
+      if (lookahead == '$') ADVANCE(56);
       if (lookahead == '%') ADVANCE(68);
       if (lookahead == '(') ADVANCE(47);
       if (lookahead == ')') ADVANCE(48);
-      if (lookahead == '*') ADVANCE(63);
+      if (lookahead == '*') ADVANCE(61);
       if (lookahead == '+') ADVANCE(64);
       if (lookahead == ',') ADVANCE(66);
       if (lookahead == '-') ADVANCE(51);
@@ -820,13 +820,13 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 11:
       if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(61);
+          lookahead == ' ') ADVANCE(62);
       if (lookahead != 0 &&
           lookahead != '#' &&
           lookahead != '%' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(62);
+          lookahead != '@') ADVANCE(63);
       END_STATE();
     case 12:
       if (('\t' <= lookahead && lookahead <= '\r') ||
@@ -841,7 +841,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 13:
       if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(56);
+          lookahead == ' ') ADVANCE(57);
       if (lookahead != 0 &&
           lookahead != '!' &&
           lookahead != '#' &&
@@ -849,7 +849,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '*' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(57);
+          lookahead != '@') ADVANCE(58);
       END_STATE();
     case 14:
       if (('\t' <= lookahead && lookahead <= '\r') ||
@@ -1035,20 +1035,12 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '@') ADVANCE(55);
       END_STATE();
     case 56:
-      ACCEPT_TOKEN(aux_sym_description_token1);
-      if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(56);
-      if (lookahead != 0 &&
-          lookahead != '!' &&
-          lookahead != '#' &&
-          lookahead != '%' &&
-          lookahead != '*' &&
-          lookahead != '+' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(57);
+      ACCEPT_TOKEN(sym_desc_icon);
       END_STATE();
     case 57:
-      ACCEPT_TOKEN(aux_sym_description_token1);
+      ACCEPT_TOKEN(sym_description_text);
+      if (('\t' <= lookahead && lookahead <= '\r') ||
+          lookahead == ' ') ADVANCE(57);
       if (lookahead != 0 &&
           lookahead != '!' &&
           lookahead != '#' &&
@@ -1056,10 +1048,18 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           lookahead != '*' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(57);
+          lookahead != '@') ADVANCE(58);
       END_STATE();
     case 58:
-      ACCEPT_TOKEN(sym_desc_icon);
+      ACCEPT_TOKEN(sym_description_text);
+      if (lookahead != 0 &&
+          lookahead != '!' &&
+          lookahead != '#' &&
+          lookahead != '%' &&
+          lookahead != '*' &&
+          lookahead != '+' &&
+          lookahead != '>' &&
+          lookahead != '@') ADVANCE(58);
       END_STATE();
     case 59:
       ACCEPT_TOKEN(sym_priority_icon);
@@ -1069,27 +1069,27 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (('0' <= lookahead && lookahead <= '9')) ADVANCE(60);
       END_STATE();
     case 61:
-      ACCEPT_TOKEN(aux_sym_story_token1);
-      if (('\t' <= lookahead && lookahead <= '\r') ||
-          lookahead == ' ') ADVANCE(61);
-      if (lookahead != 0 &&
-          lookahead != '#' &&
-          lookahead != '%' &&
-          lookahead != '+' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(62);
+      ACCEPT_TOKEN(sym_story_icon);
       END_STATE();
     case 62:
-      ACCEPT_TOKEN(aux_sym_story_token1);
+      ACCEPT_TOKEN(sym_story_name);
+      if (('\t' <= lookahead && lookahead <= '\r') ||
+          lookahead == ' ') ADVANCE(62);
       if (lookahead != 0 &&
           lookahead != '#' &&
           lookahead != '%' &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(62);
+          lookahead != '@') ADVANCE(63);
       END_STATE();
     case 63:
-      ACCEPT_TOKEN(sym_story_icon);
+      ACCEPT_TOKEN(sym_story_name);
+      if (lookahead != 0 &&
+          lookahead != '#' &&
+          lookahead != '%' &&
+          lookahead != '+' &&
+          lookahead != '>' &&
+          lookahead != '@') ADVANCE(63);
       END_STATE();
     case 64:
       ACCEPT_TOKEN(sym_context_icon);
@@ -1103,7 +1103,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(65);
       END_STATE();
     case 66:
-      ACCEPT_TOKEN(sym_context_separator);
+      ACCEPT_TOKEN(sym__context_separator);
       END_STATE();
     case 67:
       ACCEPT_TOKEN(sym_do_date_icon);
@@ -1307,7 +1307,7 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [aux_sym_priority_number_token1] = ACTIONS(1),
     [sym_story_icon] = ACTIONS(1),
     [sym_context_icon] = ACTIONS(1),
-    [sym_context_separator] = ACTIONS(1),
+    [sym__context_separator] = ACTIONS(1),
     [sym_do_date_icon] = ACTIONS(1),
     [anon_sym_PERCENT] = ACTIONS(1),
     [sym_year] = ACTIONS(1),
@@ -1755,7 +1755,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_id_icon,
   [557] = 3,
     ACTIONS(82), 1,
-      sym_context_separator,
+      sym__context_separator,
     ACTIONS(80), 4,
       sym_child_icon,
       sym_grandchild_icon,
@@ -2676,7 +2676,7 @@ static const uint16_t ts_small_parse_table[] = {
       anon_sym_RPAREN,
   [1749] = 1,
     ACTIONS(330), 1,
-      aux_sym_story_token1,
+      sym_story_name,
   [1753] = 1,
     ACTIONS(332), 1,
       sym_name,
@@ -2685,7 +2685,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_uuid_random,
   [1761] = 1,
     ACTIONS(334), 1,
-      aux_sym_description_token1,
+      sym_description_text,
   [1765] = 1,
     ACTIONS(336), 1,
       anon_sym_RPAREN,

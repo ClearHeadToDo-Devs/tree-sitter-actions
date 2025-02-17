@@ -82,19 +82,24 @@ module.exports = grammar({
 
     //name is anything but reserved chars
     name: $ => /[^$!*+@%>#]+/,
+
     // description is same as name except description char is okay
-    description: $ => seq($.desc_icon, /[^!*+@%>#]+/),
+    description: $ => seq($.desc_icon, $.description_text),
     desc_icon: $ => '$',
+    description_text: $ => /[^!*+@%>#]+/,
+
     priority: $ => seq($.priority_icon, $.priority_number),
     priority_icon: $ => '!',
     priority_number: $ => /[0-9]+/,
-    story: $ => seq($.story_icon, /[^+@%>#]+/),
+
+    story: $ => seq($.story_icon, $.story_name),
     story_icon: $ => '*',
+    story_name: $ => /[^+@%>#]+/,
 
     context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
     context_icon: $ => '+',
-    middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, $.context_separator),
-    context_separator: $ => ',',
+    middle_context: $ => seq(/[a-zA-Z0-9\-_]+/, $._context_separator),
+    _context_separator: $ => ',',
     tail_context: $ => /[a-zA-Z0-9\-_]+/,
 
     do_date_or_time: $ => seq($.do_date_icon, choice($.date, $.time)),
