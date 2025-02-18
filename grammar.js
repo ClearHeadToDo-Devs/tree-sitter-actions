@@ -80,12 +80,11 @@ module.exports = grammar({
     blocked: $ => '=',
     cancelled: $ => '_',
 
-    //name is anything but reserved chars
     name: $ => /[^$!*+@%>#]+/,
 
-    // description is same as name except description char is okay
     description: $ => seq($.desc_icon, $.description_text),
     desc_icon: $ => '$',
+    //allow `$` char
     description_text: $ => /[^!*+@%>#]+/,
 
     priority: $ => seq($.priority_icon, $.priority_number),
@@ -94,6 +93,7 @@ module.exports = grammar({
 
     story: $ => seq($.story_icon, $.story_name),
     story_icon: $ => '*',
+    //allow `*` char
     story_name: $ => /[^+@%>#]+/,
 
     context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
@@ -107,7 +107,8 @@ module.exports = grammar({
     do_date_icon: $ => '@',
     completed_date: $ => seq('%', $.date),
 
-    date: $ => seq(seq($.year,'-',$.month,'-',$.day), optional($.time)),
+    extended_date: $ => seq($.date, optional($.time)),
+    date: $ => seq($.year,'-',$.month,'-',$.day),
     year: $ => /[0-9]{4}/,
     month: $ => /[0-9]{2}/,
     day: $ => /[0-9]{2}/,
@@ -119,6 +120,10 @@ module.exports = grammar({
 
     duration: $ => seq($.duration_designator, /[0-9]+/),
     duration_designator: $ => 'D',
+
+    recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
+    recurrance_icon: $ => 'R',
+    recurrance_structure: $ => seq(choice('D', 'W', 'M', 'Y'), optional($.recurrance_interval)),
 
     //expects uuid v7
     id: $ => seq($.id_icon, $.uuid),

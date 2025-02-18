@@ -140,9 +140,35 @@ However, if given as an addition to the date, then it must be preceded by a `T` 
 
 
 #### Duration (Optional)
+We can give an optional duration after the time by supply the `D` character followed by a number that will be converted to minutes
 
-Finally, we can give an optional duration after the time by supply the `D` character followed by a number that will be converted to minutes
+this can look like a simple `D30` to mean a duration of 30 minutes
 
+for application designers, durations are assumed to default to 15 minutes
+
+##### Recurrance
+We can use that do-date as simply a start date for a recurring task by adding the `R` Character followed by one of the following options for recurrance:
+- `D` Daily
+  - We can also put a list of time(s) to allow for the use-case of something that needs to be done multiple times a day (think medications)
+- `W` Weekly
+  - Can give a list of the day(s) of the week where you want this to recur {Mon, Tue, Wed, Thurs, Fri, Sat, Sun}
+- `M` Monthly
+  - Can list the week(s) to be recurred {1, 2, 3, 4, 5}
+- `Y` Yearly
+  - Can list the Month(s) this should be done {Jan, Feb, March, April, June, July, August, September, October, November, December}
+- `C` Custom Data Recurrance
+  - Can list which week(s) this should be done {1, 2, 3, 4, 5}
+  - Can also list the day to be recurred {Mon, Tue, Wed, Thurs, Fri, Sat, Sun}
+  - and time it needs to be done
+
+  for any of these, its assumed that the recurrance adopts the date/time originally used for the do-date
+
+  for example, if you do a weekly recurring action on tuesday and dont designate date, then the action assumed to be done every tuesday at the time you put
+
+###### End Date
+Recurrance is assumed to go on forever unless an end date is otherwise designated (i mean, you do need to take the trash out for the rest of your life?)
+
+however, you can put an end date in the date with the `E` Character, followed by a standardized date/time format that we have covered in the other dates that we listed here
 
 ## Completed Date (Optional)
 
