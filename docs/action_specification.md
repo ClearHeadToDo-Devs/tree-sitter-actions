@@ -178,7 +178,7 @@ Started with the `%` character, this helps to determine the date/time the action
 
 follows the same rules as the Do-Date covered above
 
-## Id
+## Id (Optional)
 for this we are going to be using the v7 of the UUID standard.
 
 the icon for this is `#` but is optional as we want to support the ability to create actions WITHOUT forcing the user to add a uuid manually before it is interpretted
@@ -191,10 +191,9 @@ here, we are trying to leave the door open for applications to go in later and u
 As we have laid out above, we have quite an array of options when it comes to how much or how little information to give.
 
 To give the most minimal example possible, we can see below:
-`<( )Test Action>0194811d-afd0-797d-86de-f51376a33dbb`
+`( ) Test Action`
 
-the ease of parsing should allow most editors to automatically hide the ID, giving the writer a more pleasant viewing experience, while still giving the metadata the systems will need to identify the action universally
-
+This hopefully serves to show that these should be able to be short, with the ability to read for a human without structured editing able to go through
 
 ## Robust Example
 
