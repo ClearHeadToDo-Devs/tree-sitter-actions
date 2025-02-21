@@ -94,6 +94,34 @@ with do-date
 
 ---
 
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (do_date_or_time
+    (do_date_icon)
+    (extended_date_and_time
+     (date_and_time
+      (date
+       (year)
+       (month)
+       (day))
+      (time
+       (time_designator)
+       (hour)
+       (minute)))
+     (duration
+      (duration_designator)
+      (duration_value)))))))
+
+======================
+with recurring do-date
+======================
+(x) context test @2019-01-01T12:01AMD120RDaT01:05PM
+
+---
 
 (action_list
  (root_action
@@ -103,16 +131,28 @@ with do-date
    (name)
    (do_date_or_time
     (do_date_icon)
-    (date
-     (year)
-     (month)
-     (day)
-     (time
-      (time_designator)
-      (hour)
-      (minute)
-      (duration
-       (duration_designator))))))))
+    (extended_date_and_time
+     (date_and_time
+      (date
+       (year)
+       (month)
+       (day))
+      (time
+       (time_designator)
+       (hour)
+       (minute)))
+     (duration
+      (duration_designator)
+      (duration_value)))
+    (recurrance
+     (recurrance_icon)
+     (recurrance_structure
+      (daily_recurrance
+       (time
+	(time_designator)
+	(hour)
+	(minute)))))))))
+
 
 ===================
 with completed date
@@ -129,10 +169,11 @@ with completed date
     (completed))
    (name)
    (completed_date
+   (date_and_time
     (date
      (year)
      (month)
-     (day)
+     (day))
      (time
       (time_designator)
       (hour)
@@ -216,27 +257,27 @@ With Children
        (state 
 	(not_started))
        (name))
-    (great_grandchild_action_list
-     (great_grandchild_action
-      (great_grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-    (double_great_grandchild_action_list
-     (double_great_grandchild_action
-      (double_great_grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-    (leaf_action_list
-     (leaf_action
-      (leaf_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))))))))))))))
+      (great_grandchild_action_list
+       (great_grandchild_action
+	(great_grandchild_icon)
+	(core_action
+	 (state 
+	  (not_started))
+	 (name))
+	(double_great_grandchild_action_list
+	 (double_great_grandchild_action
+	  (double_great_grandchild_icon)
+	  (core_action
+	   (state 
+	    (not_started))
+	   (name))
+	  (leaf_action_list
+	   (leaf_action
+	    (leaf_icon)
+	    (core_action
+	     (state 
+	      (not_started))
+	     (name))))))))))))))
 
 ===============
 With Everything
@@ -279,47 +320,51 @@ $ descriptions
     (tail_context))
    (do_date_or_time
     (do_date_icon)
+    (extended_date_and_time
+    (date_and_time
     (date
      (year)
      (month)
-     (day)
+     (day))
      (time
       (time_designator)
       (hour)
-      (minute)
+      (minute)))
       (duration
-       (duration_designator)))))
+       (duration_designator)
+       (duration_value))))
    (completed_date
+   (date_and_time
     (date
      (year)
      (month)
-     (day)
+     (day))
      (time
       (time_designator)
       (hour)
       (minute))))
-	(id
-	 (id_icon)
-	 (uuid
-	  (uuid_time_high)
-	  (uuid_time_mid)
-	  (uuid_version_random)
-	  (uuid_variant_random)
-	  (uuid_random))))
-  (child_action_list
-   (child_action
-    (child_icon)
+(id
+ (id_icon)
+ (uuid
+  (uuid_time_high)
+  (uuid_time_mid)
+  (uuid_version_random)
+  (uuid_variant_random)
+  (uuid_random))))
+(child_action_list
+ (child_action
+  (child_icon)
+  (core_action
+   (state 
+    (not_started))
+   (name))
+  (grandchild_action_list
+   (grandchild_action
+    (grandchild_icon)
     (core_action
      (state 
       (not_started))
      (name))
-    (grandchild_action_list
-     (grandchild_action
-      (grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
     (great_grandchild_action_list
      (great_grandchild_action
       (great_grandchild_icon)
@@ -327,17 +372,17 @@ $ descriptions
        (state 
 	(not_started))
        (name))
-    (double_great_grandchild_action_list
-     (double_great_grandchild_action
-      (double_great_grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-    (leaf_action_list
-     (leaf_action
-      (leaf_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))))))))))))))
+      (double_great_grandchild_action_list
+       (double_great_grandchild_action
+	(double_great_grandchild_icon)
+	(core_action
+	 (state 
+	  (not_started))
+	 (name))
+	(leaf_action_list
+	 (leaf_action
+	  (leaf_icon)
+	  (core_action
+	   (state 
+	    (not_started))
+	   (name))))))))))))))

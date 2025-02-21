@@ -61,7 +61,7 @@
       "required": true,
       "types": [
         {
-          "type": "date",
+          "type": "date_and_time",
           "named": true
         }
       ]
@@ -143,6 +143,21 @@
     }
   },
   {
+    "type": "daily_recurrance",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "time",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "date",
     "named": true,
     "fields": {},
@@ -159,11 +174,26 @@
           "named": true
         },
         {
-          "type": "time",
+          "type": "year",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "date_and_time",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "date",
           "named": true
         },
         {
-          "type": "year",
+          "type": "time",
           "named": true
         }
       ]
@@ -202,15 +232,15 @@
       "required": true,
       "types": [
         {
-          "type": "date",
-          "named": true
-        },
-        {
           "type": "do_date_icon",
           "named": true
         },
         {
-          "type": "time",
+          "type": "extended_date_and_time",
+          "named": true
+        },
+        {
+          "type": "recurrance",
           "named": true
         }
       ]
@@ -259,11 +289,39 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "duration_designator",
+          "named": true
+        },
+        {
+          "type": "duration_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "duration_value",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "extended_date_and_time",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "date_and_time",
+          "named": true
+        },
+        {
+          "type": "duration",
           "named": true
         }
       ]
@@ -462,6 +520,40 @@
     "fields": {}
   },
   {
+    "type": "recurrance",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "recurrance_icon",
+          "named": true
+        },
+        {
+          "type": "recurrance_structure",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "recurrance_structure",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "daily_recurrance",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "root_action",
     "named": true,
     "fields": {},
@@ -543,10 +635,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "duration",
-          "named": true
-        },
         {
           "type": "hour",
           "named": true
@@ -633,6 +721,10 @@
     "named": false
   },
   {
+    "type": "Da",
+    "named": false
+  },
+  {
     "type": "PM",
     "named": false
   },
@@ -714,6 +806,10 @@
   },
   {
     "type": "priority_icon",
+    "named": true
+  },
+  {
+    "type": "recurrance_icon",
     "named": true
   },
   {
