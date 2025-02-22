@@ -1,0 +1,119 @@
+================
+With Description
+================
+(x) long $ with description
+
+---
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (description
+    (desc_icon)
+    (description_text)))))
+
+================
+With Priority
+================
+(x) priority !1
+
+---
+
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (priority
+    (priority_icon)
+    (priority_number)))))
+
+================
+With Story
+================
+(x) story test *Parent Story
+
+---
+
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (story
+    (story_icon)
+    (story_name)))))
+
+============
+with context
+============
+(x) context test +test_context,another_context
+
+---
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (context_list
+    (context_icon)
+    (middle_context
+     (context_text)
+     (context_separator))
+    (tail_context)))))
+
+
+===============
+With Id no dash
+================
+(x) id test #01951111cfa6718db303d7107f4005b3
+
+---
+
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (id
+    (id_icon)
+    (uuid
+     (uuid_time_high)
+     (uuid_time_mid)
+     (uuid_version_random)
+     (uuid_variant_random)
+     (uuid_random))))))
+
+=================
+With Id with dash
+=================
+(x) id test #01951111-cfa6-718d-b303-d7107f4005b3
+
+---
+
+
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (id
+    (id_icon)
+    (uuid
+     (uuid_time_high)
+     (uuid_time_mid)
+     (uuid_version_random)
+     (uuid_variant_random)
+     (uuid_random))))))
