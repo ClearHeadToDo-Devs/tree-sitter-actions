@@ -8,9 +8,9 @@
 #define LANGUAGE_VERSION 14
 #define STATE_COUNT 138
 #define LARGE_STATE_COUNT 2
-#define SYMBOL_COUNT 90
+#define SYMBOL_COUNT 89
 #define ALIAS_COUNT 0
-#define TOKEN_COUNT 40
+#define TOKEN_COUNT 39
 #define EXTERNAL_TOKEN_COUNT 0
 #define FIELD_COUNT 0
 #define MAX_ALIAS_SEQUENCE_LENGTH 9
@@ -51,61 +51,60 @@ enum ts_symbol_identifiers {
   anon_sym_pm = 32,
   anon_sym_AM = 33,
   anon_sym_PM = 34,
-  sym_time_designator = 35,
-  sym_id_icon = 36,
-  sym_uuid_time_high = 37,
-  sym_uuid_random = 38,
-  sym__uuid_chunk = 39,
-  sym_action_list = 40,
-  sym_root_action = 41,
-  sym_child_action_list = 42,
-  sym_child_action = 43,
-  sym_grandchild_action_list = 44,
-  sym_grandchild_action = 45,
-  sym_great_grandchild_action_list = 46,
-  sym_great_grandchild_action = 47,
-  sym_double_great_grandchild_action_list = 48,
-  sym_double_great_grandchild_action = 49,
-  sym_leaf_action_list = 50,
-  sym_leaf_action = 51,
-  sym_core_action = 52,
-  sym_state = 53,
-  sym_in_progress = 54,
-  sym_description = 55,
-  sym_priority = 56,
-  sym_priority_number = 57,
-  sym_story = 58,
-  sym_context_list = 59,
-  sym_middle_context = 60,
-  sym_context_text = 61,
-  sym_tail_context = 62,
-  sym_do_date_or_time = 63,
-  sym_completed_date = 64,
-  sym_extended_date_and_time = 65,
-  sym_date_and_time = 66,
-  sym_date = 67,
-  sym_month = 68,
-  sym_day = 69,
-  sym_duration = 70,
-  sym_duration_value = 71,
-  sym_recurrance = 72,
-  sym_recurrance_structure = 73,
-  sym_daily_recurrance = 74,
-  sym_time = 75,
-  sym_hour = 76,
-  sym_minute = 77,
-  sym_id = 78,
-  sym_uuid = 79,
-  sym_uuid_time_mid = 80,
-  sym_uuid_version_random = 81,
-  sym_uuid_variant_random = 82,
-  aux_sym_action_list_repeat1 = 83,
-  aux_sym_child_action_list_repeat1 = 84,
-  aux_sym_grandchild_action_list_repeat1 = 85,
-  aux_sym_great_grandchild_action_list_repeat1 = 86,
-  aux_sym_double_great_grandchild_action_list_repeat1 = 87,
-  aux_sym_leaf_action_list_repeat1 = 88,
-  aux_sym_context_list_repeat1 = 89,
+  sym_id_icon = 35,
+  sym_uuid_time_high = 36,
+  sym_uuid_random = 37,
+  sym__uuid_chunk = 38,
+  sym_action_list = 39,
+  sym_root_action = 40,
+  sym_child_action_list = 41,
+  sym_child_action = 42,
+  sym_grandchild_action_list = 43,
+  sym_grandchild_action = 44,
+  sym_great_grandchild_action_list = 45,
+  sym_great_grandchild_action = 46,
+  sym_double_great_grandchild_action_list = 47,
+  sym_double_great_grandchild_action = 48,
+  sym_leaf_action_list = 49,
+  sym_leaf_action = 50,
+  sym_core_action = 51,
+  sym_state = 52,
+  sym_in_progress = 53,
+  sym_description = 54,
+  sym_priority = 55,
+  sym_priority_number = 56,
+  sym_story = 57,
+  sym_context_list = 58,
+  sym_middle_context = 59,
+  sym_context_text = 60,
+  sym_tail_context = 61,
+  sym_do_date_or_time = 62,
+  sym_completed_date = 63,
+  sym_extended_date_and_time = 64,
+  sym_date_and_time = 65,
+  sym_date = 66,
+  sym_month = 67,
+  sym_day = 68,
+  sym_duration = 69,
+  sym_duration_value = 70,
+  sym_recurrance = 71,
+  sym_recurrance_structure = 72,
+  sym_daily_recurrance = 73,
+  sym_time = 74,
+  sym_hour = 75,
+  sym_minute = 76,
+  sym_id = 77,
+  sym_uuid = 78,
+  sym_uuid_time_mid = 79,
+  sym_uuid_version_random = 80,
+  sym_uuid_variant_random = 81,
+  aux_sym_action_list_repeat1 = 82,
+  aux_sym_child_action_list_repeat1 = 83,
+  aux_sym_grandchild_action_list_repeat1 = 84,
+  aux_sym_great_grandchild_action_list_repeat1 = 85,
+  aux_sym_double_great_grandchild_action_list_repeat1 = 86,
+  aux_sym_leaf_action_list_repeat1 = 87,
+  aux_sym_context_list_repeat1 = 88,
 };
 
 static const char * const ts_symbol_names[] = {
@@ -144,7 +143,6 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_pm] = "pm",
   [anon_sym_AM] = "AM",
   [anon_sym_PM] = "PM",
-  [sym_time_designator] = "time_designator",
   [sym_id_icon] = "id_icon",
   [sym_uuid_time_high] = "uuid_time_high",
   [sym_uuid_random] = "uuid_random",
@@ -237,7 +235,6 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_pm] = anon_sym_pm,
   [anon_sym_AM] = anon_sym_AM,
   [anon_sym_PM] = anon_sym_PM,
-  [sym_time_designator] = sym_time_designator,
   [sym_id_icon] = sym_id_icon,
   [sym_uuid_time_high] = sym_uuid_time_high,
   [sym_uuid_random] = sym_uuid_random,
@@ -434,10 +431,6 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   [anon_sym_PM] = {
     .visible = true,
     .named = false,
-  },
-  [sym_time_designator] = {
-    .visible = true,
-    .named = true,
   },
   [sym_id_icon] = {
     .visible = true,
@@ -813,7 +806,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 0:
       if (eof) ADVANCE(42);
       if (lookahead == '!') ADVANCE(60);
-      if (lookahead == '#') ADVANCE(82);
+      if (lookahead == '#') ADVANCE(81);
       if (lookahead == '$') ADVANCE(57);
       if (lookahead == '%') ADVANCE(69);
       if (lookahead == '(') ADVANCE(48);
@@ -830,7 +823,6 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == 'D') ADVANCE(73);
       if (lookahead == 'P') ADVANCE(6);
       if (lookahead == 'R') ADVANCE(74);
-      if (lookahead == 'T') ADVANCE(81);
       if (lookahead == '_') ADVANCE(54);
       if (lookahead == 'a') ADVANCE(8);
       if (lookahead == 'p') ADVANCE(9);
@@ -940,15 +932,15 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 19:
       if (('0' <= lookahead && lookahead <= '9') ||
-          ('a' <= lookahead && lookahead <= 'f')) ADVANCE(85);
+          ('a' <= lookahead && lookahead <= 'f')) ADVANCE(84);
       END_STATE();
     case 20:
       if (('0' <= lookahead && lookahead <= '9') ||
-          ('a' <= lookahead && lookahead <= 'f')) ADVANCE(83);
+          ('a' <= lookahead && lookahead <= 'f')) ADVANCE(82);
       END_STATE();
     case 21:
       if (('0' <= lookahead && lookahead <= '9') ||
-          ('a' <= lookahead && lookahead <= 'f')) ADVANCE(84);
+          ('a' <= lookahead && lookahead <= 'f')) ADVANCE(83);
       END_STATE();
     case 22:
       if (('0' <= lookahead && lookahead <= '9') ||
@@ -1024,7 +1016,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 40:
       if (eof) ADVANCE(42);
-      if (lookahead == '#') ADVANCE(82);
+      if (lookahead == '#') ADVANCE(81);
       if (lookahead == '%') ADVANCE(69);
       if (lookahead == '(') ADVANCE(48);
       if (lookahead == ',') ADVANCE(67);
@@ -1040,7 +1032,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 41:
       if (eof) ADVANCE(42);
-      if (lookahead == '#') ADVANCE(82);
+      if (lookahead == '#') ADVANCE(81);
       if (lookahead == '%') ADVANCE(69);
       if (lookahead == '(') ADVANCE(48);
       if (lookahead == '>') ADVANCE(43);
@@ -1232,18 +1224,15 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(anon_sym_PM);
       END_STATE();
     case 81:
-      ACCEPT_TOKEN(sym_time_designator);
-      END_STATE();
-    case 82:
       ACCEPT_TOKEN(sym_id_icon);
       END_STATE();
-    case 83:
+    case 82:
       ACCEPT_TOKEN(sym_uuid_time_high);
       END_STATE();
-    case 84:
+    case 83:
       ACCEPT_TOKEN(sym_uuid_random);
       END_STATE();
-    case 85:
+    case 84:
       ACCEPT_TOKEN(sym__uuid_chunk);
       END_STATE();
     default:
@@ -1423,7 +1412,6 @@ static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
     [anon_sym_pm] = ACTIONS(1),
     [anon_sym_AM] = ACTIONS(1),
     [anon_sym_PM] = ACTIONS(1),
-    [sym_time_designator] = ACTIONS(1),
     [sym_id_icon] = ACTIONS(1),
   },
   [1] = {

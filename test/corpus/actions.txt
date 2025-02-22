@@ -6,7 +6,7 @@ $ descriptions
 !1 
 * Test Story 
 +test_context,another-context 
-@2019-01-01 12:01AMD120
+@2019-01-01 12:01AM D120
 %2019-03-01 02:01AM
 #01951111cfa6718db303d7107f4005b3
 > ( ) child action

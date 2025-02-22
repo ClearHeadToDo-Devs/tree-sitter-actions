@@ -125,7 +125,6 @@ module.exports = grammar({
 
 
     time: $ => seq(seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM'))),
-    time_designator: $ => ('T'),
     hour: $ => /[0-9]{2}/,
     minute: $ => /[0-9]{2}/,
 
