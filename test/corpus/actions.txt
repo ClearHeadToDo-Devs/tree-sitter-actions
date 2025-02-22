@@ -1,73 +1,3 @@
-==================
-Basic Root Action
-==================
-( ) test
-
----
-
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))))
-
-
-
-=============
-With Children
-=============
-( ) root test
-> ( ) child action
->> ( ) grandchild action
->>> ( ) great grandchild action
->>>> ( ) double-great grandchild action
->>>>> ( ) Leaf action
-
----
-
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))
-  (child_action_list
-   (child_action
-    (child_icon)
-    (core_action
-     (state 
-      (not_started))
-     (name))
-    (grandchild_action_list
-     (grandchild_action
-      (grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-      (great_grandchild_action_list
-       (great_grandchild_action
-	(great_grandchild_icon)
-	(core_action
-	 (state 
-	  (not_started))
-	 (name))
-	(double_great_grandchild_action_list
-	 (double_great_grandchild_action
-	  (double_great_grandchild_icon)
-	  (core_action
-	   (state 
-	    (not_started))
-	   (name))
-	  (leaf_action_list
-	   (leaf_action
-	    (leaf_icon)
-	    (core_action
-	     (state 
-	      (not_started))
-	     (name))))))))))))))
-
 ===============
 With Everything
 ===============
@@ -76,8 +6,8 @@ $ descriptions
 !1 
 * Test Story 
 +test_context,another-context 
-@2019-01-01T12:01AMD120
-%2019-03-01T02:01AM
+@2019-01-01 12:01AMD120
+%2019-03-01 02:01AM
 #01951111cfa6718db303d7107f4005b3
 > ( ) child action
 >> ( ) grandchild action
@@ -116,7 +46,6 @@ $ descriptions
        (month)
        (day))
       (time
-       (time_designator)
        (hour)
        (minute)))
      (duration
@@ -129,7 +58,6 @@ $ descriptions
       (month)
       (day))
      (time
-      (time_designator)
       (hour)
       (minute))))
 (id

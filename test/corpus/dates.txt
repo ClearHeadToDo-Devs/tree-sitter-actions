@@ -1,7 +1,7 @@
 ============
 with do-date
 ============
-(x) context test @2019-01-01T12:01AMD120
+(x) context test @2019-01-01 12:01AMD120
 
 ---
 
@@ -20,7 +20,6 @@ with do-date
        (month)
        (day))
       (time
-       (time_designator)
        (hour)
        (minute)))
      (duration
@@ -30,7 +29,7 @@ with do-date
 =======================
 with recurring do-date
 =======================
-(x) context test @2019-01-01T12:01AMD120RDaT01:05PM
+(x) context test @2019-01-01 12:01AMD120RDa 01:05PM
 
 ---
 
@@ -49,7 +48,6 @@ with recurring do-date
        (month)
        (day))
       (time
-       (time_designator)
        (hour)
        (minute)))
      (duration
@@ -60,14 +58,13 @@ with recurring do-date
      (recurrance_structure
       (daily_recurrance
        (time
-	(time_designator)
 	(hour)
 	(minute)))))))))
 
 ====================
 with completed date
 ====================
-(x) context test %2019-01-01T12:01AM
+(x) context test %2019-01-01 12:01AM
 
 ---
 
@@ -85,6 +82,5 @@ with completed date
      (month)
      (day))
      (time
-      (time_designator)
       (hour)
       (minute)))))))

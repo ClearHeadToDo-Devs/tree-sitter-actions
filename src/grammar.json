@@ -653,10 +653,6 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "time_designator"
-        },
-        {
           "type": "SEQ",
           "members": [
             {

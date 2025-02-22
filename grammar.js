@@ -1,5 +1,4 @@
-/**
- * @file parser for the actions file as defined by the specification therein
+/** @file parser for the actions file as defined by the specification therein
  * @author Darrion Burgess <darrionburgess@gmail.com>
  * @license MIT
  */
@@ -125,7 +124,7 @@ module.exports = grammar({
     daily_recurrance: $ => seq('Da', $.time),
 
 
-    time: $ => seq($.time_designator, seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM'))),
+    time: $ => seq(seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM'))),
     time_designator: $ => ('T'),
     hour: $ => /[0-9]{2}/,
     minute: $ => /[0-9]{2}/,
