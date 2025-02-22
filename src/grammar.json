@@ -515,6 +515,131 @@
         }
       ]
     },
+    "recurrance": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "recurrance_icon"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "recurrance_structure"
+        }
+      ]
+    },
+    "recurrance_icon": {
+      "type": "STRING",
+      "value": "R"
+    },
+    "recurrance_structure": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "daily_recurrance"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "weekly_recurrance"
+        }
+      ]
+    },
+    "daily_recurrance": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "Da"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "time"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "weekly_recurrance": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "W"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "weekly_recurrance_days"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "time"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "weekly_recurrance_days": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "Mon"
+          },
+          {
+            "type": "STRING",
+            "value": "Tue"
+          },
+          {
+            "type": "STRING",
+            "value": "Wen"
+          },
+          {
+            "type": "STRING",
+            "value": "Thurs"
+          },
+          {
+            "type": "STRING",
+            "value": "Fri"
+          },
+          {
+            "type": "STRING",
+            "value": "Sat"
+          },
+          {
+            "type": "STRING",
+            "value": "Sun"
+          }
+        ]
+      }
+    },
     "extended_date_and_time": {
       "type": "SEQ",
       "members": [
@@ -594,61 +719,6 @@
       "type": "PATTERN",
       "value": "[0-9]{2}"
     },
-    "duration": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "duration_designator"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "duration_value"
-        }
-      ]
-    },
-    "duration_designator": {
-      "type": "STRING",
-      "value": "D"
-    },
-    "duration_value": {
-      "type": "PATTERN",
-      "value": "[0-9]+"
-    },
-    "recurrance": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "recurrance_icon"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "recurrance_structure"
-        }
-      ]
-    },
-    "recurrance_icon": {
-      "type": "STRING",
-      "value": "R"
-    },
-    "recurrance_structure": {
-      "type": "SYMBOL",
-      "name": "daily_recurrance"
-    },
-    "daily_recurrance": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "Da"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "time"
-        }
-      ]
-    },
     "time": {
       "type": "SEQ",
       "members": [
@@ -707,6 +777,27 @@
     "minute": {
       "type": "PATTERN",
       "value": "[0-9]{2}"
+    },
+    "duration": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "duration_designator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "duration_value"
+        }
+      ]
+    },
+    "duration_designator": {
+      "type": "STRING",
+      "value": "D"
+    },
+    "duration_value": {
+      "type": "PATTERN",
+      "value": "[0-9]+"
     },
     "id": {
       "type": "SEQ",

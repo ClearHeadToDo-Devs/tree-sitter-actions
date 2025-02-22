@@ -148,7 +148,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "time",
@@ -549,6 +549,10 @@
         {
           "type": "daily_recurrance",
           "named": true
+        },
+        {
+          "type": "weekly_recurrance",
+          "named": true
         }
       ]
     }
@@ -693,6 +697,30 @@
     "fields": {}
   },
   {
+    "type": "weekly_recurrance",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "time",
+          "named": true
+        },
+        {
+          "type": "weekly_recurrance_days",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "weekly_recurrance_days",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "%",
     "named": false
   },
@@ -721,7 +749,39 @@
     "named": false
   },
   {
+    "type": "Fri",
+    "named": false
+  },
+  {
+    "type": "Mon",
+    "named": false
+  },
+  {
     "type": "PM",
+    "named": false
+  },
+  {
+    "type": "Sat",
+    "named": false
+  },
+  {
+    "type": "Sun",
+    "named": false
+  },
+  {
+    "type": "Thurs",
+    "named": false
+  },
+  {
+    "type": "Tue",
+    "named": false
+  },
+  {
+    "type": "W",
+    "named": false
+  },
+  {
+    "type": "Wen",
     "named": false
   },
   {

@@ -106,6 +106,13 @@ module.exports = grammar({
     do_date_icon: $ => '@',
     completed_date: $ => seq('%', $.date_and_time),
 
+    recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
+    recurrance_icon: $ => 'R',
+    recurrance_structure: $ => choice($.daily_recurrance, $.weekly_recurrance),
+    daily_recurrance: $ => seq('Da', optional($.time)),
+    weekly_recurrance: $ => seq('W', optional(seq($.weekly_recurrance_days, optional($.time)))),
+    weekly_recurrance_days: $ => repeat1(choice('Mon', 'Tue', 'Wen', 'Thurs', 'Fri', 'Sat', 'Sun')),
+
     extended_date_and_time: $ => seq($.date_and_time, optional($.duration)),
     date_and_time: $ => seq($.date, optional($.time)),
     date: $ => seq($.year,'-',$.month,'-',$.day),
@@ -113,20 +120,13 @@ module.exports = grammar({
     month: $ => /[0-9]{2}/,
     day: $ => /[0-9]{2}/,
 
+    time: $ => seq(seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM'))),
+    hour: $ => /[0-9]{2}/,
+    minute: $ => /[0-9]{2}/,
 
     duration: $ => seq($.duration_designator, $.duration_value ),
     duration_designator: $ => 'D',
     duration_value: $ => /[0-9]+/,
-
-    recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
-    recurrance_icon: $ => 'R',
-    recurrance_structure: $ => $.daily_recurrance,
-    daily_recurrance: $ => seq('Da', $.time),
-
-
-    time: $ => seq(seq($.hour,':',$.minute), optional(choice('am','pm','AM','PM'))),
-    hour: $ => /[0-9]{2}/,
-    minute: $ => /[0-9]{2}/,
 
     //expects uuid v7
     id: $ => seq($.id_icon, $.uuid),
