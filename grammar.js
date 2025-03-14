@@ -79,12 +79,12 @@ module.exports = grammar({
     blocked: $ => '=',
     cancelled: $ => '_',
 
-    name: $ => /[^$!*+@%>#]+/,
+    name: $ => /[^$!*+@%>#(]+/,
 
     description: $ => seq($.desc_icon, $.description_text),
     desc_icon: $ => '$',
     //allow `$` char
-    description_text: $ => /[^!*+@%>#]+/,
+    description_text: $ => /[^!*+@%>#(]+/,
 
     priority: $ => seq($.priority_icon, $.priority_number),
     priority_icon: $ => '!',
