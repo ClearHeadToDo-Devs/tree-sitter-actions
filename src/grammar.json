@@ -354,7 +354,7 @@
     },
     "name": {
       "type": "PATTERN",
-      "value": "[^$!*+@%>#(]+"
+      "value": "[^$!*+@%>#\\(]+"
     },
     "description": {
       "type": "SEQ",
@@ -375,7 +375,7 @@
     },
     "description_text": {
       "type": "PATTERN",
-      "value": "[^!*+@%>#(]+"
+      "value": "[^!*+@%>#\\(]+"
     },
     "priority": {
       "type": "SEQ",
@@ -417,7 +417,7 @@
     },
     "story_name": {
       "type": "PATTERN",
-      "value": "[^+@%>#]+"
+      "value": "[^+@%>#\\(]+"
     },
     "context_list": {
       "type": "SEQ",
