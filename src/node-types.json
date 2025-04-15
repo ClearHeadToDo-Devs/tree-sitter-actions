@@ -134,10 +134,6 @@
         {
           "type": "state",
           "named": true
-        },
-        {
-          "type": "story",
-          "named": true
         }
       ]
     }
@@ -571,6 +567,10 @@
         },
         {
           "type": "core_action",
+          "named": true
+        },
+        {
+          "type": "story",
           "named": true
         }
       ]

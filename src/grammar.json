@@ -20,6 +20,18 @@
           "members": [
             {
               "type": "SYMBOL",
+              "name": "story"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
               "name": "child_action_list"
             },
             {
@@ -226,18 +238,6 @@
             {
               "type": "SYMBOL",
               "name": "priority"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "story"
             },
             {
               "type": "BLANK"
