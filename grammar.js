@@ -79,12 +79,12 @@ module.exports = grammar({
     blocked: $ => '=',
     cancelled: $ => '_',
 
-    name: $ => /[^$!*+@%>#]+/,
+    name: $ => /[^$!*+@%>#\(]+/,
 
     description: $ => seq($.desc_icon, $.description_text),
     desc_icon: $ => '$',
     //allow `$` char
-    description_text: $ => /[^!*+@%>#]+/,
+    description_text: $ => /[^!*+@%>#\(]+/,
 
     priority: $ => seq($.priority_icon, $.priority_number),
     priority_icon: $ => '!',
@@ -93,7 +93,7 @@ module.exports = grammar({
     story: $ => seq($.story_icon, $.story_name),
     story_icon: $ => '*',
     //allow `*` char
-    story_name: $ => /[^+@%>#]+/,
+    story_name: $ => /[^+@%>#\(]+/,
 
     context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
     context_icon: $ => '+',
