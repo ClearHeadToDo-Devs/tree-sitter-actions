@@ -98,6 +98,13 @@ designated by the `*` character, the same rules apply around escaping forbidden 
 
 otherwise actions are assumed to be unparented.
 
+### Root Actions only
+It should also be noted that only root actions can have a parent project/story.
+
+It is assumed that any child action(s) are part of the parent action and do not need to be designated as part of a project
+
+This radically reduces the complexity of the parser and allows for a more readable format, it also makes querying radically easier since it enables us to simply query for the root node of the tree and get all of the children without needing to do any special parsing
+
 
 ## Context (Optional)
 We use the context in accordance with GTD to answer the where question often. 
