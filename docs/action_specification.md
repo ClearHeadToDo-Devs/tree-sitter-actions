@@ -9,15 +9,12 @@ version: 1.1.1
 ---
 This specification will lay out the formal specifications for the `actions` filetype, usually denoted by a `*.actions` file.
 
-
 # High-Level Guidelines
-
 This specification will attempt to maintain backwards compatibility. That is, we will only add backwards-compatible changes to prevent implement's from dealing with breaking changes in the specification.
 
 this means that there are currently no plans to add a top-level 'version' structure as we want to make sure that an action list made today will still be parsable 10 years from now, even if there are new features that have been added in that time.
 
 ## plaintext implications
-
 Fundamentally, the `actions` filetype is a list of actions that can be formally parsed in a machine-readable way while still being readable and writable with any application the user chooses
 As such, great care is taken to minimize the amount of characters that need to be typed by a human, while being considerate to readability of the core file
 
@@ -27,14 +24,12 @@ This could result in a situation where other filetypes are using the name of the
 As such, one should be considerate about creating default names for actions as this could lead to name collision within the implementation, and should instead use some form of pattern to create new actions automatically without having name collision (maybe default to UUID of action?)
 
 ## Parser Guidance
-
 With that said, it is also a use-case that these files are able to be read by a formal parser to allow for data extraction and the potential for placing these pieces of data into a schema
 
 Finally, in terms of rules-processing, we take the approach of newer markdown formats like neorg which deemphasize the importance of whitespace to denote depth.
 Instead, we use explicit characters or a sequence of characters to make the act of parsing this work cleaner
 
 # Structure
-
 As denoted, each file can be understood as a list of actions that the person intends to take.
 
 ordering matters here so each part is intended to be done in sequence to again make the act of parsing easier and minimizing the amount of characters that need to be escaped within the main text chunks
@@ -46,18 +41,14 @@ Every child action starts with atleast one `>` character. Children of a parent a
 
 all other symbols will be valid for child actions, and parsing should still be easy since they will all be preceded by the progression of `>` characters
 
-
 ### Adding Children
-
 Children actions should be added to the end of an action to leave the context closer to the name of the action. 
 Children should be the last thing in the chain before the completion-date/Id
 
 As such, child actions are encapsulated within the parent to make for easy parsing
 styling around indentation is left up to the implementors, it should NOT be important to parsing the document
 
-
 ## State (Required)
-
 We want to accomodate a few more states than done and not done, so we put the state between the `(` and the `)` characters
 The options for states are as follows:
 - ` ` Not Started (default)
@@ -70,7 +61,6 @@ This and the depth constitute the primary "marker" for the start of an action, m
 
 
 ## Name (Required)
-
 The final required field is the name of the action itself. 
 
 Due to the nature of the format, special characters will need to be escaped with the  character
@@ -88,7 +78,6 @@ Otherwise, this is one of the more encompassing fields where users are allowed t
 however, do note the point above about using names as secondary keys so if something is going to be really long, save it for the description section below
 
 ### Description (optional)
-
 The name fields status as a secondary key means that it is sometimes necessary to denote a longer description for an action
 
 this is where the description comes in and we can start one at any point within our name field within the `$` character
@@ -97,14 +86,12 @@ However, the rules around escaping still apply to ensure easy parsing
 
 
 ## Priority (Optional)
-
 Priority can be designated at any time with the `!` character followed by a number.
 
 While there is no limit, it is encourage to support around 4 levels of priority atleast to support the eisenhower method
 
 
 ## Story/Project (Optional)
-
 An action may designate a parent project/story. in this case, the name of the story/project is used as the key for the sake of readability
 
 designated by the `*` character, the same rules apply around escaping forbidden characters
@@ -113,7 +100,6 @@ otherwise actions are assumed to be unparented.
 
 
 ## Context (Optional)
-
 We use the context in accordance with GTD to answer the where question often. 
 
 started with the `+` character, one can use multiple contexts by separating each one with the `,` character to get multiple tags
@@ -122,14 +108,12 @@ contexts are simply keys and cannot be assigned values
 
 
 ## Do-Date/Time (Optional)
-
 actions can have a full date/time designated using the standard "YYYY-MM-DD" format after an initial `@` character
 
 this allows systems that require a future data to utilize this for parsing, while still being optional in designation
 
 
 ### Time (Optional)
-
 Time can either be added after the date, or given directly
 
 The format will be the standard "HH:MM" in military time or "HH:MMam/pm" to designate time of day
@@ -187,7 +171,6 @@ the icon for this is `#` but is optional as we want to support the ability to cr
 here, we are trying to leave the door open for applications to go in later and update this whole thing with automated tools such as the cli that will be able to review and update these ids after the user has created the initial version of the structure
 
 # Examples
-
 As we have laid out above, we have quite an array of options when it comes to how much or how little information to give.
 
 To give the most minimal example possible, we can see below:
@@ -196,7 +179,6 @@ To give the most minimal example possible, we can see below:
 This hopefully serves to show that these should be able to be short, with the ability to read for a human without structured editing able to go through
 
 ## Robust Example
-
 As we saw, many optional pieces of context can be added so here is an example of an action that has much more of these optional parameters:
 
 ```actions
@@ -216,7 +198,6 @@ Finally, it was part of the Driving, Store, and Market contexts and contains ext
 
 
 ## Adding Children
-
 Finally, we will do a showcase of the format for those actions with child actions:
 ```actions
 ( ) Parent Action >( ) Child Action
