@@ -1,4 +1,4 @@
--- [nfnl] Compiled from ftdetect/actions.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] ftdetect/actions.fnl
 local function _1_()
   _G.vim.bo.filetype = "actions"
   return nil
