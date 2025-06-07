@@ -10,6 +10,12 @@
   },
   "main": "bindings/node",
   "types": "bindings/node",
+  "exports": {
+    ".": "./lib/index.js",
+    "./grammar": "./bindings/node/index.js",
+    "./parser": "./parser.js",
+    "./schema": "./schema.json"
+  },
   "keywords": [
     "incremental",
     "parsing",
@@ -25,7 +31,9 @@
     "queries/*",
     "src/**",
     "*.wasm",
-    "parser.js"
+    "parser.js",
+    "lib/*",
+    "schema.json"
   ],
   "dependencies": {
     "node-addon-api": "^8.2.1",

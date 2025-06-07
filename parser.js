@@ -364,3 +364,5 @@ if (require.main === module) {
 }
 
 module.exports = ActionsParser;
+module.exports.ActionsParser = ActionsParser;
+module.exports.default = ActionsParser;
