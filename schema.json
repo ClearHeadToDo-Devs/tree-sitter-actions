@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Actions Tree Schema",
+  "description": "Schema for converting actions file trees to hashmap format",
+  "type": "object",
+  "properties": {
+    "actions": {
+      "type": "object",
+      "description": "Hashmap of actions keyed by ID or generated key",
+      "patternProperties": {
+        "^[0-9a-f]{8}(-?[0-9a-f]{4}){3}-?[0-9a-f]{12}$|^generated_[0-9]+$": {
+          "$ref": "#/definitions/action"
+        }
+      },
+      "additionalProperties": false
+    },
+    "root_actions": {
+      "type": "array",
+      "description": "Array of root action IDs in order",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["actions", "root_actions"],
+  "additionalProperties": false,
+  "definitions": {
+    "action": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": ["string", "null"],
+          "description": "UUID v7 identifier (with or without dashes) or null if not provided",
+          "pattern": "^[0-9a-f]{8}(-?[0-9a-f]{4}){3}-?[0-9a-f]{12}$"
+        },
+        "generated_id": {
+          "type": "string",
+          "description": "Generated ID when original ID is missing",
+          "pattern": "^generated_[0-9]+$"
+        },
+        "depth": {
+          "type": "integer",
+          "description": "Depth level (0 for root, 1-5 for children)",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "state": {
+          "type": "string",
+          "description": "Action state",
+          "enum": [" ", "x", "-", "=", "_"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Action name (required)",
+          "minLength": 1
+        },
+        "description": {
+          "type": ["string", "null"],
+          "description": "Optional description (without $ prefix)"
+        },
+        "priority": {
+          "type": ["integer", "null"],
+          "description": "Priority level (optional)",
+          "minimum": 1
+        },
+        "story": {
+          "type": ["string", "null"],
+          "description": "Parent project/story name (root actions only, without * prefix)"
+        },
+        "contexts": {
+          "type": "array",
+          "description": "List of context tags (without + prefix)",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-_]+$"
+          },
+          "default": []
+        },
+        "do_date": {
+          "type": ["string", "null"],
+          "description": "Do date in YYYY-MM-DD format",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "do_time": {
+          "type": ["string", "null"],
+          "description": "Do time in HH:MM format (24-hour or with AM/PM)",
+          "pattern": "^[0-9]{2}:[0-9]{2}\\s?(AM|PM|am|pm)?$"
+        },
+        "duration": {
+          "type": ["integer", "null"],
+          "description": "Duration in minutes",
+          "minimum": 1
+        },
+        "recurrence": {
+          "type": ["object", "null"],
+          "description": "Recurrence pattern",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["daily", "weekly"]
+            },
+            "days": {
+              "type": "array",
+              "description": "Days for weekly recurrence",
+              "items": {
+                "type": "string",
+                "enum": ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun"]
+              }
+            },
+            "time": {
+              "type": ["string", "null"],
+              "description": "Time for recurrence",
+              "pattern": "^[0-9]{2}:[0-9]{2}\\s?(AM|PM|am|pm)?$"
+            }
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        },
+        "completed_date": {
+          "type": ["string", "null"],
+          "description": "Completion date in YYYY-MM-DD format",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "completed_time": {
+          "type": ["string", "null"],
+          "description": "Completion time in HH:MM format",
+          "pattern": "^[0-9]{2}:[0-9]{2}\\s?(AM|PM|am|pm)?$"
+        },
+        "parent_id": {
+          "type": ["string", "null"],
+          "description": "ID of parent action (null for root actions)"
+        },
+        "children": {
+          "type": "array",
+          "description": "Array of child action IDs in order",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "order": {
+          "type": "integer",
+          "description": "Order within parent or root level",
+          "minimum": 0
+        }
+      },
+      "required": ["depth", "state", "name", "children", "order"],
+      "additionalProperties": false,
+      "anyOf": [
+        {"required": ["id"]},
+        {"required": ["generated_id"]}
+      ]
+    }
+  }
+}
