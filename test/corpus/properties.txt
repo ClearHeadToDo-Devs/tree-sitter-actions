@@ -69,7 +69,7 @@ with context
     (middle_context
      (context_text)
      (context_separator))
-    (tail_context)))))
+    (context_text)))))
 
 
 ===============

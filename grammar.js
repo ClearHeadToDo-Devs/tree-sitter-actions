@@ -95,12 +95,11 @@ module.exports = grammar({
     //allow `*` char
     story_name: $ => /[^+@%>#\(]+/,
 
-    context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.tail_context))),
+    context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.context_text))),
     context_icon: $ => '+',
     middle_context: $ => seq($.context_text, $.context_separator),
     context_text: $ => /[a-zA-Z0-9\-_]+/,
     context_separator: $ => ',',
-    tail_context: $ => /[a-zA-Z0-9\-_]+/,
 
     do_date_or_time: $ => seq($.do_date_icon, $.extended_date_and_time, optional($.recurrance)),
     do_date_icon: $ => '@',

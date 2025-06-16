@@ -2,6 +2,7 @@
   {
     "type": "action_list",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -80,20 +81,15 @@
           "named": true
         },
         {
-          "type": "middle_context",
+          "type": "context_text",
           "named": true
         },
         {
-          "type": "tail_context",
+          "type": "middle_context",
           "named": true
         }
       ]
     }
-  },
-  {
-    "type": "context_text",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "core_action",
@@ -627,11 +623,6 @@
     }
   },
   {
-    "type": "tail_context",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "time",
     "named": true,
     "fields": {},
@@ -810,6 +801,10 @@
   },
   {
     "type": "context_separator",
+    "named": true
+  },
+  {
+    "type": "context_text",
     "named": true
   },
   {

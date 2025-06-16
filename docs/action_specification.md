@@ -29,13 +29,17 @@ With that said, it is also a use-case that these files are able to be read by a 
 Finally, in terms of rules-processing, we take the approach of newer markdown formats like neorg which deemphasize the importance of whitespace to denote depth.
 Instead, we use explicit characters or a sequence of characters to make the act of parsing this work cleaner
 
+## Align to strong foundations
+to the degree possible, we try to adhere to the [action schema](https://schema.org/Action) defined at schema.org so that we are able to align with the larger semantic data community and leave the door open for interoperability in the future
+
+and do note from the W3C consortium we define an Action as a subset of a [Thing](http://webschemas.appspot.com/Thing) from a schema perspective
+
 # Structure
 As denoted, each file can be understood as a list of actions that the person intends to take.
 
 ordering matters here so each part is intended to be done in sequence to again make the act of parsing easier and minimizing the amount of characters that need to be escaped within the main text chunks
 
 ## Depth (Required)
-
 Every child action starts with atleast one `>` character. Children of a parent action can be denoted by `>>` and so-on down to the official limit of 5 levels of depth.
 6 levels was chosen to conform with standard markdown conventions
 
@@ -190,9 +194,9 @@ As we saw, many optional pieces of context can be added so here is an example of
 
 ```actions
 (x) Go to the store for chicken
-$ Make sure you get the stuff from the butcher directly
-!1 
-*Run Errands
+    $ Make sure you get the stuff from the butcher directly
+    !1 
+    *Run Errands
 +Driving,Store,Market
 @2025-01-19T08:30D30
 %2025-01-19T10:30

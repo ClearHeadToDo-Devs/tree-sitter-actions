@@ -33,7 +33,7 @@ $ descriptions
     (middle_context
      (context_text)
      (context_separator))
-    (tail_context))
+    (context_text))
    (do_date_or_time
     (do_date_icon)
     (extended_date_and_time

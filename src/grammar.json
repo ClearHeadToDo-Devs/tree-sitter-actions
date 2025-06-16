@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "actions",
   "rules": {
     "action_list": {
@@ -437,7 +438,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "tail_context"
+                "name": "context_text"
               }
             ]
           }
@@ -468,10 +469,6 @@
     "context_separator": {
       "type": "STRING",
       "value": ","
-    },
-    "tail_context": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z0-9\\-_]+"
     },
     "do_date_or_time": {
       "type": "SEQ",
@@ -924,5 +921,6 @@
   "precedences": [],
   "externals": [],
   "inline": [],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }
