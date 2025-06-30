@@ -13,7 +13,7 @@ module.exports = grammar({
     action_list: $ => repeat($.root_action),
     root_action: $ => seq(
         $.core_action,
-        optional($.story),
+        optional(field("actionStory", $.story)),
         optional($.child_action_list)
     ),
     child_action_list: $ => repeat1($.child_action),

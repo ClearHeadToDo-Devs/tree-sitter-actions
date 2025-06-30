@@ -20,8 +20,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "story"
+              "type": "FIELD",
+              "name": "actionStory",
+              "content": {
+                "type": "SYMBOL",
+                "name": "story"
+              }
             },
             {
               "type": "BLANK"

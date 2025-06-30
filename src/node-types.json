@@ -552,7 +552,18 @@
   {
     "type": "root_action",
     "named": true,
-    "fields": {},
+    "fields": {
+      "actionStory": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -563,10 +574,6 @@
         },
         {
           "type": "core_action",
-          "named": true
-        },
-        {
-          "type": "story",
           "named": true
         }
       ]
