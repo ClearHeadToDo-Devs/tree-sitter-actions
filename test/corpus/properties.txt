@@ -1,8 +1,7 @@
 ================
 With Description
 ================
-(x) long $ with description
-
+examples/with_description.actions
 ---
 
 (action_list
@@ -18,8 +17,7 @@ With Description
 ================
 With Priority
 ================
-(x) priority !1
-
+examples/with_priority.actions
 ---
 
 
@@ -36,8 +34,7 @@ With Priority
 ================
 With Story
 ================
-(x) story test *Parent Story
-
+examples/with_story.actions
 ---
 
 
@@ -54,8 +51,7 @@ With Story
 ============
 with context
 ============
-(x) context test +test_context,another_context
-
+examples/with_context.actions
 ---
 
 (action_list
@@ -75,8 +71,7 @@ with context
 ===============
 With Id no dash
 ================
-(x) id test #01951111cfa6718db303d7107f4005b3
-
+examples/with_id_no_dash.actions
 ---
 
 
@@ -98,8 +93,7 @@ With Id no dash
 =================
 With Id with dash
 =================
-(x) id test #01951111-cfa6-718d-b303-d7107f4005b3
-
+examples/with_id_with_dash.actions
 ---
 
 
