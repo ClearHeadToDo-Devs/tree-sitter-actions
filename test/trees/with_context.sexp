@@ -1,0 +1,12 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (context_list
+    (context_icon)
+    (middle_context
+     (context_text)
+     (context_separator))
+    (context_text)))))

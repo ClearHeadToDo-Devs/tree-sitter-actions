@@ -1,0 +1,14 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (id
+    (id_icon)
+    (uuid
+     (uuid_time_high)
+     (uuid_time_mid)
+     (uuid_version_random)
+     (uuid_variant_random)
+     (uuid_random))))))

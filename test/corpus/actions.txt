@@ -14,6 +14,7 @@ $ descriptions
 >>> ( ) great grandchild action
 >>>> ( ) double-great grandchild action
 >>>>> ( ) Leaf action
+
 ---
 
 (action_list
@@ -57,49 +58,49 @@ $ descriptions
      (time
       (hour)
       (minute))))
-(id
- (id_icon)
- (uuid
-  (uuid_time_high)
-  (uuid_time_mid)
-  (uuid_version_random)
-  (uuid_variant_random)
-  (uuid_random))))
-  (story
-    (story_icon)
-    (story_name))
-(child_action_list
- (child_action
-  (child_icon)
-  (core_action
-   (state 
-    (not_started))
-   (name))
-  (grandchild_action_list
-   (grandchild_action
-    (grandchild_icon)
-    (core_action
-     (state 
-      (not_started))
-     (name))
-    (great_grandchild_action_list
-     (great_grandchild_action
-      (great_grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-      (double_great_grandchild_action_list
-       (double_great_grandchild_action
-	(double_great_grandchild_icon)
-	(core_action
-	 (state 
-	  (not_started))
-	 (name))
-	(leaf_action_list
-	 (leaf_action
-	  (leaf_icon)
+	(id
+	 (id_icon)
+	 (uuid
+	  (uuid_time_high)
+	  (uuid_time_mid)
+	  (uuid_version_random)
+	  (uuid_variant_random)
+	  (uuid_random))))
+	(story
+	 (story_icon)
+	 (story_name))
+	(child_action_list
+	 (child_action
+	  (child_icon)
 	  (core_action
 	   (state 
 	    (not_started))
-	   (name))))))))))))))
+	   (name))
+	  (grandchild_action_list
+	   (grandchild_action
+	    (grandchild_icon)
+	    (core_action
+	     (state 
+	      (not_started))
+	     (name))
+	    (great_grandchild_action_list
+	     (great_grandchild_action
+	      (great_grandchild_icon)
+	      (core_action
+	       (state 
+		(not_started))
+	       (name))
+	      (double_great_grandchild_action_list
+	       (double_great_grandchild_action
+		(double_great_grandchild_icon)
+		(core_action
+		 (state 
+		  (not_started))
+		 (name))
+		(leaf_action_list
+		 (leaf_action
+		  (leaf_icon)
+		  (core_action
+		   (state 
+		    (not_started))
+		   (name))))))))))))))

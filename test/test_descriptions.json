@@ -1,5 +1,13 @@
 {
   "actions": {
     "with_everything": "With Everything"
+  },
+  "properties": {
+    "with_description": "With Description",
+    "with_priority": "With Priority",
+    "with_story": "With Story",
+    "with_context": "With Context",
+    "with_id_no_dash": "With Id no dash",
+    "with_id_with_dash": "With Id with dash"
   }
 }

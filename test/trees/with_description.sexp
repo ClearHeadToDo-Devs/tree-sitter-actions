@@ -1,0 +1,9 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (description
+    (desc_icon)
+    (description_text)))))

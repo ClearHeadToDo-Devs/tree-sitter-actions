@@ -1,0 +1,9 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name))
+   (story
+    (story_icon)
+    (story_name))))

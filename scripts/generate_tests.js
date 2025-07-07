@@ -38,10 +38,10 @@ ${exampleContent}
 ${sexpContent}
 
 `;
-    
+
     output += testCase;
   }
-  
+
   // Write the output file
   fs.writeFileSync(outputPath, output.trim() + '\n');
   console.log(`Generated: ${outputPath}`);

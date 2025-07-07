@@ -1,0 +1,9 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (priority
+    (priority_icon)
+    (priority_number)))))
