@@ -1,6 +1,6 @@
-==================
+=================
 Basic Root Action
-==================
+=================
 ( ) test
 
 ---
@@ -16,11 +16,11 @@ Basic Root Action
 With Children
 =============
 ( ) root test
-> ( ) child action
->> ( ) grandchild action
->>> ( ) great grandchild action
->>>> ( ) double-great grandchild action
->>>>> ( ) Leaf action
+	> ( ) child action
+		>> ( ) grandchild action
+			>>> ( ) great grandchild action
+				>>>> ( ) double-great grandchild action
+				>>>>> ( ) Leaf action
 
 ---
 
@@ -66,9 +66,9 @@ With Children
 	      (not_started))
 	     (name))))))))))))))
 
-=================================
+================================
 Children Followed by Root Action
-=================================
+================================
 ( ) test
   > ( ) Child Action
 ( ) Another Root
