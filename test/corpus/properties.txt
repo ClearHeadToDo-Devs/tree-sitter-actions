@@ -15,13 +15,12 @@ With Description
     (desc_icon)
     (description_text)))))
 
-================
+=============
 With Priority
-================
+=============
 (x) priority !1
 
 ---
-
 
 (action_list
  (root_action
@@ -33,13 +32,12 @@ With Priority
     (priority_icon)
     (priority_number)))))
 
-================
+==========
 With Story
-================
+==========
 (x) story test *Parent Story
 
 ---
-
 
 (action_list
  (root_action
@@ -52,7 +50,7 @@ With Story
     (story_name))))
 
 ============
-with context
+With Context
 ============
 (x) context test +test_context,another_context
 
@@ -71,14 +69,12 @@ with context
      (context_separator))
     (context_text)))))
 
-
 ===============
 With Id no dash
-================
+===============
 (x) id test #01951111cfa6718db303d7107f4005b3
 
 ---
-
 
 (action_list
  (root_action
@@ -101,7 +97,6 @@ With Id with dash
 (x) id test #01951111-cfa6-718d-b303-d7107f4005b3
 
 ---
-
 
 (action_list
  (root_action

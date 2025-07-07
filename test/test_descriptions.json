@@ -9,5 +9,16 @@
     "with_context": "With Context",
     "with_id_no_dash": "With Id no dash",
     "with_id_with_dash": "With Id with dash"
+  },
+  "dates": {
+    "with_do_date": "With do-date",
+    "with_completed_date": "with completed date",
+    "with_recurring_daily_do_date": "with recurring daily do-date",
+    "with_recurring_weekly_do_date": "with recurring weekly do-date"
+  },
+  "children": {
+    "minimal": "Basic Root Action",
+    "with_children": "With Children",
+    "with_children_and_second_root": "Children Followed by Root Action"
   }
 }

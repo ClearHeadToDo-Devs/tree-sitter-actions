@@ -1,0 +1,15 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (completed))
+   (name)
+   (completed_date
+    (date_and_time
+     (date
+      (year)
+      (month)
+      (day))
+     (time
+      (hour)
+      (minute)))))))

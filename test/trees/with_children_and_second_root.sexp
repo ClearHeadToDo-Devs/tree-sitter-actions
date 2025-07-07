@@ -1,0 +1,18 @@
+(action_list
+ (root_action
+  (core_action
+   (state 
+    (not_started))
+   (name))
+  (child_action_list
+   (child_action
+    (child_icon)
+    (core_action
+     (state
+      (not_started))
+     (name)))))
+ (root_action
+  (core_action
+   (state
+    (not_started))
+    (name))))
