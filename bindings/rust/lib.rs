@@ -44,7 +44,33 @@ fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>
 
     let mut export_map: HashMap<String, HashMap<String, HashMap<String, String>>> = HashMap::new();
 
-    for (file_name, tests) in map {}
+    for (file_name, tests) in map {
+        export_map.insert(file_name.clone(), HashMap::new());
+        
+        for (test_name, test_description) in tests {
+            let file_map = export_map.get_mut(&file_name).unwrap();
+            let mut test_map = HashMap::new();
+            
+            // Add the description
+            test_map.insert("description".to_string(), test_description);
+            
+            // Try to read the corresponding example file
+            let example_path = format!("../../examples/{}.actions", test_name);
+            match fs::read_to_string(&example_path) {
+                Ok(content) => {
+                    test_map.insert("content".to_string(), content);
+                }
+                Err(_) => {
+                    // If file doesn't exist, add a placeholder or empty content
+                    test_map.insert("content".to_string(), "".to_string());
+                }
+            }
+            
+            file_map.insert(test_name, test_map);
+        }
+    }
+    
+    export_map
 }
 
 // NOTE: uncomment these to include any queries that this grammar contains:
