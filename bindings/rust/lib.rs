@@ -82,13 +82,56 @@ fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>
 //
 pub const CUSTOM: &str = "hi mom!";
 
+/// Load test descriptions and example file contents into a nested HashMap structure.
+/// 
+/// Returns a HashMap with the structure:
+/// category -> test_name -> {"description": "...", "content": "..."}
+/// 
+/// For example:
+/// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
+/// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
+pub fn get_test_data() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
+    load_json_tests()
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn test_can_load_grammar() {
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading ClearHead Actions parser");
+    }
+
+    #[test]
+    fn test_load_json_tests_structure() {
+        let test_data = get_test_data();
+        
+        // Verify top-level categories exist
+        assert!(test_data.contains_key("actions"));
+        assert!(test_data.contains_key("properties"));
+        assert!(test_data.contains_key("dates"));
+        assert!(test_data.contains_key("children"));
+        
+        // Verify a specific test has both description and content
+        let properties = &test_data["properties"];
+        let with_description = &properties["with_description"];
+        
+        assert_eq!(with_description["description"], "With Description");
+        assert_eq!(with_description["content"], "(x) long $ with description\n");
+        
+        // Verify another test to ensure structure is consistent
+        let actions = &test_data["actions"];
+        let with_everything = &actions["with_everything"];
+        
+        assert_eq!(with_everything["description"], "With Everything");
+        assert!(with_everything["content"].contains("(x) Mega Action"));
+        assert!(with_everything["content"].contains("$ descriptions"));
+        
+        println!("Test data structure verified successfully!");
+        println!("Categories: {:?}", test_data.keys().collect::<Vec<_>>());
     }
 }
