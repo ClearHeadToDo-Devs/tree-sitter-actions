@@ -18,9 +18,11 @@
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
-use std::collections::HashMap;
+use std::{collections::HashMap, fs};
 
 use tree_sitter_language::LanguageFn;
+
+use serde_json::*;
 
 extern "C" {
     fn tree_sitter_actions() -> *const ();
@@ -36,7 +38,15 @@ pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_actio
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
-pub TEST_FILES: HashMap<String, HashMap<String, String>> = HashMap::new();
+fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
+    let data = fs::read_to_string("../../test/test_descriptions.json").unwrap();
+    let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
+
+    let mut export_map: HashMap<String, HashMap<String, HashMap<String, String>>> = HashMap::new();
+
+    for (file_name, tests) in map {}
+}
+
 // NOTE: uncomment these to include any queries that this grammar contains:
 
 // pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
