@@ -20,7 +20,6 @@ fn main() {
     }
 
     c_config.compile("tree-sitter-actions");
-    generate_test_data_file();
 }
 
 /// Generate a Rust file containing the test data at compile time

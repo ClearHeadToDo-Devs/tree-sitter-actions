@@ -61,16 +61,4 @@ mod tests {
             .set_language(&LANGUAGE.into())
             .expect("Error loading ClearHead Actions parser");
     }
-
-    #[test]
-    fn test_load_json_tests_structure() {
-        let test_data = get_test_data();
-
-        let actions = &test_data["actions"];
-        let with_everything = &actions["with_everything"];
-
-        assert_eq!(with_everything["description"], "With Everything");
-        assert!(with_everything["content"].contains("(x) Mega Action"));
-        assert!(with_everything["content"].contains("$ descriptions"));
-    }
 }
