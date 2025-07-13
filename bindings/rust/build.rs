@@ -1,3 +1,6 @@
+use serde_json::*;
+use std::collections::HashMap;
+use std::fs::*;
 fn main() {
     let src_dir = std::path::Path::new("src");
 
@@ -18,4 +21,48 @@ fn main() {
     }
 
     c_config.compile("tree-sitter-actions");
+    get_test_files();
+}
+
+/// Load test descriptions and example file contents into a nested HashMap structure.
+///
+/// Returns a HashMap with the structure:
+/// category -> test_name -> {"description": "...", "content": "..."}
+///
+/// For example:
+/// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
+/// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
+pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
+    let data = include_str!("../../test/test_descriptions.json");
+    let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
+
+    let mut export_map: HashMap<String, HashMap<String, HashMap<String, String>>> = HashMap::new();
+
+    for (file_name, tests) in map {
+        export_map.insert(file_name.clone(), HashMap::new());
+
+        for (test_name, test_description) in tests {
+            let file_map = export_map.get_mut(&file_name).unwrap();
+            let mut test_map = HashMap::new();
+
+            // Add the description
+            test_map.insert("description".to_string(), test_description);
+
+            // Try to read the corresponding example file
+            let example_path = format!("examples/{}.actions", test_name);
+            match read_to_string(&example_path) {
+                Ok(content) => {
+                    test_map.insert("content".to_string(), content);
+                }
+                Err(_) => {
+                    // If file doesn't exist, add a placeholder or empty content
+                    test_map.insert("content".to_string(), "".to_string());
+                }
+            }
+
+            file_map.insert(test_name, test_map);
+        }
+    }
+
+    export_map
 }
