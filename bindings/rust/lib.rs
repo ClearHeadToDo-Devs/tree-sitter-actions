@@ -22,8 +22,9 @@ use std::collections::HashMap;
 
 use tree_sitter_language::LanguageFn;
 
-// Include the generated test data
-include!(concat!(env!("OUT_DIR"), "/test_data.rs"));
+// Include the generated test data for reuse by other implementations
+pub mod generated_tests;
+use generated_tests::get_test_data;
 
 extern "C" {
     fn tree_sitter_actions() -> *const ();
@@ -49,7 +50,7 @@ pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 pub const CUSTOM: &str = "hi mom!";
 
 /// Get test files data with descriptions and content
-/// 
+///
 /// Returns a HashMap with the structure:
 /// category -> test_name -> {"description": "...", "content": "..."}
 ///

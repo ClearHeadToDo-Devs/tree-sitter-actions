@@ -27,8 +27,7 @@ fn main() {
 fn generate_test_data_file() {
     let test_data = get_test_files();
 
-    let out_dir = std::env::var("OUT_DIR").unwrap();
-    let dest_path = std::path::Path::new(&out_dir).join("test_data.rs");
+    let dest_path = std::path::Path::new("bindings/rust/generated_tests.rs");
 
     let mut file_content = String::new();
     file_content.push_str("/// Get test files data generated at compile time\n");
@@ -49,7 +48,8 @@ fn generate_test_data_file() {
                 "        category_map.insert(\"{}\".to_string(), {{\n",
                 test_name
             ));
-            file_content.push_str("            let mut test_map = std::collections::HashMap::new();\n");
+            file_content
+                .push_str("            let mut test_map = std::collections::HashMap::new();\n");
 
             for (key, value) in test_info {
                 let escaped_value = value

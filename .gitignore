@@ -48,3 +48,5 @@ zig-out/
 test/corpus/*.txt
 
 Cargo.lock
+
+bindings/rust/generated_tests.rs
