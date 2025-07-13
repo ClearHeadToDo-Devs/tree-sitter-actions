@@ -31,10 +31,9 @@ fn generate_test_data_file() {
     let dest_path = std::path::Path::new(&out_dir).join("test_data.rs");
 
     let mut file_content = String::new();
-    file_content.push_str("use std::collections::HashMap;\n\n");
     file_content.push_str("/// Get test files data generated at compile time\n");
     file_content.push_str(
-        "pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {\n",
+        "pub fn get_test_data() -> std::collections::HashMap<String, std::collections::HashMap<String, std::collections::HashMap<String, String>>> {\n",
     );
     file_content.push_str("    let mut map = std::collections::HashMap::new();\n\n");
 
@@ -43,14 +42,14 @@ fn generate_test_data_file() {
             "    map.insert(\"{}\".to_string(), {{\n",
             category
         ));
-        file_content.push_str("        let mut category_map = HashMap::new();\n");
+        file_content.push_str("        let mut category_map = std::collections::HashMap::new();\n");
 
         for (test_name, test_info) in tests {
             file_content.push_str(&format!(
                 "        category_map.insert(\"{}\".to_string(), {{\n",
                 test_name
             ));
-            file_content.push_str("            let mut test_map = HashMap::new();\n");
+            file_content.push_str("            let mut test_map = std::collections::HashMap::new();\n");
 
             for (key, value) in test_info {
                 let escaped_value = value
