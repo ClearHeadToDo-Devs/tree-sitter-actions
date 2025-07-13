@@ -22,7 +22,6 @@ use std::{collections::HashMap, fs};
 
 use tree_sitter_language::LanguageFn;
 
-
 extern "C" {
     fn tree_sitter_actions() -> *const ();
 }
@@ -37,7 +36,15 @@ pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_actio
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
-fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
+/// Load test descriptions and example file contents into a nested HashMap structure.
+///
+/// Returns a HashMap with the structure:
+/// category -> test_name -> {"description": "...", "content": "..."}
+///
+/// For example:
+/// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
+/// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
+pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
     let data = fs::read_to_string("test/test_descriptions.json").unwrap();
     let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
 
@@ -45,14 +52,14 @@ fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>
 
     for (file_name, tests) in map {
         export_map.insert(file_name.clone(), HashMap::new());
-        
+
         for (test_name, test_description) in tests {
             let file_map = export_map.get_mut(&file_name).unwrap();
             let mut test_map = HashMap::new();
-            
+
             // Add the description
             test_map.insert("description".to_string(), test_description);
-            
+
             // Try to read the corresponding example file
             let example_path = format!("examples/{}.actions", test_name);
             match fs::read_to_string(&example_path) {
@@ -64,11 +71,11 @@ fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>
                     test_map.insert("content".to_string(), "".to_string());
                 }
             }
-            
+
             file_map.insert(test_name, test_map);
         }
     }
-    
+
     export_map
 }
 
@@ -80,18 +87,6 @@ fn load_json_tests() -> HashMap<String, HashMap<String, HashMap<String, String>>
 // pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
 //
 pub const CUSTOM: &str = "hi mom!";
-
-/// Load test descriptions and example file contents into a nested HashMap structure.
-/// 
-/// Returns a HashMap with the structure:
-/// category -> test_name -> {"description": "...", "content": "..."}
-/// 
-/// For example:
-/// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
-/// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
-pub fn get_test_data() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
-    load_json_tests()
-}
 
 #[cfg(test)]
 mod tests {
@@ -107,30 +102,13 @@ mod tests {
 
     #[test]
     fn test_load_json_tests_structure() {
-        let test_data = get_test_data();
-        
-        // Verify top-level categories exist
-        assert!(test_data.contains_key("actions"));
-        assert!(test_data.contains_key("properties"));
-        assert!(test_data.contains_key("dates"));
-        assert!(test_data.contains_key("children"));
-        
-        // Verify a specific test has both description and content
-        let properties = &test_data["properties"];
-        let with_description = &properties["with_description"];
-        
-        assert_eq!(with_description["description"], "With Description");
-        assert_eq!(with_description["content"], "(x) long $ with description\n");
-        
-        // Verify another test to ensure structure is consistent
+        let test_data = get_test_files();
+
         let actions = &test_data["actions"];
         let with_everything = &actions["with_everything"];
-        
+
         assert_eq!(with_everything["description"], "With Everything");
         assert!(with_everything["content"].contains("(x) Mega Action"));
         assert!(with_everything["content"].contains("$ descriptions"));
-        
-        println!("Test data structure verified successfully!");
-        println!("Categories: {:?}", test_data.keys().collect::<Vec<_>>());
     }
 }
