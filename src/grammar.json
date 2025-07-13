@@ -13,15 +13,19 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "core_action"
+          "type": "FIELD",
+          "name": "root_action_props",
+          "content": {
+            "type": "SYMBOL",
+            "name": "core_action"
+          }
         },
         {
           "type": "CHOICE",
           "members": [
             {
               "type": "FIELD",
-              "name": "actionStory",
+              "name": "action_story",
               "content": {
                 "type": "SYMBOL",
                 "name": "story"
@@ -36,8 +40,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "child_action_list"
+              "type": "FIELD",
+              "name": "children",
+              "content": {
+                "type": "SYMBOL",
+                "name": "child_action_list"
+              }
             },
             {
               "type": "BLANK"
