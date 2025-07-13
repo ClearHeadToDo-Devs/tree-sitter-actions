@@ -12,9 +12,9 @@ module.exports = grammar({
   rules: {
     action_list: $ => repeat($.root_action),
     root_action: $ => seq(
-        $.core_action,
-        optional(field("actionStory", $.story)),
-        optional($.child_action_list)
+        field("root_action_props",$.core_action),
+        optional(field("action_story", $.story)),
+        optional(field("children",$.child_action_list))
     ),
     child_action_list: $ => repeat1($.child_action),
 
