@@ -47,6 +47,18 @@ So far, there are two usecases i know I will be using this for:
 ## Testing
 All features of the parser should be covered by tests within the `tests` folder and can be run using the standard `tree-sitter test` if you have the cli installed locally
 
+One deviation we have made from other implementations is that tests actually reside split between three files:
+1. the `test/test_descriptions.json` file which contains 3 layers:
+  1. The file name of the corpus test each test belongs to
+  2. the name of the test
+  3. the description
+2. an actions file within the `examples` file of the same name of the test
+3. a sexp file within `test/sexp` which shows the expected output tree in s-exp format
+
+we use `scripts/generate_tests` to read these files and generate the corpus tests themselves
+- this is why the test folder itself is not only empty, but ignored in git as this is required to keep things tidy
+- this was ultimately intended to make these tests and files more reuasable in other contexts
+
 ## Contributing
 Ive really tried to keep this as simple as possible, relying entirely on basic treesitter rules and careful grammer design instead of funky priority rules
 - no C so far so the entire grammer is in the rules currently
@@ -60,4 +72,3 @@ But contributions are welcomed via pull requests!
 - if you make changes to the grammar itself, please just be sure to add tests to cover the new conditions you add, and make sure the existing tests still pass.
 If possible, we always want to check-in commits where all tests (both new and existing) are passing to give users a sense of stability even on the main branch
 - If you want to suggest new things we SHOULD cover, go ahead and review the [specification](./docs/action_specification.md) and put proposed changes there so we can be sure it aligns with the larger document before implementing the idea within code
-
