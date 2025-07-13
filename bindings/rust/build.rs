@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::fs::*;
+use std::fs::{self, *};
 fn main() {
     let src_dir = std::path::Path::new("src");
 
@@ -86,7 +86,7 @@ fn generate_test_data_file() {
 /// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
 /// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
 fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
-    let data = include_str!("../../test/test_descriptions.json");
+    let data = fs::read_to_string("test/test_descriptions.json").unwrap();
     let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
 
     let mut export_map: HashMap<String, HashMap<String, HashMap<String, String>>> = HashMap::new();
