@@ -28,5 +28,8 @@ path = "bindings/rust/lib.rs"
 cc = "1.2"
 serde_json = "1.0"
 
+[dependencies]
+tree-sitter-language = "0.1"
+
 [dev-dependencies]
 tree-sitter = "0.25.1"

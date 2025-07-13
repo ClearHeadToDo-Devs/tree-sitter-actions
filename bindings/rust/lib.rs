@@ -18,8 +18,6 @@
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
-use std::{collections::HashMap, fs};
-
 use tree_sitter_language::LanguageFn;
 
 extern "C" {
