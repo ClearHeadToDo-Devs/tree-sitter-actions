@@ -1,4 +1,3 @@
-use serde_json::*;
 use std::collections::HashMap;
 use std::fs::*;
 fn main() {
@@ -37,7 +36,7 @@ fn generate_test_data_file() {
     file_content.push_str(
         "pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {\n",
     );
-    file_content.push_str("    let mut map = HashMap::new();\n\n");
+    file_content.push_str("    let mut map = std::collections::HashMap::new();\n\n");
 
     for (category, tests) in &test_data {
         file_content.push_str(&format!(

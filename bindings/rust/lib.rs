@@ -56,7 +56,9 @@ pub const CUSTOM: &str = "hi mom!";
 /// For example:
 /// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
 /// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
-pub use get_test_files;
+pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
+    get_test_data()
+}
 
 #[cfg(test)]
 mod tests {
