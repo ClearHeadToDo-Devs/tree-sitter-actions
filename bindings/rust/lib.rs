@@ -18,15 +18,9 @@
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
-use tree_sitter_language::LanguageFn;
+use std::{collections::HashMap, fs};
 
-/// Include the generated test data for reuse by other implementations
-/// This is primarily used get the generated test data that can be used as actual data at runtime
-/// to dynamically create tests against the very same structure that the main parsing library, this
-/// eliminates the risk that downstream dependencies need to test against a subset of data from my
-/// end instead they can pull the entire contents of the example files and use them in whatever
-/// tests they may need to use
-pub mod generated_tests;
+use tree_sitter_language::LanguageFn;
 
 extern "C" {
     fn tree_sitter_actions() -> *const ();
@@ -51,14 +45,12 @@ pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use generated_tests::get_test_data;
 
     #[test]
     fn test_can_load_grammar() {
         let mut parser = tree_sitter::Parser::new();
         parser
-            .set_language(&LANGUAGE.into())
+            .set_language(&super::LANGUAGE.into())
             .expect("Error loading ClearHead Actions parser");
     }
 }
