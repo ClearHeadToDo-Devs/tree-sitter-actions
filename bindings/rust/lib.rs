@@ -45,7 +45,7 @@ pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 /// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
 /// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
 pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
-    let data = fs::read_to_string("test/test_descriptions.json").unwrap();
+    let data = include_str!("../../test/test_descriptions.json");
     let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
 
     let mut export_map: HashMap<String, HashMap<String, HashMap<String, String>>> = HashMap::new();
