@@ -21,7 +21,47 @@ fn main() {
     }
 
     c_config.compile("tree-sitter-actions");
-    get_test_files();
+    generate_test_data_file();
+}
+
+/// Generate a Rust file containing the test data at compile time
+fn generate_test_data_file() {
+    let test_data = get_test_files();
+    
+    let out_dir = std::env::var("OUT_DIR").unwrap();
+    let dest_path = std::path::Path::new(&out_dir).join("test_data.rs");
+    
+    let mut file_content = String::new();
+    file_content.push_str("use std::collections::HashMap;\n\n");
+    file_content.push_str("/// Get test files data generated at compile time\n");
+    file_content.push_str("pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {\n");
+    file_content.push_str("    let mut map = HashMap::new();\n\n");
+    
+    for (category, tests) in &test_data {
+        file_content.push_str(&format!("    map.insert(\"{}\".to_string(), {{\n", category));
+        file_content.push_str("        let mut category_map = HashMap::new();\n");
+        
+        for (test_name, test_info) in tests {
+            file_content.push_str(&format!("        category_map.insert(\"{}\".to_string(), {{\n", test_name));
+            file_content.push_str("            let mut test_map = HashMap::new();\n");
+            
+            for (key, value) in test_info {
+                let escaped_value = value.replace('\\', "\\\\").replace('"', "\\\"").replace('\n', "\\n").replace('\r', "\\r");
+                file_content.push_str(&format!("            test_map.insert(\"{}\".to_string(), \"{}\".to_string());\n", key, escaped_value));
+            }
+            
+            file_content.push_str("            test_map\n");
+            file_content.push_str("        });\n");
+        }
+        
+        file_content.push_str("        category_map\n");
+        file_content.push_str("    });\n\n");
+    }
+    
+    file_content.push_str("    map\n");
+    file_content.push_str("}\n");
+    
+    write(&dest_path, file_content).unwrap();
 }
 
 /// Load test descriptions and example file contents into a nested HashMap structure.
@@ -32,7 +72,7 @@ fn main() {
 /// For example:
 /// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
 /// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
-pub fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
+fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
     let data = include_str!("../../test/test_descriptions.json");
     let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
 

@@ -18,9 +18,12 @@
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
-use std::{collections::HashMap, fs};
+use std::collections::HashMap;
 
 use tree_sitter_language::LanguageFn;
+
+// Include the generated test data
+include!(concat!(env!("OUT_DIR"), "/test_data.rs"));
 
 extern "C" {
     fn tree_sitter_actions() -> *const ();
@@ -45,6 +48,16 @@ pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 //
 pub const CUSTOM: &str = "hi mom!";
 
+/// Get test files data with descriptions and content
+/// 
+/// Returns a HashMap with the structure:
+/// category -> test_name -> {"description": "...", "content": "..."}
+///
+/// For example:
+/// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
+/// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
+pub use get_test_files;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -59,7 +72,7 @@ mod tests {
 
     #[test]
     fn test_load_json_tests_structure() {
-        let test_data = get_test_files();
+        let test_data = super::get_test_files();
 
         let actions = &test_data["actions"];
         let with_everything = &actions["with_everything"];
