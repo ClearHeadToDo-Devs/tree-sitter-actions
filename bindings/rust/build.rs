@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::env;
 use std::fs::{self, *};
 fn main() {
     let src_dir = std::path::Path::new("src");
@@ -20,13 +21,15 @@ fn main() {
     }
 
     c_config.compile("tree-sitter-actions");
+    generate_test_data_file();
 }
 
 /// Generate a Rust file containing the test data at compile time
 fn generate_test_data_file() {
     let test_data = get_test_files();
 
-    let dest_path = std::path::Path::new("bindings/rust/generated_tests.rs");
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let dest_path = std::path::Path::new(&out_dir).join("generated_tests.rs");
 
     let mut file_content = String::new();
     file_content.push_str("/// Get test files data generated at compile time\n");
