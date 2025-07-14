@@ -88,7 +88,11 @@ fn generate_test_data_file() {
 /// - "actions" -> "with_everything" -> {"description": "With Everything", "content": "(x) Mega Action\n..."}
 /// - "properties" -> "with_description" -> {"description": "With Description", "content": "(x) long $ with description\n"}
 fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
-    let data = fs::read_to_string("test/test_descriptions.json").unwrap();
+    let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let descriptions_path = std::path::Path::new(&manifest_dir)
+        .join("test")
+        .join("test_descriptions.json");
+    let data = fs::read_to_string(descriptions_path).unwrap();
     let map: HashMap<String, HashMap<String, String>> = serde_json::from_str(&data).unwrap();
 
     let mut export_map: HashMap<String, HashMap<String, HashMap<String, String>>> = HashMap::new();
@@ -104,7 +108,9 @@ fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>>
             test_map.insert("description".to_string(), test_description);
 
             // Try to read the corresponding example file
-            let example_path = format!("examples/{}.actions", test_name);
+            let example_path = std::path::Path::new(&manifest_dir)
+                .join("examples")
+                .join(format!("{}.actions", test_name));
             match read_to_string(&example_path) {
                 Ok(content) => {
                     test_map.insert("content".to_string(), content);
