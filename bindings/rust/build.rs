@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::env;
 use std::fs::{self, *};
 fn main() {
-    let src_dir = std::path::Path::new("src");
+    let src_dir = std::path::Path::new("../../src");
 
     let mut c_config = cc::Build::new();
     c_config.std("c11").include(src_dir);
@@ -90,6 +90,8 @@ fn generate_test_data_file() {
 fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>> {
     let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     let descriptions_path = std::path::Path::new(&manifest_dir)
+        .join("..")
+        .join("..")
         .join("test")
         .join("test_descriptions.json");
     let data = fs::read_to_string(descriptions_path).unwrap();
@@ -109,6 +111,8 @@ fn get_test_files() -> HashMap<String, HashMap<String, HashMap<String, String>>>
 
             // Try to read the corresponding example file
             let example_path = std::path::Path::new(&manifest_dir)
+                .join("..")
+                .join("..")
                 .join("examples")
                 .join(format!("{}.actions", test_name));
             match read_to_string(&example_path) {
