@@ -53,4 +53,29 @@ mod tests {
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading ClearHead Actions parser");
     }
+
+    #[test]
+    fn test_generated_data_is_accessible() {
+        let test_data = super::get_test_data();
+        assert!(!test_data.is_empty(), "Test data should not be empty");
+
+        // Check for a specific category and test case to ensure data is loaded correctly
+        let actions_category = test_data
+            .get("actions")
+            .expect("Actions category should exist");
+        let with_everything_test = actions_category
+            .get("with_everything")
+            .expect("with_everything test should exist in actions category");
+
+        assert_eq!(
+            with_everything_test.get("description"),
+            Some(&"With Everything".to_string()),
+            "Description for with_everything should be correct"
+        );
+
+        assert!(
+            with_everything_test.contains_key("content"),
+            "Content for with_everything should exist"
+        );
+    }
 }
