@@ -12,67 +12,62 @@ module.exports = grammar({
   rules: {
     action_list: $ => repeat($.root_action),
     root_action: $ => seq(
-        field("root_action_props",$.core_action),
-        optional(field("action_story", $.story)),
-        optional(field("children",$.child_action_list))
+      field("root_props",$.core_action),
+      optional(field("story", $.story)),
+      optional(field("children",$.child_action_list))
     ),
     child_action_list: $ => repeat1($.child_action),
 
     child_action: $ => seq(
-      $.child_icon,
-      $.core_action,
-      optional($.grandchild_action_list)
+      field('child_icon','>'),
+      field("child_props",$.core_action),
+      optional(field("grandchildren",$.grandchild_action_list))
     ),
-    child_icon: $ => '>',
 
     grandchild_action_list: $ => repeat1($.grandchild_action),
 
     grandchild_action: $ => seq(
-      $.grandchild_icon,
-      $.core_action,
-      optional($.great_grandchild_action_list)
+      field('grandchild_icon','>>'),
+      field("grandchild_props",$.core_action),
+      optional(field("great_grandchildren",$.great_grandchild_action_list))
     ),
-    grandchild_icon: $ => '>>',
 
     great_grandchild_action_list: $ => repeat1($.great_grandchild_action),
 
     great_grandchild_action: $ => seq(
-      $.great_grandchild_icon,
-      $.core_action,
-      optional($.double_great_grandchild_action_list)
+      field('great_grandchild_icon','>>>'),
+      field("great_grandchild_props",$.core_action),
+      optional(field("double_great_grandchildren",$.double_great_grandchild_action_list))
     ),
-    great_grandchild_icon: $ => '>>>',
 
     double_great_grandchild_action_list: $ => repeat1($.double_great_grandchild_action),
 
     double_great_grandchild_action: $ => seq(
-      $.double_great_grandchild_icon,
-      $.core_action,
-      optional($.leaf_action_list)
+      field('double_great_grandchild_icon','>>>>'),
+      field("double_great_grandchild_props",$.core_action),
+      optional(field("leaves",$.leaf_action_list))
     ),
-    double_great_grandchild_icon: $ => '>>>>',
 
     leaf_action_list: $ => repeat1($.leaf_action),
 
     leaf_action: $ => seq(
-      $.leaf_icon,
-      $.core_action
+      field('leaf_action_icon','>>>>>'),
+      field("leaf_props",$.core_action)
     ),
-    leaf_icon: $ => '>>>>>',
 
     core_action: $ => seq(
-        $.state,
-        $.name,
-        optional($.description),
-        optional($.priority),
-        optional($.context_list),
-        optional($.do_date_or_time),
-        optional($.completed_date),
-        optional($.id),
+      field('state',$.state),
+      field('name',$.name),
+      optional(field('description',$.description)),
+      optional(field('priority',$.priority)),
+      optional(field('context_list',$.context_list)),
+      optional(field('do_date_time',$.do_date_or_time)),
+      optional(field('completed_date_time',$.completed_date)),
+      optional(field("id",$.id)),
     ),
 
 
-    state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
+    state: $ => seq(field('state_begin'),'(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),field('state_end',')')),
     not_started: $ => ' ',
     completed: $ => 'x',
     in_progress: $ => '-',
@@ -81,32 +76,24 @@ module.exports = grammar({
 
     name: $ => /[^$!*+@%>#\(]+/,
 
-    description: $ => seq($.desc_icon, $.description_text),
-    desc_icon: $ => '$',
-    //allow `$` char
+    description: $ => seq(field('description_icon','$'), $.description_text),
     description_text: $ => /[^!*+@%>#\(]+/,
 
-    priority: $ => seq($.priority_icon, $.priority_number),
-    priority_icon: $ => '!',
+    priority: $ => seq(field('priority_icon','!'), $.priority_number),
     priority_number: $ => /[0-9]+/,
 
-    story: $ => seq($.story_icon, $.story_name),
-    story_icon: $ => '*',
+    story: $ => seq(field('story_icon','*'), $.story_name),
     //allow `*` char
     story_name: $ => /[^+@%>#\(]+/,
 
-    context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.context_text))),
-    context_icon: $ => '+',
-    middle_context: $ => seq($.context_text, $.context_separator),
+    context_list: $ => seq(field('context_list_icon','+'), repeat1(choice($.middle_context, $.context_text))),
+    middle_context: $ => seq($.context_text, field('context_separator',',')),
     context_text: $ => /[a-zA-Z0-9\-_]+/,
-    context_separator: $ => ',',
 
-    do_date_or_time: $ => seq($.do_date_icon, $.extended_date_and_time, optional($.recurrance)),
-    do_date_icon: $ => '@',
+    do_date_or_time: $ => seq('@', $.extended_date_and_time, optional($.recurrance)),
     completed_date: $ => seq('%', $.date_and_time),
 
-    recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
-    recurrance_icon: $ => 'R',
+    recurrance: $ => seq('R', $.recurrance_structure),
     recurrance_structure: $ => choice($.daily_recurrance, $.weekly_recurrance),
     daily_recurrance: $ => seq('Da', optional($.time)),
     weekly_recurrance: $ => seq('W', optional(seq($.weekly_recurrance_days, optional($.time)))),
@@ -123,13 +110,11 @@ module.exports = grammar({
     hour: $ => /[0-9]{2}/,
     minute: $ => /[0-9]{2}/,
 
-    duration: $ => seq($.duration_designator, $.duration_value ),
-    duration_designator: $ => 'D',
+    duration: $ => seq('D', $.duration_value ),
     duration_value: $ => /[0-9]+/,
 
     //expects uuid v7
-    id: $ => seq($.id_icon, $.uuid),
-    id_icon: $ => '#',
+    id: $ => seq('#', $.uuid),
     uuid: $ => seq($.uuid_time_high, optional('-'), $.uuid_time_mid, optional('-'), $.uuid_version_random, optional('-'),$.uuid_variant_random, optional('-'),$.uuid_random),
     uuid_time_high : $ => /[0-9a-f]{8}/,
     uuid_time_mid: $ => $._uuid_chunk,

@@ -5,10 +5,8 @@
     (completed))
    (name)
    (description
-    (desc_icon)
     (description_text))
    (priority
-    (priority_icon)
     (priority_number))
    (context_list
     (context_icon)
