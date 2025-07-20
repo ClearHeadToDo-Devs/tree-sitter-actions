@@ -69,15 +69,23 @@
           "name": "child_icon"
         },
         {
-          "type": "SYMBOL",
-          "name": "core_action"
+          "type": "FIELD",
+          "name": "child_action_pros",
+          "content": {
+            "type": "SYMBOL",
+            "name": "core_action"
+          }
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "grandchild_action_list"
+              "type": "FIELD",
+              "name": "grandchildren",
+              "content": {
+                "type": "SYMBOL",
+                "name": "grandchild_action_list"
+              }
             },
             {
               "type": "BLANK"
@@ -105,15 +113,23 @@
           "name": "grandchild_icon"
         },
         {
-          "type": "SYMBOL",
-          "name": "core_action"
+          "type": "FIELD",
+          "name": "grandchild_props",
+          "content": {
+            "type": "SYMBOL",
+            "name": "core_action"
+          }
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "great_grandchild_action_list"
+              "type": "FIELD",
+              "name": "great_grandchildren",
+              "content": {
+                "type": "SYMBOL",
+                "name": "great_grandchild_action_list"
+              }
             },
             {
               "type": "BLANK"
@@ -141,15 +157,23 @@
           "name": "great_grandchild_icon"
         },
         {
-          "type": "SYMBOL",
-          "name": "core_action"
+          "type": "FIELD",
+          "name": "great_grandchild_props",
+          "content": {
+            "type": "SYMBOL",
+            "name": "core_action"
+          }
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "double_great_grandchild_action_list"
+              "type": "FIELD",
+              "name": "double_great_grandchildren",
+              "content": {
+                "type": "SYMBOL",
+                "name": "double_great_grandchild_action_list"
+              }
             },
             {
               "type": "BLANK"
@@ -177,8 +201,12 @@
           "name": "double_great_grandchild_icon"
         },
         {
-          "type": "SYMBOL",
-          "name": "core_action"
+          "type": "FIELD",
+          "name": "double_great_grandchildren_props",
+          "content": {
+            "type": "SYMBOL",
+            "name": "core_action"
+          }
         },
         {
           "type": "CHOICE",
@@ -213,8 +241,12 @@
           "name": "leaf_icon"
         },
         {
-          "type": "SYMBOL",
-          "name": "core_action"
+          "type": "FIELD",
+          "name": "leaf_action_props",
+          "content": {
+            "type": "SYMBOL",
+            "name": "core_action"
+          }
         }
       ]
     },
@@ -226,19 +258,31 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "state"
+          "type": "FIELD",
+          "name": "action_state",
+          "content": {
+            "type": "SYMBOL",
+            "name": "state"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "name"
+          "type": "FIELD",
+          "name": "action_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "name"
+          }
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "description"
+              "type": "FIELD",
+              "name": "action_description",
+              "content": {
+                "type": "SYMBOL",
+                "name": "description"
+              }
             },
             {
               "type": "BLANK"
@@ -249,8 +293,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "priority"
+              "type": "FIELD",
+              "name": "action_priority",
+              "content": {
+                "type": "SYMBOL",
+                "name": "priority"
+              }
             },
             {
               "type": "BLANK"
@@ -261,8 +309,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "context_list"
+              "type": "FIELD",
+              "name": "action_context",
+              "content": {
+                "type": "SYMBOL",
+                "name": "context_list"
+              }
             },
             {
               "type": "BLANK"
@@ -273,8 +325,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "do_date_or_time"
+              "type": "FIELD",
+              "name": "action_do_date_time",
+              "content": {
+                "type": "SYMBOL",
+                "name": "do_date_or_time"
+              }
             },
             {
               "type": "BLANK"
@@ -285,8 +341,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "completed_date"
+              "type": "FIELD",
+              "name": "action_completed_date",
+              "content": {
+                "type": "SYMBOL",
+                "name": "completed_date"
+              }
             },
             {
               "type": "BLANK"
@@ -297,8 +357,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "id"
+              "type": "FIELD",
+              "name": "action_id",
+              "content": {
+                "type": "SYMBOL",
+                "name": "id"
+              }
             },
             {
               "type": "BLANK"

@@ -20,8 +20,8 @@ module.exports = grammar({
 
     child_action: $ => seq(
       $.child_icon,
-      $.core_action,
-      optional($.grandchild_action_list)
+      field("child_action_pros",$.core_action),
+      optional(field("grandchildren",$.grandchild_action_list))
     ),
     child_icon: $ => '>',
 
@@ -29,8 +29,8 @@ module.exports = grammar({
 
     grandchild_action: $ => seq(
       $.grandchild_icon,
-      $.core_action,
-      optional($.great_grandchild_action_list)
+      field("grandchild_props",$.core_action),
+      optional(field("great_grandchildren",$.great_grandchild_action_list))
     ),
     grandchild_icon: $ => '>>',
 
@@ -38,8 +38,8 @@ module.exports = grammar({
 
     great_grandchild_action: $ => seq(
       $.great_grandchild_icon,
-      $.core_action,
-      optional($.double_great_grandchild_action_list)
+      field("great_grandchild_props",$.core_action),
+      optional(field("double_great_grandchildren",$.double_great_grandchild_action_list))
     ),
     great_grandchild_icon: $ => '>>>',
 
@@ -47,7 +47,7 @@ module.exports = grammar({
 
     double_great_grandchild_action: $ => seq(
       $.double_great_grandchild_icon,
-      $.core_action,
+      field("double_great_grandchildren_props",$.core_action),
       optional($.leaf_action_list)
     ),
     double_great_grandchild_icon: $ => '>>>>',
@@ -56,19 +56,19 @@ module.exports = grammar({
 
     leaf_action: $ => seq(
       $.leaf_icon,
-      $.core_action
+      field("leaf_action_props",$.core_action)
     ),
     leaf_icon: $ => '>>>>>',
 
     core_action: $ => seq(
-        $.state,
-        $.name,
-        optional($.description),
-        optional($.priority),
-        optional($.context_list),
-        optional($.do_date_or_time),
-        optional($.completed_date),
-        optional($.id),
+        field("action_state",$.state),
+        field("action_name",$.name),
+        optional(field("action_description",$.description)),
+        optional(field("action_priority",$.priority)),
+        optional(field("action_context",$.context_list)),
+        optional(field("action_do_date_time",$.do_date_or_time)),
+        optional(field("action_completed_date", $.completed_date)),
+        optional(field("action_id",$.id)),
     ),
 
 
