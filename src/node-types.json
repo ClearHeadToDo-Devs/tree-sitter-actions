@@ -19,57 +19,53 @@
     "type": "child_action",
     "named": true,
     "fields": {
-      "child_action_pros": {
-        "multiple": false,
-        "required": true,
+      "children": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
-            "type": "core_action",
+            "type": "grandchild_action",
             "named": true
           }
         ]
       },
-      "grandchildren": {
+      "depth": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "grandchild_action_list",
+            "type": ">",
+            "named": false
+          }
+        ]
+      },
+      "properties": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "core_properties",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "child_icon",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "child_action_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "child_action",
-          "named": true
-        }
-      ]
     }
   },
   {
     "type": "completed_date",
     "named": true,
-    "fields": {},
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "%",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -82,34 +78,21 @@
     }
   },
   {
-    "type": "context_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "context_icon",
-          "named": true
-        },
-        {
-          "type": "context_separator",
-          "named": true
-        },
-        {
-          "type": "context_text",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "core_action",
+    "type": "core_properties",
     "named": true,
     "fields": {
-      "action_completed_date": {
+      "closing": {
         "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "]",
+            "named": false
+          }
+        ]
+      },
+      "completed_date_time": {
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -118,28 +101,8 @@
           }
         ]
       },
-      "action_context": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "context_list",
-            "named": true
-          }
-        ]
-      },
-      "action_description": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "description",
-            "named": true
-          }
-        ]
-      },
-      "action_do_date_time": {
-        "multiple": false,
+      "do_date_time": {
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -148,8 +111,46 @@
           }
         ]
       },
-      "action_id": {
-        "multiple": false,
+      "icon": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": " ",
+            "named": false
+          },
+          {
+            "type": "!",
+            "named": false
+          },
+          {
+            "type": "$",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "_",
+            "named": false
+          },
+          {
+            "type": "x",
+            "named": false
+          }
+        ]
+      },
+      "id": {
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -158,32 +159,64 @@
           }
         ]
       },
-      "action_name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "action_priority": {
-        "multiple": false,
+      "list": {
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "priority",
+            "type": "safe_text",
             "named": true
           }
         ]
       },
-      "action_state": {
+      "name": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "state",
+            "type": "safe_text",
+            "named": true
+          }
+        ]
+      },
+      "number": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "1",
+            "named": false
+          },
+          {
+            "type": "2",
+            "named": false
+          },
+          {
+            "type": "3",
+            "named": false
+          },
+          {
+            "type": "4",
+            "named": false
+          }
+        ]
+      },
+      "opening": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "[",
+            "named": false
+          }
+        ]
+      },
+      "text": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "safe_text",
             "named": true
           }
         ]
@@ -253,36 +286,24 @@
     "fields": {}
   },
   {
-    "type": "description",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "desc_icon",
-          "named": true
-        },
-        {
-          "type": "description_text",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "do_date_or_time",
     "named": true,
-    "fields": {},
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "@",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "do_date_icon",
-          "named": true
-        },
         {
           "type": "extended_date_and_time",
           "named": true
@@ -298,45 +319,36 @@
     "type": "double_great_grandchild_action",
     "named": true,
     "fields": {
-      "double_great_grandchildren_props": {
+      "children": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "leaf_action",
+            "named": true
+          }
+        ]
+      },
+      "depth": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "core_action",
+            "type": ">>>>",
+            "named": false
+          }
+        ]
+      },
+      "properties": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "core_properties",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "double_great_grandchild_icon",
-          "named": true
-        },
-        {
-          "type": "leaf_action_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "double_great_grandchild_action_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "double_great_grandchild_action",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -357,11 +369,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "duration_value",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "extended_date_and_time",
@@ -386,102 +393,72 @@
     "type": "grandchild_action",
     "named": true,
     "fields": {
-      "grandchild_props": {
-        "multiple": false,
-        "required": true,
+      "children": {
+        "multiple": true,
+        "required": false,
         "types": [
           {
-            "type": "core_action",
+            "type": "great_grandchild_action",
             "named": true
           }
         ]
       },
-      "great_grandchildren": {
+      "depth": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "great_grandchild_action_list",
+            "type": ">>",
+            "named": false
+          }
+        ]
+      },
+      "properties": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "core_properties",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "grandchild_icon",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "grandchild_action_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "grandchild_action",
-          "named": true
-        }
-      ]
     }
   },
   {
     "type": "great_grandchild_action",
     "named": true,
     "fields": {
-      "double_great_grandchildren": {
-        "multiple": false,
+      "children": {
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "double_great_grandchild_action_list",
+            "type": "double_great_grandchild_action",
             "named": true
           }
         ]
       },
-      "great_grandchild_props": {
+      "depth": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "core_action",
+            "type": ">>>",
+            "named": false
+          }
+        ]
+      },
+      "properties": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "core_properties",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "great_grandchild_icon",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "great_grandchild_action_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "great_grandchild_action",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -509,49 +486,29 @@
     }
   },
   {
-    "type": "in_progress",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "leaf_action",
     "named": true,
     "fields": {
-      "leaf_action_props": {
+      "depth": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "core_action",
+            "type": ">>>>>",
+            "named": false
+          }
+        ]
+      },
+      "properties": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "core_properties",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "leaf_icon",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "leaf_action_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "leaf_action",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -561,30 +518,6 @@
   },
   {
     "type": "month",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "priority",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "priority_icon",
-          "named": true
-        },
-        {
-          "type": "priority_number",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "priority_number",
     "named": true,
     "fields": {}
   },
@@ -630,86 +563,46 @@
     "type": "root_action",
     "named": true,
     "fields": {
-      "action_story": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "story",
-            "named": true
-          }
-        ]
-      },
       "children": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "child_action_list",
+            "type": "child_action",
             "named": true
           }
         ]
       },
-      "root_action_props": {
+      "icon": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "*",
+            "named": false
+          }
+        ]
+      },
+      "properties": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "core_action",
+            "type": "core_properties",
+            "named": true
+          }
+        ]
+      },
+      "text": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "safe_text",
             "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "state",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "blocked",
-          "named": true
-        },
-        {
-          "type": "cancelled",
-          "named": true
-        },
-        {
-          "type": "completed",
-          "named": true
-        },
-        {
-          "type": "in_progress",
-          "named": true
-        },
-        {
-          "type": "not_started",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "story",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "story_icon",
-          "named": true
-        },
-        {
-          "type": "story_name",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -802,15 +695,27 @@
     "fields": {}
   },
   {
+    "type": " ",
+    "named": false
+  },
+  {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "$",
+    "named": false
+  },
+  {
     "type": "%",
     "named": false
   },
   {
-    "type": "(",
+    "type": "*",
     "named": false
   },
   {
-    "type": ")",
+    "type": "+",
     "named": false
   },
   {
@@ -818,7 +723,51 @@
     "named": false
   },
   {
+    "type": "1",
+    "named": false
+  },
+  {
+    "type": "2",
+    "named": false
+  },
+  {
+    "type": "3",
+    "named": false
+  },
+  {
+    "type": "4",
+    "named": false
+  },
+  {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">>",
+    "named": false
+  },
+  {
+    "type": ">>>",
+    "named": false
+  },
+  {
+    "type": ">>>>",
+    "named": false
+  },
+  {
+    "type": ">>>>>",
+    "named": false
+  },
+  {
+    "type": "@",
     "named": false
   },
   {
@@ -866,63 +815,27 @@
     "named": false
   },
   {
-    "type": "am",
+    "type": "[",
     "named": false
   },
   {
-    "type": "blocked",
-    "named": true
+    "type": "]",
+    "named": false
   },
   {
-    "type": "cancelled",
-    "named": true
+    "type": "_",
+    "named": false
   },
   {
-    "type": "child_icon",
-    "named": true
-  },
-  {
-    "type": "completed",
-    "named": true
-  },
-  {
-    "type": "context_icon",
-    "named": true
-  },
-  {
-    "type": "context_separator",
-    "named": true
-  },
-  {
-    "type": "context_text",
-    "named": true
-  },
-  {
-    "type": "desc_icon",
-    "named": true
-  },
-  {
-    "type": "description_text",
-    "named": true
-  },
-  {
-    "type": "do_date_icon",
-    "named": true
-  },
-  {
-    "type": "double_great_grandchild_icon",
-    "named": true
+    "type": "am",
+    "named": false
   },
   {
     "type": "duration_designator",
     "named": true
   },
   {
-    "type": "grandchild_icon",
-    "named": true
-  },
-  {
-    "type": "great_grandchild_icon",
+    "type": "duration_value",
     "named": true
   },
   {
@@ -930,35 +843,15 @@
     "named": true
   },
   {
-    "type": "leaf_icon",
-    "named": true
-  },
-  {
-    "type": "name",
-    "named": true
-  },
-  {
-    "type": "not_started",
-    "named": true
-  },
-  {
     "type": "pm",
     "named": false
-  },
-  {
-    "type": "priority_icon",
-    "named": true
   },
   {
     "type": "recurrance_icon",
     "named": true
   },
   {
-    "type": "story_icon",
-    "named": true
-  },
-  {
-    "type": "story_name",
+    "type": "safe_text",
     "named": true
   },
   {
@@ -968,6 +861,10 @@
   {
     "type": "uuid_time_high",
     "named": true
+  },
+  {
+    "type": "x",
+    "named": false
   },
   {
     "type": "year",

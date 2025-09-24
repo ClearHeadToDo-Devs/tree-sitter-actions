@@ -11,99 +11,58 @@ module.exports = grammar({
 
   rules: {
     action_list: $ => repeat($.root_action),
+
     root_action: $ => seq(
-        field("root_action_props",$.core_action),
-        optional(field("action_story", $.story)),
-        optional(field("children",$.child_action_list))
+        field("properties",$.core_properties),
+        optional(field("story", seq(field('icon', '*'), field('text',$.safe_text)))),
+        optional(field("children",repeat1($.child_action)))
     ),
-    child_action_list: $ => repeat1($.child_action),
 
     child_action: $ => seq(
-      $.child_icon,
-      field("child_action_pros",$.core_action),
-      optional(field("grandchildren",$.grandchild_action_list))
+      field("depth", '>'),
+      field("properties",$.core_properties),
+      optional(field("children",repeat1($.grandchild_action)))
     ),
-    child_icon: $ => '>',
-
-    grandchild_action_list: $ => repeat1($.grandchild_action),
 
     grandchild_action: $ => seq(
-      $.grandchild_icon,
-      field("grandchild_props",$.core_action),
-      optional(field("great_grandchildren",$.great_grandchild_action_list))
+      field("depth", '>>'),
+      field("properties",$.core_properties),
+      optional(field("children",repeat1($.great_grandchild_action)))
     ),
-    grandchild_icon: $ => '>>',
-
-    great_grandchild_action_list: $ => repeat1($.great_grandchild_action),
 
     great_grandchild_action: $ => seq(
-      $.great_grandchild_icon,
-      field("great_grandchild_props",$.core_action),
-      optional(field("double_great_grandchildren",$.double_great_grandchild_action_list))
+      field('depth', '>>>'),
+      field("properties",$.core_properties),
+      optional(field("children",repeat1($.double_great_grandchild_action)))
     ),
-    great_grandchild_icon: $ => '>>>',
-
-    double_great_grandchild_action_list: $ => repeat1($.double_great_grandchild_action),
 
     double_great_grandchild_action: $ => seq(
-      $.double_great_grandchild_icon,
-      field("double_great_grandchildren_props",$.core_action),
-      optional($.leaf_action_list)
+      field('depth', '>>>>'),
+      field("properties",$.core_properties),
+      optional(field("children",repeat1($.leaf_action)))
     ),
-    double_great_grandchild_icon: $ => '>>>>',
-
-    leaf_action_list: $ => repeat1($.leaf_action),
 
     leaf_action: $ => seq(
-      $.leaf_icon,
-      field("leaf_action_props",$.core_action)
-    ),
-    leaf_icon: $ => '>>>>>',
-
-    core_action: $ => seq(
-        field("action_state",$.state),
-        field("action_name",$.name),
-        optional(field("action_description",$.description)),
-        optional(field("action_priority",$.priority)),
-        optional(field("action_context",$.context_list)),
-        optional(field("action_do_date_time",$.do_date_or_time)),
-        optional(field("action_completed_date", $.completed_date)),
-        optional(field("action_id",$.id)),
+      field('depth', '>>>>>'),
+      field("properties",$.core_properties)
     ),
 
+    core_properties: $ => seq(
+        field("state",seq(field('opening','['), field('icon', choice(' ', 'x', '-', '=', '_')),field("closing",']'))),
+        field("name",$.safe_text),
+        optional(repeat1(choice(
+        (field("description",seq(field('icon', '$'), field('text',$.safe_text)))),
+        (field("priority",seq(field('icon','!'), field('number', choice('1', '2', '3', '4'))))),
+        (field("context",seq(field('icon', '+'), field('list', repeat1(seq(field('text', $.safe_text, optional(field('separator',','))))))))),
+        (field("do_date_time",$.do_date_or_time)),
+        (field("completed_date_time", $.completed_date)),
+        (field("id",$.id)))))
+    ),
 
-    state: $ => seq('(', choice($.not_started, $.completed, $.in_progress, $.blocked, $.cancelled),')'),
-    not_started: $ => ' ',
-    completed: $ => 'x',
-    in_progress: $ => '-',
-    blocked: $ => '=',
-    cancelled: $ => '_',
 
-    name: $ => /[^$!*+@%>#\(]+/,
-
-    description: $ => seq($.desc_icon, $.description_text),
-    desc_icon: $ => '$',
-    //allow `$` char
-    description_text: $ => /[^!*+@%>#\(]+/,
-
-    priority: $ => seq($.priority_icon, $.priority_number),
-    priority_icon: $ => '!',
-    priority_number: $ => /[0-9]+/,
-
-    story: $ => seq($.story_icon, $.story_name),
-    story_icon: $ => '*',
-    //allow `*` char
-    story_name: $ => /[^+@%>#\(]+/,
-
-    context_list: $ => seq($.context_icon, repeat1(seq($.context_text, optional($.context_separator)))),
-    context_icon: $ => '+',
-    middle_context: $ => seq($.context_text, $.context_separator),
-    context_text: $ => /[a-zA-Z0-9\-_]+/,
-    context_separator: $ => ',',
-
-    do_date_or_time: $ => seq($.do_date_icon, $.extended_date_and_time, optional($.recurrance)),
-    do_date_icon: $ => '@',
-    completed_date: $ => seq('%', $.date_and_time),
+    safe_text: $ => /[^$!*+@%>#\(]+/,
+    do_date_or_time: $ => seq(field('icon','@'), $.extended_date_and_time, optional($.recurrance)),
+    completed_date: $ => seq(field('icon','%'), $.date_and_time),
 
     recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
     recurrance_icon: $ => 'R',

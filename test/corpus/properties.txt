@@ -1,7 +1,7 @@
 ================
 With Description
 ================
-(x) long $ with description
+[x] long $ with description
 
 ---
 
@@ -18,7 +18,7 @@ With Description
 =============
 With Priority
 =============
-(x) priority !1
+[x] priority !1
 
 ---
 
@@ -35,7 +35,7 @@ With Priority
 ==========
 With Story
 ==========
-(x) story test *Parent Story
+[x] story test *Parent Story
 
 ---
 
@@ -52,7 +52,7 @@ With Story
 ============
 With Context
 ============
-(x) context test +test_context,another_context
+[x] context test +test_context,another_context
 
 ---
 
@@ -115,7 +115,7 @@ With Id with dash
 ===============
 With Id no dash
 ===============
-(x) id test #01951111cfa6718db303d7107f4005b3
+[x] id test #01951111cfa6718db303d7107f4005b3
 
 ---
 
@@ -137,7 +137,7 @@ With Id no dash
 =================
 With Id with dash
 =================
-(x) id test #01951111-cfa6-718d-b303-d7107f4005b3
+[x] id test #01951111-cfa6-718d-b303-d7107f4005b3
 
 ---
 

@@ -1,6 +1,6 @@
-( ) root test
-	> ( ) child action
-		>> ( ) grandchild action
-			>>> ( ) great grandchild action
-				>>>> ( ) double-great grandchild action
-				>>>>> ( ) Leaf action
+[ ] root test
+	> [ ] child action
+		>> [ ] grandchild action
+			>>> [ ] great grandchild action
+				>>>> [ ] double-great grandchild action
+				>>>>> [ ] Leaf action

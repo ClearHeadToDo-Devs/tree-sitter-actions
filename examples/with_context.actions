@@ -1,1 +1,1 @@
-(x) context test +test_context,another_context
+[x] context test +test_context,another_context
