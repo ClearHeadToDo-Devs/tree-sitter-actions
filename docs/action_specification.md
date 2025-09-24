@@ -94,6 +94,8 @@ Priority can be designated at any time with the `!` character followed by a numb
 
 While there is no limit, it is encourage to support around 4 levels of priority atleast to support the eisenhower method
 
+we use the eisenhower matrix method as described in [the attached pdf](./Eisenhower-Matrix-Fillable.pdf)
+
 
 ## Story/Project (Optional)
 An action may designate a parent project/story. in this case, the name of the story/project is used as the key for the sake of readability
