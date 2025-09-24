@@ -94,11 +94,11 @@
           "named": true
         },
         {
-          "type": "context_text",
+          "type": "context_separator",
           "named": true
         },
         {
-          "type": "middle_context",
+          "type": "context_text",
           "named": true
         }
       ]
@@ -549,25 +549,6 @@
       "types": [
         {
           "type": "leaf_action",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "middle_context",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "context_separator",
-          "named": true
-        },
-        {
-          "type": "context_text",
           "named": true
         }
       ]

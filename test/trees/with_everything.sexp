@@ -5,14 +5,15 @@
     (completed))
    (name)
    (description
+    (desc_icon)
     (description_text))
    (priority
+    (priority_icon)
     (priority_number))
    (context_list
     (context_icon)
-    (middle_context
-     (context_text)
-     (context_separator))
+    (context_text)
+    (context_separator)
     (context_text))
    (do_date_or_time
     (do_date_icon)

@@ -506,15 +506,23 @@
         {
           "type": "REPEAT1",
           "content": {
-            "type": "CHOICE",
+            "type": "SEQ",
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "middle_context"
+                "name": "context_text"
               },
               {
-                "type": "SYMBOL",
-                "name": "context_text"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "context_separator"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
               }
             ]
           }

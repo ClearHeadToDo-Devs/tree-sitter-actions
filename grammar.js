@@ -95,7 +95,7 @@ module.exports = grammar({
     //allow `*` char
     story_name: $ => /[^+@%>#\(]+/,
 
-    context_list: $ => seq($.context_icon, repeat1(choice($.middle_context, $.context_text))),
+    context_list: $ => seq($.context_icon, repeat1(seq($.context_text, optional($.context_separator)))),
     context_icon: $ => '+',
     middle_context: $ => seq($.context_text, $.context_separator),
     context_text: $ => /[a-zA-Z0-9\-_]+/,
