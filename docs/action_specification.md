@@ -34,16 +34,113 @@ to the degree possible, we try to adhere to the [action schema](https://schema.o
 
 and do note from the W3C consortium we define an Action as a subset of a [Thing](http://webschemas.appspot.com/Thing) from a schema perspective
 
-# Structure
+## Dates, times, and repititions
+we make repeated use of date formats in this file type.
+
+we primarily follow the [icalendar standard](https://en.wikipedia.org/wiki/ICalendar) as these can be seen as specialized calendar events and a core usecase is the integration with calendar apps
+dates, times, and durations will be written using the [ISO 8601 Date Standard](https://en.wikipedia.org/wiki/ISO_8601) 
+
+this makes reading dates consistent and easily parsable by nearly any language while also aligning to the notation most expected by the international community 
+
+while only some will take advantage of the extended functionality, they will all share the same base of the ISO 8601 standard
+### Date Structure
 As denoted, each file can be understood as a list of actions that the person intends to take.
 
 ordering matters here so each part is intended to be done in sequence to again make the act of parsing easier and minimizing the amount of characters that need to be escaped within the main text chunks
+
+both formats should be supported:
+- YYYY-MM-DD
+- YYYYMMDD
+
+weekly formats should also be supported in cases where the ability for ambiguity is required (like do date)
+- YYYY-www
+- YYYYwww
+
+ordinal dates are on a per-parser bases. for the time being, there is no need to support this unless there are requests for more generic date representations in specific parsing scenarios
+#### Time
+Time is denoted with the `T` character after the date and supports both extended and simplified formats:
+- full
+    - hh:mm:ss.sss
+    - hhmmss.sss
+- seconds
+    - hh:mm:ss
+    - hhmmss
+- minutes
+    - hh:mm
+    - hhmm
+- hour
+    - hh
+    - hh
+
+if in an unambiguous context (like a child of an action due on a specific day) then simply listing the time should be sufficient, without the requirement of even a date
+
+However, do note this will be implementation specific and will require more opinionated configuration than would otherwise be feasible for this work
+
+remember, `00:00:00` denotes the INSTANT a day begins from a calculation perspective and can serve as a good default when needed for a time structure in more strictly typed languages
+
+##### Timezones
+Timezones are optional. if omited, local time is assumed as the standard suggests.
+
+However, we should also note that the UTC offsets are accepted for the possibility of international parsing
+- <time>Z (zero UTC offset)
+- <time>+/-hh:mm
+- <time>+/-hhmm
+- <time>+/-hh
+
+#### Durations
+While a single day-time is the representation of a single time, we also want the ability to easily respresent the DURATION of this time
+
+ISO 8601 covers this with the `P` designator
+
+and has the following format:
+- `P[n]Y[n]M[n]DT[n]H[n]M[n]S`
+    - like the date format, each designator is preceded by the number of that period
+    - durations that dont need a specific signifier, can simply omit it 
+        - Full example: `P1Y2M3DT4H5M6S` is: 1 year, 2 Months, 3 Days, 4 Hours, 5 Minutes and 6 Seconds
+        - pragmatic date example: `P1M` is: 1 Month
+        - pragmatic hour example: `PT5M` is: 5 Minutes
+            - note the `T` designator to disambiguate between the `M` for Month and Minutes respectively
+- `P<date>T<time>`
+    - This format is similar to the first, but instead simply uses a similar format as above to denote the duration
+        - do note, standard logic applies, one cannot do an end time that would end up being 25 hours etc
+            - full example: `P0001-02-03T04-05-06` is 1 year, 2 Months, 3 Days, 4 Hours, 5 Minutes and 6 Seconds just like above
+##### Time Intervals
+Therefore, we have a few formats for when we have to designate a duration AND a date
+- `<start>/<end>`
+- `<start>/<duration>`
+- `<duration>/<end>`
+
+While you CAN simply list a duration on its own, again, given the context enables it. 
+
+However, great care must be taken to handle the inherent ambiguity around durations alone (if we say 2 months, that could be 28,29,30, or 31 days)
+
+By contrast, if we put the duration after a proper date, then there is no ambiguity as we can calculate two months from that specific starting date rather than an arbitrary starting date
+
+same goes for time and seconds due to leap seconds
+
+###### Repitition
+Finally, we can denote that all the mechanics above can be used to REPEAT this period.
+
+we primarily use the field [RFC 5545 section 3.8.5.3](https://datatracker.ietf.org/doc/html/rfc5545#section-3.8.5.3)  
+
+using [RFC 5546 section 3.3.10](https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10) to define the format, only we use the fields more thoughtfully
+
+This is denoted with the `R[n]` notation.  at the beginning of the interval format we saw earlier so it can be:
+- `R[n]/<interval>`
+    - with `n` representing the number of repitions
+    - as one would expect `0` represents no repeats but it is preferred to simply omit the repitition in this case
+- `R/<interval>`
+    - without a number of representations, the number of repitions is assumed to be _infinite_
+        - `-1` signifies unlimited repitions as well
+
+for no repitions, simply omit the repition format
+
 
 ## Depth (Required)
 Every child action starts with atleast one `>` character. Children of a parent action can be denoted by `>>` and so-on down to the official limit of 5 levels of depth.
 6 levels was chosen to conform with standard markdown conventions
 
-all other symbols will be valid for child actions, and parsing should still be easy since they will all be preceded by the progression of `>` characters
+all other symbols will be valid for child actions, and parsing should still be easy sivce they will all be preceded by the progression of `>` characters
 
 ### Adding Children
 Children actions should be added to the end of an action to leave the context closer to the name of the action. 
@@ -119,22 +216,12 @@ started with the `+` character, one can use multiple contexts by separating each
 
 contexts are simply keys and cannot be assigned values
 
-
 ## Do-Date/Time (Optional)
-actions can have a full date/time designated using the standard "YYYY-MM-DD" format after an initial `@` character
+Actions can have a do-date, do-time, or both. This is designated by the `@` character. The format conforms to a simplified subset of ISO 8601.
 
-this allows systems that require a future data to utilize this for parsing, while still being optional in designation
-
-
-### Time (Optional)
-Time can either be added after the date, or given directly
-
-The format will be the standard "HH:MM" in military time or "HH:MMam/pm" to designate time of day
-
-If given directly it can be added directly after the `@` character
-
-However, if given as an addition to the date, then it must be preceded by a `T` character
-
+- **Date**: A date is specified in `YYYY-MM-DD` format (e.g., `@2025-10-20`).
+- **Time**: A time is specified in 24-hour `HH:MM` format (e.g., `@14:30`).
+- **Date and Time**: A date and time are combined with a `T` separator: `YYYY-MM-DDTHH:MM` (e.g., `@2025-10-20T14:30`).
 
 #### Duration (Optional)
 We can give an optional duration after the time by supply the `D` character followed by a number that will be converted to minutes
@@ -173,7 +260,7 @@ Intended to be added automatically by tooling when the state is changed to compl
 
 Started with the `%` character, this helps to determine the date/time the action was completed.
 
-follows the same rules as the Do-Date covered above
+It follows the same format as the Do-Date/Time: `YYYY-MM-DD`, `HH:MM`, or `YYYY-MM-DDTHH:MM`.
 
 ## Id (Optional)
 for this we are going to be using the v7 of the UUID standard.

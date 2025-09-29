@@ -60,9 +60,8 @@ module.exports = grammar({
     ),
 
 
-    safe_text: $ => /[^$!*+@%>#\(]+/,
-    do_date_or_time: $ => seq(field('icon', '@'), $.extended_date_and_time, optional($.recurrance)),
-    completed_date: $ => seq(field('icon', '%'), $.date_and_time),
+    do_date_or_time: $ => seq(field('icon', '@'), $.extended_date_spec, optional($.recurrance)),
+    completed_date: $ => seq(field('icon', '%'), $.date_spec),
 
     recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
     recurrance_icon: $ => 'R',
@@ -71,13 +70,12 @@ module.exports = grammar({
     weekly_recurrance: $ => seq('W', optional(seq($.weekly_recurrance_days, optional($.time)))),
     weekly_recurrance_days: $ => repeat1(choice('Mon', 'Tue', 'Wen', 'Thurs', 'Fri', 'Sat', 'Sun')),
 
-    extended_date_and_time: $ => seq($.date_and_time, optional($.duration)),
-    date_and_time: $ => seq($.date, optional($.time)),
-    date: $ => seq(field('year', /[0-9]{4}/), '-', field("month", /[0-9]{2}/), '-', field('day', /[0-9]{2}/)),
+    extended_date_spec: $ => seq($.date_time, optional($.duration)),
 
-    time: $ => seq(seq($.hour, ':', $.minute), optional(choice('am', 'pm', 'AM', 'PM'))),
-    hour: $ => /[0-9]{2}/,
-    minute: $ => /[0-9]{2}/,
+    date_time: $ => seq($.date, 'T', $.time),
+    date: $ => seq(field('year', /[0-9]{4}/), '-', field("month", /[0-9]{2}/), '-', field('day', /[0-9]{2}/)),
+    time: $ => seq(field('hour', /[0-9]{2}/), ':', field('minute', /[0-9]{2}/)),
+
 
     duration: $ => seq($.duration_designator, $.duration_value),
     duration_designator: $ => 'D',
@@ -94,5 +92,9 @@ module.exports = grammar({
     uuid_random: $ => /[0-9a-f]{12}/,
 
     _uuid_chunk: $ => /[0-9a-f]{4}/,
+
+
+    //shared safe_text root
+    safe_text: $ => /[^$!*+@%>#\(]+/,
   },
 });
