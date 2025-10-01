@@ -118,24 +118,58 @@ By contrast, if we put the duration after a proper date, then there is no ambigu
 
 same goes for time and seconds due to leap seconds
 
-###### Repitition
+### Repitition
 Finally, we can denote that all the mechanics above can be used to REPEAT this period.
 
 we primarily use the field [RFC 5545 section 3.8.5.3](https://datatracker.ietf.org/doc/html/rfc5545#section-3.8.5.3)  
 
 using [RFC 5546 section 3.3.10](https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10) to define the format, only we use the fields more thoughtfully
 
-This is denoted with the `R[n]` notation.  at the beginning of the interval format we saw earlier so it can be:
-- `R[n]/<interval>`
-    - with `n` representing the number of repitions
-    - as one would expect `0` represents no repeats but it is preferred to simply omit the repitition in this case
-- `R/<interval>`
-    - without a number of representations, the number of repitions is assumed to be _infinite_
-        - `-1` signifies unlimited repitions as well
+We can add a repitition AFTER the date itself which serves as the "DSTART" value in the reccurance rule
 
-for no repitions, simply omit the repition format
+We denote a repition with the `R` character
 
+it should be noted what this DOES is try to calculate the event set if these events are to be exported into a calendar format which is a common usecase for this type of data
 
+in the end this will be used to define the recurrance set which is the set of events that we plan to use with this work
+
+#### Frequency
+We can have the following frequencies:
+- MI = Minutely
+- H = Hourly
+- D = Daily
+- W = Weekly
+- MO = Monthly
+- Y = Yearly
+
+This is the first field and the only MANDATORY one besides the start date itself. All other fields can go in whatever order is needed
+##### Bounding the Repition
+we immediately have values to bound these options:
+- `U` = Until Date
+    - End date of the repition
+- `C` = Count
+    - The MAXIMUM count of repitions allowd
+- `I` = Interval
+    - the interval of repition, defaulting to 1
+        - so `D` with `I2` is a repition of every other day
+
+###### Semantic Bounding
+We also can bound them based on more calendar-specific formats:
+
+The best way to think of this is that each frequency can use all bounds of LESS GRANULARITY.
+
+So the by minute frequency can only use the "By Minute" property alonge with the ones above, by contrast, the "yearly" frequency can use every value possible to represent what it needs for a frequency
+- `BMI` = By Minute
+    - A list of integers between 0 and 60 representing which minute(s) in the hour to repeat
+- `BH` = By Hour
+    -   list of numbers between 0 and 23 representing what hour to repeat this within
+- `BD` = By Day
+    - an integer representing the numbered day in the week 
+- `BMOD` = By Month Day
+    - A list of days of the month
+    - can accept negative and positive values
+- `BMO` = By Month
+    - List of ints representing months
 ## Depth (Required)
 Every child action starts with atleast one `>` character. Children of a parent action can be denoted by `>>` and so-on down to the official limit of 5 levels of depth.
 6 levels was chosen to conform with standard markdown conventions
