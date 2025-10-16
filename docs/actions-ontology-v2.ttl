@@ -1,0 +1,305 @@
+@prefix : <http://example.org/actions#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <http://example.org/actions#> .
+
+<http://example.org/actions> rdf:type owl:Ontology ;
+    rdfs:label "Actions File Specification Ontology" ;
+    rdfs:comment "OWL ontology for the actions file specification - optimized for queries and clarity" ;
+    owl:versionInfo "2.0.0" .
+
+#################################################################
+#    Core Action Class with Required Properties
+#################################################################
+
+:Action rdf:type owl:Class ;
+    rdfs:label "Action" ;
+    rdfs:comment "A task or action that can be performed" ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty :name ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ,
+    [
+        a owl:Restriction ;
+        owl:onProperty :state ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ,
+    [
+        a owl:Restriction ;
+        owl:onProperty :depth ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+#################################################################
+#    Structural Action Subclasses (for constraints & queries)
+#################################################################
+
+:RootAction rdf:type owl:Class ;
+    rdfs:label "Root Action" ;
+    rdfs:comment "An action at depth 1 - can belong to projects" ;
+    rdfs:subClassOf :Action ,
+        [ a owl:Restriction ;
+          owl:onProperty :depth ;
+          owl:hasValue 1 ] .
+
+:ChildAction rdf:type owl:Class ;
+    rdfs:label "Child Action" ;
+    rdfs:comment "An action at depth > 1 - must have parent" ;
+    rdfs:subClassOf :Action ,
+        [ a owl:Restriction ;
+          owl:onProperty :depth ;
+          owl:someValuesFrom [ a rdfs:Datatype ;
+                               owl:onDatatype xsd:positiveInteger ;
+                               owl:withRestrictions ( [ xsd:minInclusive 2 ] ) ] ] ,
+        [ a owl:Restriction ;
+          owl:onProperty :parentAction ;
+          owl:cardinality "1"^^xsd:nonNegativeInteger ] .
+
+#################################################################
+#    Action State Enumeration (instances for queries)
+#################################################################
+
+:ActionState rdf:type owl:Class ;
+    rdfs:label "Action State" ;
+    rdfs:comment "Enumerated states an action can be in" .
+
+:NotStarted rdf:type owl:NamedIndividual, :ActionState ;
+    rdfs:label "Not Started" ;
+    :stateSymbol " " .
+
+:InProgress rdf:type owl:NamedIndividual, :ActionState ;
+    rdfs:label "In Progress" ;
+    :stateSymbol "-" .
+
+:Completed rdf:type owl:NamedIndividual, :ActionState ;
+    rdfs:label "Completed" ;
+    :stateSymbol "x" .
+
+:Blocked rdf:type owl:NamedIndividual, :ActionState ;
+    rdfs:label "Blocked/Awaiting" ;
+    :stateSymbol "=" .
+
+:Cancelled rdf:type owl:NamedIndividual, :ActionState ;
+    rdfs:label "Cancelled" ;
+    :stateSymbol "_" .
+
+#################################################################
+#    Object Properties (structural relationships)
+#################################################################
+
+:parentAction rdf:type owl:ObjectProperty ;
+    rdfs:label "parent action" ;
+    rdfs:comment "Links child action to its parent" ;
+    rdfs:domain :ChildAction ;
+    rdfs:range :Action ;
+    owl:inverseOf :childAction .
+
+:childAction rdf:type owl:ObjectProperty ;
+    rdfs:label "child action" ;
+    rdfs:comment "Links parent to its child actions" ;
+    rdfs:domain :Action ;
+    rdfs:range :ChildAction .
+
+:state rdf:type owl:ObjectProperty, owl:FunctionalProperty ;
+    rdfs:label "state" ;
+    rdfs:comment "Current state of the action" ;
+    rdfs:domain :Action ;
+    rdfs:range :ActionState .
+
+#################################################################
+#    Required Data Properties
+#################################################################
+
+:name rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "name" ;
+    rdfs:comment "Name/title of the action (secondary key)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:string .
+
+:depth rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "depth" ;
+    rdfs:comment "Hierarchical depth (1-6)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:onDatatype xsd:positiveInteger ;
+                 owl:withRestrictions ( [ xsd:minInclusive 1 ] [ xsd:maxInclusive 6 ] ) ] .
+
+#################################################################
+#    Optional Content Properties
+#################################################################
+
+:description rdf:type owl:DatatypeProperty ;
+    rdfs:label "description" ;
+    rdfs:comment "Detailed description (marked with $)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:string .
+
+:identifier rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "identifier" ;
+    rdfs:comment "UUID v7 identifier (marked with #)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Organizational Properties (simple strings for queryability)
+#################################################################
+
+:project rdf:type owl:DatatypeProperty ;
+    rdfs:label "project" ;
+    rdfs:comment "Project/story name (marked with *, root actions only)" ;
+    rdfs:domain :RootAction ;
+    rdfs:range xsd:string .
+
+:context rdf:type owl:DatatypeProperty ;
+    rdfs:label "context" ;
+    rdfs:comment "GTD context (marked with +, multiple allowed)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:string .
+
+:priority rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "priority" ;
+    rdfs:comment "Priority level (marked with !, Eisenhower matrix)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:positiveInteger .
+
+#################################################################
+#    Temporal Properties (simplified for clarity)
+#################################################################
+
+:doDateTime rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "do date time" ;
+    rdfs:comment "When action should be performed (marked with @, ISO 8601)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:dateTime .
+
+:doDate rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "do date" ;
+    rdfs:comment "Date action should be performed (marked with @)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:date .
+
+:doTime rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "do time" ;
+    rdfs:comment "Time action should be performed (marked with @)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:time .
+
+:completedDateTime rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "completed date time" ;
+    rdfs:comment "When action was completed (marked with %, auto-generated)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:dateTime .
+
+:durationMinutes rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "duration minutes" ;
+    rdfs:comment "Expected duration in minutes (D30 = 30 minutes)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:positiveInteger .
+
+#################################################################
+#    Recurrence Properties (compositional, not instances)
+#################################################################
+
+:recurrenceFrequency rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "recurrence frequency" ;
+    rdfs:comment "Recurrence frequency code (R + MI|H|D|W|MO|Y)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:oneOf ( "MI" "H" "D" "W" "MO" "Y" ) ] .
+
+:recurrenceInterval rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "recurrence interval" ;
+    rdfs:comment "Interval for recurrence (default 1, I2 = every 2nd)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:positiveInteger .
+
+:recurrenceUntil rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "recurrence until" ;
+    rdfs:comment "End date for recurrence (U + date)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:date .
+
+:recurrenceCount rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "recurrence count" ;
+    rdfs:comment "Maximum recurrence count (C + number)" ;
+    rdfs:domain :Action ;
+    rdfs:range xsd:positiveInteger .
+
+:byDay rdf:type owl:DatatypeProperty ;
+    rdfs:label "by day" ;
+    rdfs:comment "Days of week for recurrence (BD + Mon,Tue,etc)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:oneOf ( "Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun" ) ] .
+
+:byMonth rdf:type owl:DatatypeProperty ;
+    rdfs:label "by month" ;
+    rdfs:comment "Months for yearly recurrence (BMO + Jan,Feb,etc)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:oneOf ( "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec" ) ] .
+
+:byMonthDay rdf:type owl:DatatypeProperty ;
+    rdfs:label "by month day" ;
+    rdfs:comment "Days of month for recurrence (BMOD + 1-31)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:onDatatype xsd:integer ;
+                 owl:withRestrictions ( [ xsd:minInclusive 1 ] [ xsd:maxInclusive 31 ] ) ] .
+
+:byHour rdf:type owl:DatatypeProperty ;
+    rdfs:label "by hour" ;
+    rdfs:comment "Hours for time-based recurrence (BH + 0-23)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:onDatatype xsd:integer ;
+                 owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 23 ] ) ] .
+
+:byMinute rdf:type owl:DatatypeProperty ;
+    rdfs:label "by minute" ;
+    rdfs:comment "Minutes for time-based recurrence (BMI + 0-59)" ;
+    rdfs:domain :Action ;
+    rdfs:range [ a rdfs:Datatype ;
+                 owl:onDatatype xsd:integer ;
+                 owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 59 ] ) ] .
+
+#################################################################
+#    Meta Properties (for parser generation)
+#################################################################
+
+:stateSymbol rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
+    rdfs:label "state symbol" ;
+    rdfs:comment "Character representing state in file format" ;
+    rdfs:domain :ActionState ;
+    rdfs:range xsd:string .
+
+#################################################################
+#    Derived Classes (for query convenience)
+#################################################################
+
+:CompletedAction rdf:type owl:Class ;
+    rdfs:label "Completed Action" ;
+    rdfs:comment "Actions that have been completed" ;
+    rdfs:subClassOf :Action ,
+        [ a owl:Restriction ;
+          owl:onProperty :state ;
+          owl:hasValue :Completed ] .
+
+:RecurringAction rdf:type owl:Class ;
+    rdfs:label "Recurring Action" ;
+    rdfs:comment "Actions with recurrence patterns" ;
+    rdfs:subClassOf :Action ,
+        [ a owl:Restriction ;
+          owl:onProperty :recurrenceFrequency ;
+          owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
+
+:ProjectAction rdf:type owl:Class ;
+    rdfs:label "Project Action" ;  
+    rdfs:comment "Actions belonging to a project" ;
+    rdfs:subClassOf :RootAction ,
+        [ a owl:Restriction ;
+          owl:onProperty :project ;
+          owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
