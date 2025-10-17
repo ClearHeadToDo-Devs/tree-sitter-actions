@@ -7,7 +7,7 @@
 @base <http://example.org/actions#> .
 
 <http://example.org/actions> rdf:type owl:Ontology ;
-rdfs:label "Actions File Specification Ontology" ;
+    rdfs:label "Actions File Specification Ontology" ;
     rdfs:comment "OWL ontology extending Schema.org Action for the actions file specification - optimized for queries and clarity" ;
     rdfs:seeAlso <http://schema.org/Action> ;
     owl:versionInfo "2.1.0" .
@@ -81,22 +81,7 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
 :Action rdf:type owl:Class ;
     rdfs:label "Action" ;
     rdfs:comment "A task or action that can be performed, extending Schema.org Action with file format specific properties" ;
-    rdfs:subClassOf schema:Action ,
-    [
-        a owl:Restriction ;
-        owl:onProperty schema:name ;
-        owl:cardinality "1"^^xsd:nonNegativeInteger
-    ] ,
-    [
-        a owl:Restriction ;
-        owl:onProperty :state ;
-        owl:cardinality "1"^^xsd:nonNegativeInteger
-    ] ,
-    [
-        a owl:Restriction ;
-        owl:onProperty :depth ;
-        owl:cardinality "1"^^xsd:nonNegativeInteger
-    ] .
+    rdfs:subClassOf schema:Action .
 
 #################################################################
 #    Structural Action Subclasses (for constraints & queries)
@@ -105,23 +90,12 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
 :RootAction rdf:type owl:Class ;
     rdfs:label "Root Action" ;
     rdfs:comment "An action at depth 1 - can belong to projects" ;
-    rdfs:subClassOf :Action ,
-        [ a owl:Restriction ;
-          owl:onProperty :depth ;
-          owl:hasValue 1 ] .
+    rdfs:subClassOf :Action .
 
 :ChildAction rdf:type owl:Class ;
     rdfs:label "Child Action" ;
     rdfs:comment "An action at depth > 1 - must have parent" ;
-    rdfs:subClassOf :Action ,
-        [ a owl:Restriction ;
-          owl:onProperty :depth ;
-          owl:someValuesFrom [ a rdfs:Datatype ;
-                               owl:onDatatype xsd:positiveInteger ;
-                               owl:withRestrictions ( [ xsd:minInclusive 2 ] ) ] ] ,
-        [ a owl:Restriction ;
-          owl:onProperty :parentAction ;
-          owl:cardinality "1"^^xsd:nonNegativeInteger ] .
+    rdfs:subClassOf :Action .
 
 #################################################################
 #    Action State Enumeration (mapped to Schema.org ActionStatusType)
@@ -166,14 +140,14 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
 
 :parentAction rdf:type owl:ObjectProperty ;
     rdfs:label "parent action" ;
-    rdfs:comment "Links child action to its parent" ;
+    rdfs:comment "Links child action to its parent (file format specific hierarchy)" ;
     rdfs:domain :ChildAction ;
     rdfs:range :Action ;
     owl:inverseOf :childAction .
 
 :childAction rdf:type owl:ObjectProperty ;
     rdfs:label "child action" ;
-    rdfs:comment "Links parent to its child actions" ;
+    rdfs:comment "Links parent to its child actions (file format specific hierarchy)" ;
     rdfs:domain :Action ;
     rdfs:range :ChildAction .
 
@@ -185,17 +159,6 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
     rdfs:subPropertyOf schema:actionStatus .
 
 #################################################################
-#    Schema.org Property Alignments
-#################################################################
-
-# Use Schema.org properties directly where compatible
-# schema:name - already used for action name (secondary key)
-# schema:description - already used for action description (marked with $)
-# schema:identifier - already used for UUID v7 identifier (marked with #)
-# schema:startTime - use for do date/time (marked with @)
-# schema:endTime - use for completion date/time (marked with %)
-
-#################################################################
 #    File Format Specific Data Properties
 #################################################################
 
@@ -203,9 +166,7 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
     rdfs:label "depth" ;
     rdfs:comment "Hierarchical depth (1-6) specific to file format structure" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:onDatatype xsd:positiveInteger ;
-                 owl:withRestrictions ( [ xsd:minInclusive 1 ] [ xsd:maxInclusive 6 ] ) ] .
+    rdfs:range xsd:positiveInteger .
 
 #################################################################
 #    Organizational Properties (file format specific)
@@ -230,10 +191,6 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
     rdfs:domain :Action ;
     rdfs:range xsd:positiveInteger .
 
-#################################################################
-#    Duration Property (extends Schema.org duration concept)
-#################################################################
-
 :durationMinutes rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
     rdfs:label "duration minutes" ;
     rdfs:comment "Expected duration in minutes (D30 = 30 minutes)" ;
@@ -244,7 +201,6 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
 #    Temporal Properties (aligned with Schema.org)
 #################################################################
 
-# Subproperties of schema:startTime for different granularities
 :doDateTime rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
     rdfs:label "do date time" ;
     rdfs:comment "When action should be performed (marked with @, ISO 8601)" ;
@@ -266,7 +222,6 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
     rdfs:range xsd:time ;
     rdfs:subPropertyOf schema:startTime .
 
-# Completion time as subproperty of schema:endTime
 :completedDateTime rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
     rdfs:label "completed date time" ;
     rdfs:comment "When action was completed (marked with %, auto-generated)" ;
@@ -282,8 +237,7 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
     rdfs:label "recurrence frequency" ;
     rdfs:comment "Recurrence frequency code (R + MI|H|D|W|MO|Y)" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:oneOf ( "MI" "H" "D" "W" "MO" "Y" ) ] .
+    rdfs:range xsd:string .
 
 :recurrenceInterval rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
     rdfs:label "recurrence interval" ;
@@ -307,43 +261,31 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
     rdfs:label "by day" ;
     rdfs:comment "Days of week for recurrence (BD + Mon,Tue,etc)" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:oneOf ( "Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun" ) ] .
+    rdfs:range xsd:string .
 
 :byMonth rdf:type owl:DatatypeProperty ;
     rdfs:label "by month" ;
     rdfs:comment "Months for yearly recurrence (BMO + Jan,Feb,etc)" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:oneOf ( "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec" ) ] .
+    rdfs:range xsd:string .
 
 :byMonthDay rdf:type owl:DatatypeProperty ;
     rdfs:label "by month day" ;
     rdfs:comment "Days of month for recurrence (BMOD + 1-31)" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:onDatatype xsd:integer ;
-                 owl:withRestrictions ( [ xsd:minInclusive 1 ] [ xsd:maxInclusive 31 ] ) ] .
+    rdfs:range xsd:integer .
 
 :byHour rdf:type owl:DatatypeProperty ;
     rdfs:label "by hour" ;
     rdfs:comment "Hours for time-based recurrence (BH + 0-23)" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:onDatatype xsd:integer ;
-                 owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 23 ] ) ] .
+    rdfs:range xsd:integer .
 
 :byMinute rdf:type owl:DatatypeProperty ;
     rdfs:label "by minute" ;
     rdfs:comment "Minutes for time-based recurrence (BMI + 0-59)" ;
     rdfs:domain :Action ;
-    rdfs:range [ a rdfs:Datatype ;
-                 owl:onDatatype xsd:integer ;
-                 owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 59 ] ) ] .
-
-#################################################################
-#    Meta Properties (for parser generation)
-#################################################################
+    rdfs:range xsd:integer .
 
 :stateSymbol rdf:type owl:DatatypeProperty, owl:FunctionalProperty ;
     rdfs:label "state symbol" ;
@@ -358,25 +300,14 @@ schema:actionStatus rdf:type owl:ObjectProperty ;
 :CompletedAction rdf:type owl:Class ;
     rdfs:label "Completed Action" ;
     rdfs:comment "Actions that have been completed" ;
-    rdfs:subClassOf :Action ,
-        [ a owl:Restriction ;
-          owl:onProperty :state ;
-          owl:hasValue :Completed ] .
+    rdfs:subClassOf :Action .
 
 :RecurringAction rdf:type owl:Class ;
     rdfs:label "Recurring Action" ;
     rdfs:comment "Actions with recurrence patterns" ;
-    rdfs:subClassOf :Action ,
-        [ a owl:Restriction ;
-          owl:onProperty :recurrenceFrequency ;
-          owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
+    rdfs:subClassOf :Action .
 
 :ProjectAction rdf:type owl:Class ;
     rdfs:label "Project Action" ;  
     rdfs:comment "Actions belonging to a project" ;
-    rdfs:subClassOf :RootAction ,
-        [ a owl:Restriction ;
-          owl:onProperty :project ;
-          owl:minCardinality "1"^^xsd:nonNegativeInteger ] .
-
-
+    rdfs:subClassOf :RootAction .
