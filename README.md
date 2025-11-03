@@ -4,6 +4,7 @@ This is intended to be a small, purpose-built parser in alignment with the speci
 Please read the specification for more in-depth coverage on what is available within the format and why it was designed the way it was
 
 Taking a step back, these action files can be used in a few ways:
+
 - as a more structured alternative to `todo.txt` complete with a parser that can be used as structured data while still allowing for a document-first workflow
 - as a part of a larger whole in the ClearHead Framework, serving as the children for stories
 - in an alternative framework that is less opinionated. Maybe a more GTD-centric framework that wants to use the actions as children for projects
@@ -59,16 +60,19 @@ we use `scripts/generate_tests` to read these files and generate the corpus test
 - this is why the test folder itself is not only empty, but ignored in git as this is required to keep things tidy
 - this was ultimately intended to make these tests and files more reuasable in other contexts
 
-## Contributing
-Ive really tried to keep this as simple as possible, relying entirely on basic treesitter rules and careful grammer design instead of funky priority rules
-- no C so far so the entire grammer is in the rules currently
-- no precedence rules, we use special characters to make the work disambiguous
-- low reliance on whitespace for through the same reason as above, ensuring there isnt too much worrying about indentation, while also supporting multi-line actions for free
-see the everything test for a good example
+## Ontology Development
+One core part of how we do this work is that we first created an ontology that semantically understands the domain of actions, and even lines to text to some degree as well as understanding how the specification should be written.
 
-we handle special characters by escaping them with `\` instead of making precedence rules. this makes is harder to write but easier to parse from a grammar perspective
+Think of this ontology as the formal definition of all the rules and concepts outlined in the primary specification.
 
-But contributions are welcomed via pull requests! 
-- if you make changes to the grammar itself, please just be sure to add tests to cover the new conditions you add, and make sure the existing tests still pass.
-If possible, we always want to check-in commits where all tests (both new and existing) are passing to give users a sense of stability even on the main branch
-- If you want to suggest new things we SHOULD cover, go ahead and review the [specification](./docs/action_specification.md) and put proposed changes there so we can be sure it aligns with the larger document before implementing the idea within code
+The core part of this application is ACTUALLY the ontology itself, which is extending the action ontology hosted at [my site](https://clearhead.us/vocab/actions/v3/) where we pull:
+- the core ontology itself
+- the SHACL shapes that define the constraints on the ontology
+- the example data that we generate our example files from
+
+### Next Steps
+1. while the domain ontology we pull is strictly concerned with the concepts, this ontology can be seen as an application ontology that encodes the standards set out within the ontology and SHACL shapes themselves.
+2. From there, we use this extended ontology and SHACL to generate JSON Type Definition (JTD) schemas 
+3. JTD schemas can be used to automatically GENERATE the tree-sitter grammar types using [json-typedef-codegen](https://github.com/jsontypedef/json-typedef-codegen) which will create our `grammar.ts` file from the JTD schemas 
+4. using [3p3r/type-sitter](https://github.com/3p3r/type-sitter), we create our `grammar.js` file from the `grammar.ts` file.
+5. Finally, tree-sitter itself can be used to generate the parser from our grammar file, which is what ultimately will be exported.
