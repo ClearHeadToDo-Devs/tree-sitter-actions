@@ -3,7 +3,7 @@
     "generated_from": "parser-ontology.ttl",
     "imports": "https://clearhead.us/vocab/actions/v3",
     "version": "1.0.0",
-    "generated_at": "2025-11-05T02:57:53.947Z"
+    "generated_at": "2025-11-05T06:36:24.328Z"
   },
   "rule_types": {
     "choice": "Fixed set of values from constraints",

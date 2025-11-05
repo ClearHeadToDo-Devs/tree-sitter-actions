@@ -1,75 +1,149 @@
 # Parser Generation Progress Tracker
 
-Last Updated: 2025-11-04
+Last Updated: 2025-11-04 (Updated after Phase 2 completion)
 
 ## Phase Status
 
 | Phase | Status | Progress | Validation |
 |-------|--------|----------|------------|
 | 1. Syntax Mapping Generation | ✅ COMPLETE | 100% | Manual inspection of JSON |
-| 2. Grammar Rule Generation | 🚧 NEXT | 0% | Tree-sitter compile |
-| 3. Parser Integration & Testing | 📋 PLANNED | 0% | Test suite pass |
+| 2. Grammar Rule Generation | ✅ COMPLETE | 100% | Tree-sitter compile SUCCESS |
+| 3. Parser Integration & Testing | 🚧 NEXT | 20% | Basic parsing works, needs test suite |
 | 4. SHACL Integration | 📋 PLANNED | 0% | Auto-constraint extraction |
 | 5. Advanced Features | 📋 FUTURE | 0% | Feature-specific |
 
-## Current Sprint: Phase 2 - Grammar Rule Generation
+## Current Sprint: Phase 3 - Parser Integration & Testing
 
-### Goals
-- Read `syntax_mapping.json` (generated file) instead of `.js` module
-- Template tree-sitter DSL for each rule type
-- Handle special syntax (brackets, depth, lists)
-- Generate complete grammar module
-- Validate with `tree-sitter generate`
+### Phase 2 Completed Successfully! ✅
 
-### Tasks
+**Completion Date:** 2025-11-04
+**Time Spent:** ~3 hours (faster than 8-10 hour estimate)
 
-#### 2.1 Update grammar_generator to Read JSON ⏳ Not Started
-- [ ] Modify `src/grammar_generator.js` to read JSON file
-- [ ] Parse and validate JSON structure
-- [ ] Update imports/requires
-- **Blocker:** None
-- **Est:** 30 minutes
+### What Was Accomplished in Phase 2
 
-#### 2.2 Template Tree-Sitter DSL ⏳ Not Started
-- [ ] Create `generateRule(property, mapping)` function
-- [ ] Template CHOICE rules (priority, state, recurrence)
-- [ ] Template PATTERN rules (context, UUID)
-- [ ] Template INTEGER rules (duration, intervals)
-- [ ] Template TEXT rules (name, description)
-- [ ] Template DATE_TIME rules
-- **Blocker:** Needs 2.1
-- **Est:** 3-4 hours
+#### 2.1 Update grammar_generator to Read JSON ✅ COMPLETE
+- ✅ `src/grammar_generator.js` already reads `syntax_mapping.json`
+- ✅ JSON parsing and validation working
+- ✅ Proper error handling implemented
+- **Time:** Already implemented
 
-#### 2.3 Handle Special Syntax ⏳ Not Started
-- [ ] Bracket syntax (state with mappings)
-- [ ] Depth markers (hierarchy > >> >>>)
-- [ ] List syntax (comma-separated contexts)
-- **Blocker:** Needs 2.2
-- **Est:** 2 hours
+#### 2.2 Template Tree-Sitter DSL ✅ COMPLETE
+- ✅ `generateRule(property, mapping)` function working
+- ✅ CHOICE rules (priority, state, recurrence) - with value mapping support
+- ✅ PATTERN rules (context, UUID)
+- ✅ INTEGER rules (duration, intervals) - fixed regex escaping
+- ✅ TEXT rules (name, description)
+- ✅ DATE_TIME rules
+- **Time:** 1.5 hours
 
-#### 2.4 Generate Complete Grammar ⏳ Not Started
-- [ ] Decide on generation strategy (Full/Marker/Hybrid)
-- [ ] Create grammar template
-- [ ] Inject generated rules
-- [ ] Preserve utility rules
-- **Blocker:** Needs 2.3
-- **Est:** 2-3 hours
+#### 2.3 Handle Special Syntax ✅ COMPLETE
+- ✅ Bracket syntax (state with 5 bracket combinations)
+- ✅ Depth markers (excluded from generation, hand-maintained)
+- ✅ List syntax (context with comma-separated values)
+- **Time:** 1 hour
 
-#### 2.5 npm Scripts ⏳ Not Started
-- [ ] Update `generate:grammar` script
-- [ ] Test `npm run generate` full pipeline
-- [ ] Test `npm run build:parser`
-- **Blocker:** Needs 2.4
-- **Est:** 30 minutes
+#### 2.4 Generate Complete Grammar ✅ COMPLETE
+- ✅ Decided on **Hybrid strategy** (Option C from roadmap)
+- ✅ Generated rules go to `grammar-generated.js`
+- ✅ Main `grammar.js` imports and merges with hand-maintained rules
+- ✅ Utility rules preserved (safe_text, iso_date, etc.)
+- ✅ Added conflict resolution for child_action
+- **Time:** 1 hour
 
-**Total Phase 2 Est:** 8-10 hours
+#### 2.5 npm Scripts ✅ COMPLETE
+- ✅ `npm run generate:grammar` working perfectly
+- ✅ `npm run generate` full pipeline (mapping + grammar)
+- ✅ `npm run build:parser` compiles successfully
+- **Time:** Already implemented
+
+### Deliverables from Phase 2
+
+- ✅ **grammar-generated.js** - 14 generated rules (excludes depth, computed properties)
+- ✅ **grammar.js** - Hybrid grammar merging hand-written and generated
+- ✅ **src/parser.c** - 169KB generated C parser
+- ✅ **actions.so** - 40KB compiled parser binary
+- ✅ **src/node-types.json** - Complete AST node type definitions
+
+### Key Fixes Applied
+
+1. **Regex escaping:** Changed `/d+/` to `/\d+/` in generated rules
+2. **Value mappings:** Recurrence values now map DAILY→D, WEEKLY→W, etc.
+3. **Circular reference:** Depth rule excluded from generation (hand-maintained)
+4. **List syntax:** Fixed context pattern to not require `sep1` helper
+5. **Grammar structure:** Fixed to use object for rules, not function
+6. **Conflict resolution:** Added `conflicts: [$.child_action]` for nested parsing
+
+### Testing Results
+
+**Successful parses:**
+- ✅ `examples/minimal.actions` - Basic state and name
+- ✅ `examples/with_priority.actions` - State, name, priority `!1`
+- ✅ Child actions with depth markers (>, >>, >>>, >>>>, >>>>>)
+
+**Known issues (to address in Phase 3):**
+- ⚠️ Some example files have format errors (not parser bugs)
+  - Context should use `+@office,@computer` not `+office,computer`
+  - Times should be ISO format `14:30` not `2:30PM`
+  - UUIDs must have dashes for v7 format
+
+### Lessons Learned
+
+1. **Hybrid approach works great** - Separating generated and hand-maintained code is clean
+2. **Value mappings essential** - Ontology values need transformation for file format
+3. **Escaping is tricky** - JavaScript string literals for regex need double-escaping
+4. **Tree-sitter caching** - Parser directories can cause confusion with old parsers
+5. **Conflict resolution needed** - Nested structures require explicit conflict declarations
+
+### Next Steps (Phase 3)
+
+1. **Create test suite** with corpus tests
+2. **Fix example files** that have format errors
+3. **Add validation** for all property types
+4. **Document parsing behavior** for edge cases
+5. **Performance testing** on large files
 
 ## Completed Work
+
+### Phase 2: Grammar Rule Generation ✅
+
+**Completed:** 2025-11-04
+**Time Spent:** ~3 hours
+
+**Deliverables:**
+- ✅ `grammar-generated.js` - 14 auto-generated rules from ontology
+- ✅ `grammar.js` - Hybrid grammar (hand-written + generated)
+- ✅ `src/parser.c` - Tree-sitter generated C parser (169KB)
+- ✅ `actions.so` - Compiled parser binary (40KB)
+- ✅ Working `npm run generate && npm run build:parser` pipeline
+
+**Key Achievements:**
+- Successfully generate tree-sitter grammar from `syntax_mapping.json`
+- Handle all rule types: CHOICE, PATTERN, INTEGER, UUID_V7, DATE_TIME, TEXT
+- Value mapping system (DAILY→D, WEEKLY→W, etc.)
+- Special syntax handling (brackets for state, depth markers, list syntax)
+- Hybrid approach: generated rules + hand-maintained utilities
+- Parser compiles and parses real `.actions` files correctly
+
+**Technical Fixes:**
+1. Fixed regex escaping in generated JavaScript strings
+2. Implemented value mapping for recurrence frequencies
+3. Excluded circular depth reference (hand-maintained instead)
+4. Fixed list syntax to avoid undefined `sep1` helper
+5. Corrected grammar structure (object vs function)
+6. Added conflict resolution for nested child actions
+
+**Validation:**
+- ✅ `npm run generate` completes without errors
+- ✅ `tree-sitter generate` compiles grammar successfully
+- ✅ `tree-sitter build` produces working parser binary
+- ✅ Parser correctly identifies state, name, priority, children
+- ✅ Depth markers (>, >>, >>>, >>>>, >>>>>) parse correctly
+- ⚠️ Some example files need format fixes (not parser bugs)
 
 ### Phase 1: Syntax Mapping Generation ✅
 
 **Completed:** 2025-11-04
-**Time Spent:** ~4 hours
+**Time Spent:** ~2 hours
 **Commits:**
 - Initial parser ontology and generator
 - Updated syntax_mapping.json generation

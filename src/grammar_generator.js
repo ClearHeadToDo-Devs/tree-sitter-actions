@@ -84,15 +84,14 @@ function generatePropertyRule(propertyName, syntaxRule) {
                 return `($) => choice(${stateChoices.join(', ')})`;
             case 'DepthMarker':
                 // Depth markers are handled by a separate rule in the main grammar
-                return `($) => $.depth`; // Reference the hand-maintained depth rule
+                // Don't generate this - it's hand-maintained in grammar.js
+                return null;
             case 'ListSyntax':
-                const pattern = syntaxRule.pattern;
-                if (!pattern) {
-                    console.warn(`🛡️  No pattern defined for ${propertyName}`);
-                    return `($) => '// No pattern for ${ruleName}'`;
-                }
-                // Assuming sep1 is available in the grammar context
-                return `($) => seq(field('icon', '${syntaxRule.symbol}'), sep1(field('value', /${pattern}/), ','))`;
+                // Context uses list syntax like: +@office,@computer,@phone
+                // We need to match the symbol followed by comma-separated values
+                // The pattern in the mapping already handles the full list pattern
+                return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('value', /@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*/))`;
+
             default:
                 console.warn(`🛡️  Unknown special syntax: ${specialSyntax} for ${propertyName}`);
                 return `($) => '// Unknown special syntax for ${ruleName}'`;
@@ -103,11 +102,21 @@ function generatePropertyRule(propertyName, syntaxRule) {
 
     switch (ruleType) {
         case RuleType.CHOICE:
-            const choices = syntaxRule.values || [];
+            let choices = syntaxRule.values || [];
             if (choices.length === 0) {
                 console.warn(`🛡️  No choices defined for ${propertyName}`);
                 return `($) => '// No choices for ${ruleName}'`;
             }
+
+            // Apply value mappings if they exist (e.g., DAILY → D)
+            if (syntaxRule.value_mappings && syntaxRule.value_mappings.length > 0) {
+                const mappingDict = {};
+                syntaxRule.value_mappings.forEach(m => {
+                    mappingDict[m.from] = m.to;
+                });
+                choices = choices.map(c => mappingDict[c] || c);
+            }
+
             const choiceStrings = choices.map(c => `'${String(c)}'`).join(', ');
             return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('number', choice(${choiceStrings})))`;
 
@@ -120,7 +129,7 @@ function generatePropertyRule(propertyName, syntaxRule) {
             return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('value', /${pattern}/))`;
 
         case RuleType.INTEGER:
-            return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('minutes', /\d+/))`;
+            return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('minutes', /\\d+/))`;
 
         case RuleType.UUID_V7:
             const uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
