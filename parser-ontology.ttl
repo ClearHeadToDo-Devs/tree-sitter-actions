@@ -118,11 +118,69 @@ parser:syntaxValue a owl:DatatypeProperty ;
     rdfs:comment "Value as represented in file syntax" ;
     rdfs:range xsd:string .
 
-parser:bracketSymbol a owl:DatatypeProperty ;
+    parser:bracketSymbol a owl:DatatypeProperty ;
     rdfs:label "bracket symbol" ;
     rdfs:comment "Character used inside brackets for state representation" ;
     rdfs:range xsd:string .
 
+# Structural properties for grammar definition
+parser:ActionGrammarStructure a owl:Class ;
+    rdfs:label "Action Grammar Structure" ;
+    rdfs:comment "Defines the ordered sequence of properties for a specific action type in the grammar." .
+
+parser:RootActionGrammarStructure a owl:Class ;
+    rdfs:subClassOf parser:ActionGrammarStructure ;
+    rdfs:label "Root Action Grammar Structure" ;
+    rdfs:comment "Defines the grammar structure for a root-level action." ;
+    parser:hasOrderedProperty (
+        [ parser:grammarRuleName "state" ; parser:isRequired "true"^^xsd:boolean ]
+        [ parser:grammarRuleName "name" ; parser:isRequired "true"^^xsd:boolean ]
+        [ parser:grammarRuleName "description" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "priority" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "project" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "context" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "do_date_or_time" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "completed_date" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "duration" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence_interval" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence_count" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence_until" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "id" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "children" ; parser:isRequired "false"^^xsd:boolean ; rdfs:comment "Special rule for nested child actions" ]
+    ) .
+
+parser:ChildActionGrammarStructure a owl:Class ;
+    rdfs:subClassOf parser:ActionGrammarStructure ;
+    rdfs:label "Child Action Grammar Structure" ;
+    rdfs:comment "Defines the grammar structure for a child-level action." ;
+    parser:hasOrderedProperty (
+        [ parser:grammarRuleName "depth" ; parser:isRequired "true"^^xsd:boolean ]
+        [ parser:grammarRuleName "state" ; parser:isRequired "true"^^xsd:boolean ]
+        [ parser:grammarRuleName "name" ; parser:isRequired "true"^^xsd:boolean ]
+        [ parser:grammarRuleName "description" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "priority" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "context" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "do_date_or_time" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "completed_date" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "duration" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence_interval" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence_count" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "recurrence_until" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "id" ; parser:isRequired "false"^^xsd:boolean ]
+        [ parser:grammarRuleName "children" ; parser:isRequired "false"^^xsd:boolean ; rdfs:comment "Special rule for nested child actions" ]
+    ) .
+
+parser:hasOrderedProperty a owl:ObjectProperty ;
+    rdfs:label "has ordered property" ;
+    rdfs:comment "Links an action grammar structure to an ordered list of properties it contains." ;
+    rdfs:range rdf:List .
+
+parser:isRequired a owl:DatatypeProperty ;
+    rdfs:label "is required" ;
+    rdfs:comment "Indicates if a property is required in the grammar structure definition." ;
+    rdfs:range xsd:boolean .
 #################################################################
 # Property Annotations - IDENTIFICATION
 #################################################################

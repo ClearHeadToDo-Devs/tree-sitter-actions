@@ -112,12 +112,42 @@ function loadParserOntology(filePath) {
     console.log(`📖 Loading parser ontology from ${filePath}...`);
     const content = fs.readFileSync(filePath, 'utf8');
 
-    // Extract parser annotations using regex (simple but effective)
-    const annotations = {};
+    const annotations = { _structures: {} };
     const lines = content.split('\n');
     let currentProperty = null;
+    let inStructureBlock = false;
+    let currentStructureName = null;
 
     for (const line of lines) {
+        // Check for start of a structure block
+        const structureStartMatch = line.match(/parser:(\w+GrammarStructure)/);
+        if (structureStartMatch) {
+            currentProperty = null; // End property block
+            inStructureBlock = true;
+            currentStructureName = structureStartMatch[1].includes('Root') ? 'root_action' : 'child_action';
+            annotations._structures[currentStructureName] = [];
+            continue;
+        }
+
+        // Check for end of a structure block
+        if (inStructureBlock && line.includes(') .')) {
+            inStructureBlock = false;
+            currentStructureName = null;
+            continue;
+        }
+
+        // If in a structure block, parse the ordered properties
+        if (inStructureBlock) {
+            const orderedPropMatch = line.match(/[\[\s*parser:grammarRuleName\s+\"([^\"]+)\"\s*;\s*parser:isRequired\s+\"([^|true|false)\"]/);
+            if (orderedPropMatch) {
+                annotations._structures[currentStructureName].push({
+                    rule: orderedPropMatch[1],
+                    required: orderedPropMatch[2] === 'true'
+                });
+            }
+            continue;
+        }
+
         // Match property declarations: actions:hasProperty or schema:name
         const propMatch = line.match(/^(actions:\w+|schema:\w+)\s*$/);
         if (propMatch) {
@@ -131,42 +161,42 @@ function loadParserOntology(filePath) {
         if (!currentProperty) continue;
 
         // Match annotations
-        const symbolMatch = line.match(/parser:symbol\s+"([^"]*)"/);
+        const symbolMatch = line.match(/parser:symbol\s+\"([^\"]*)\"/);
         if (symbolMatch) {
             annotations[currentProperty].symbol = symbolMatch[1];
         }
 
-        const ruleMatch = line.match(/parser:grammarRuleName\s+"([^"]+)"/);
+        const ruleMatch = line.match(/parser:grammarRuleName\s+\"([^\"]+)\"/);
         if (ruleMatch) {
             annotations[currentProperty].grammarRuleName = ruleMatch[1];
         }
 
-        const typeMatch = line.match(/parser:ruleType\s+"([^"]+)"/);
+        const typeMatch = line.match(/parser:ruleType\s+\"([^\"]+)\"/);
         if (typeMatch) {
             annotations[currentProperty].ruleType = typeMatch[1];
         }
 
-        const contextMatch = line.match(/parser:contextLevel\s+"([^"]+)"/);
+        const contextMatch = line.match(/parser:contextLevel\s+\"([^\"]+)\"/);
         if (contextMatch) {
             annotations[currentProperty].contextLevel = contextMatch[1];
         }
 
-        const hintMatch = line.match(/parser:formatHint\s+"([^"]+)"/);
+        const hintMatch = line.match(/parser:formatHint\s+\"([^\"]+)\"/);
         if (hintMatch) {
             annotations[currentProperty].formatHint = hintMatch[1];
         }
 
-        const exampleMatch = line.match(/parser:example\s+"([^"]+)"/);
+        const exampleMatch = line.match(/parser:example\s+\"([^\"]+)\"/);
         if (exampleMatch) {
             annotations[currentProperty].example = exampleMatch[1];
         }
 
-        const repeatMatch = line.match(/parser:canRepeat\s+"(\w+)"/);
+        const repeatMatch = line.match(/parser:canRepeat\s+\"(\w+)\"/);
         if (repeatMatch && repeatMatch[1] === 'true') {
             annotations[currentProperty].canRepeat = true;
         }
 
-        const computedMatch = line.match(/parser:isComputed\s+"(\w+)"/);
+        const computedMatch = line.match(/parser:isComputed\s+\"(\w+)\"/);
         if (computedMatch && computedMatch[1] === 'true') {
             annotations[currentProperty].computed = true;
         }
@@ -177,18 +207,19 @@ function loadParserOntology(filePath) {
         }
 
         // Value mappings
-        const ontologyValueMatch = line.match(/parser:ontologyValue\s+"([^"]+)"/);
-        const syntaxValueMatch = line.match(/parser:syntaxValue\s+"([^"]+)"/);
+        const ontologyValueMatch = line.match(/parser:ontologyValue\s+\"([^\"]+)\"/);
+        const syntaxValueMatch = line.match(/parser:syntaxValue\s+\"([^\"]+)\"/);
 
         // State/bracket mappings
-        const bracketMatch = line.match(/(actions:\w+)\s+parser:bracketSymbol\s+"([^"]+)"/);
+        const bracketMatch = line.match(/(actions:\w+)\s+parser:bracketSymbol\s+\"([^\"]+)\"/);
         if (bracketMatch) {
             if (!annotations._stateMappings) annotations._stateMappings = {};
             annotations._stateMappings[bracketMatch[1]] = bracketMatch[2];
         }
     }
 
-    console.log(`   Found ${Object.keys(annotations).length} annotated properties`);
+    console.log(`   Found ${Object.keys(annotations).filter(k => !k.startsWith('_')).length} annotated properties`);
+    console.log(`   Found ${Object.keys(annotations._structures).length} grammar structures`);
     return annotations;
 }
 
@@ -216,9 +247,16 @@ function generateMapping(annotations) {
             computed: 'Calculated from other properties'
         },
         properties: {},
+        structures: {},
         state_mappings: {},
         special_syntax: {}
     };
+
+    // Extract structures
+    if (annotations._structures) {
+        mapping.structures = annotations._structures;
+        delete annotations._structures;
+    }
 
     // Extract state mappings
     if (annotations._stateMappings) {
@@ -252,6 +290,7 @@ function generateMapping(annotations) {
     }
 
     console.log(`   Generated ${Object.keys(mapping.properties).length} property mappings`);
+    console.log(`   Generated ${Object.keys(mapping.structures).length} structure mappings`);
     console.log(`   State mappings: ${Object.keys(mapping.state_mappings).length}`);
 
     return mapping;
@@ -333,7 +372,7 @@ async function main() {
 
         // Special handling for context - add default pattern for list syntax
         if (mapping.properties.hasContext && !mapping.properties.hasContext.pattern) {
-            mapping.properties.hasContext.pattern = '@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*';
+            mapping.properties.hasContext.pattern = '@[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*';
         }
 
         // Write output
@@ -341,8 +380,10 @@ async function main() {
         fs.writeFileSync(outputPath, JSON.stringify(mapping, null, 2));
 
         console.log(`✅ Generated ${outputPath}`);
-        console.log(`\n📊 Summary:`);
-        console.log(`   • ${Object.keys(mapping.properties).length} properties mapped`);
+        console.log(`\n📊 Summary:
+`);
+        console.log(`   • ${Object.keys(mapping.properties).length} properties mapped
+`);
         console.log(`   • ${Object.keys(mapping.state_mappings).length} state symbols`);
 
         console.log('\n✨ Done!');
