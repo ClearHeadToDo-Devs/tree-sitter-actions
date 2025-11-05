@@ -66,11 +66,11 @@ const buildRules = () => {
     ),
   };
 
-  // Integrate generated rules by evaluating the strings
-  for (const [key, valueString] of Object.entries(generatedRulesStrings)) {
-    // Each valueString is a function body string like "($) => seq(...)"
-    // Use eval to convert string to actual function
-    handMaintainedRules[key] = eval(valueString);
+  // Integrate generated rules
+  // Note: generatedRulesStrings is actually an object of functions,
+  // not strings (despite the variable name - historical artifact)
+  for (const [key, ruleFn] of Object.entries(generatedRulesStrings)) {
+    handMaintainedRules[key] = ruleFn;
   }
 
   return handMaintainedRules;

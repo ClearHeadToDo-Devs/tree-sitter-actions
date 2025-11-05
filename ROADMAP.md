@@ -2,6 +2,20 @@
 
 This document outlines the phases of building the complete ontology-driven parser generation pipeline.
 
+## Architecture Decision (2025-11-04)
+
+**Decision:** Use direct syntax mapping approach (parser-ontology.ttl → syntax_mapping.json → grammar)
+
+**Rationale:**
+- 3p3r/type-sitter (TypeScript→grammar) not maintained since 2023
+- Jakobeha/type-sitter (node-types→Rust) solves CLI integration regardless of approach
+- Current approach working now with complete control over grammar
+- Can add TypeScript types later from node-types.json if needed
+
+**See:** [ARCHITECTURE.md](./ARCHITECTURE.md) for full details
+
+---
+
 ## ✅ Phase 1: Syntax Mapping Generation (COMPLETE)
 
 **Goal:** Generate `syntax_mapping.json` from `parser-ontology.ttl`

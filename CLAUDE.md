@@ -2,303 +2,391 @@
 
 **Purpose:** Parse `.actions` plaintext files into Abstract Syntax Trees (AST)
 
-**Status:** In development - grammar will be GENERATED from TypeScript types
+**Status:** Phase 2 Complete - Grammar generation working, ready for testing
 
 ---
 
-## Architecture
+## Quick Start
 
-This parser follows an **ontology-driven generation** approach:
+```bash
+# Generate parser from ontology
+npm run generate && npm run build:parser
 
+# Test parser
+tree-sitter parse examples/with_priority.actions
+
+# See full architecture
+cat ARCHITECTURE.md
 ```
-V3 Ontology + SHACL
-(from ../ontology/)
-       ↓
-   JTD Schemas
-       ↓
-TypeScript Types
-       ↓
-Parser Ontology Extension
-(adds symbol mappings: priority → "!")
-       ↓
-  [type-sitter]
-       ↓
-  grammar.js (GENERATED!)
-       ↓
-Tree-Sitter Parser
-```
-
-### Key Principle: Ontology Extension
-
-**We DON'T use separate config files** (like `syntax_mapping.json`).
-
-**We DO extend the V3 ontology** with parser-specific concepts:
-
-```turtle
-# parser-ontology.ttl
-
-@prefix actions: <https://vocab.clearhead.io/actions/v3#> .
-@prefix parser: <https://vocab.clearhead.io/parser#> .
-
-# Import base V3 ontology
-owl:imports <https://vocab.clearhead.io/actions/v3> .
-
-# Extend properties with parser annotations
-actions:hasPriority
-    parser:symbol "!" ;
-    parser:grammarRule "choice" ;
-    parser:validValues (1 2 3 4) ;
-    parser:contextLevel "any" ;
-    parser:example "!2" .
-
-actions:hasContext
-    parser:symbol "+" ;
-    parser:grammarRule "pattern" ;
-    parser:pattern "@[a-zA-Z0-9_-]+" ;
-    parser:example "+@office" .
-```
-
-**Benefits:**
-- Single source of truth (ontology)
-- Can reason over parser rules
-- Generate grammar AND documentation
-- No drift between semantic model and syntax
 
 ---
 
-## Current Status
+## Architecture Overview
 
-### ✅ Complete
-- Parser project structure
-- Test infrastructure
-- Example `.actions` files
-- Syntax mapping data structure (will migrate to ontology)
+This parser uses **ontology-driven generation** with a direct syntax mapping approach:
 
-### 🚧 In Progress
-- **Parser ontology creation** (extends V3 with file format concepts)
-- **Grammar generation** via type-sitter
+```
+parser-ontology.ttl (syntax annotations)
+    ↓ [JavaScript parser]
+syntax_mapping.json (generated intermediate)
+    ↓ [JavaScript template generator]
+grammar-generated.js (generated rules)
+    ↓ [grammar.js merges with hand-maintained]
+Complete grammar
+    ↓ [tree-sitter generate]
+Parser (C code + .so binary)
+```
 
-### ⏳ Not Started
-- TypeScript type generation from JTD
-- Corpus test generation
-- Integration with clearhead-cli
+### Key Principles
+
+1. **Ontology as source of truth** - `parser-ontology.ttl` defines syntax
+2. **Hybrid grammar** - Generated rules + hand-maintained structure
+3. **Repository independence** - No Python dependencies, self-contained
+4. **Standard integration** - CLI uses `node-types.json` → Rust via type-sitter
+
+---
+
+## File Structure
+
+### Source Files (Hand-Maintained)
+
+```
+parser-ontology.ttl          # Syntax annotations (EDIT THIS)
+grammar.js                   # Structure + utilities (EDIT THIS)
+src/grammar_generator.js     # Generation logic (EDIT THIS)
+scripts/generate-syntax-mapping.js  # Ontology parser (EDIT THIS)
+examples/*.actions           # Test files (EDIT THIS)
+```
+
+### Generated Files (DO NOT EDIT)
+
+```
+syntax_mapping.json          # Generated from parser-ontology.ttl
+grammar-generated.js         # Generated grammar rules
+src/parser.c                 # tree-sitter generates
+src/node-types.json          # tree-sitter generates
+actions.so                   # Compiled parser binary
+```
 
 ---
 
 ## Development Workflow
 
-### Phase 1: Create Parser Ontology (Current)
+### Adding a New Property
 
-```bash
-# 1. Create parser ontology that extends V3
-cat > parser-ontology.ttl << 'EOF'
-@prefix actions: <https://vocab.clearhead.io/actions/v3#> .
-@prefix parser: <https://vocab.clearhead.io/parser#> .
+1. **Update parser-ontology.ttl:**
+   ```turtle
+   actions:hasUrgency
+       parser:symbol "^" ;
+       parser:grammarRuleName "urgency" ;
+       parser:ruleType "choice" ;
+       parser:formatHint "1=low, 5=critical" ;
+       parser:example "^3" .
+   ```
 
-owl:imports <https://vocab.clearhead.io/actions/v3> .
+2. **Regenerate:**
+   ```bash
+   npm run generate && npm run build:parser
+   ```
 
-# Add parser-specific concepts
-parser:FileFormat a owl:Class .
-parser:Line a owl:Class .
+3. **Test:**
+   ```bash
+   tree-sitter parse examples/with_urgency.actions
+   ```
 
-# Extend existing properties with syntax annotations
-actions:hasPriority parser:symbol "!" .
-# ... more mappings
-EOF
+That's it! The pipeline handles the rest.
 
-# 2. Validate ontology
-uv run pytest  # In ontology directory
+### Modifying Existing Syntax
+
+1. **Update parser-ontology.ttl** (change symbol, rule type, etc.)
+2. **Run `npm run generate && npm run build:parser`**
+3. **Update test examples** if syntax changed
+4. **Run tests:** `npm test`
+
+### Debugging Generation Issues
+
+If generation fails:
+
+1. **Check syntax_mapping.json** - Was it generated correctly?
+2. **Check grammar-generated.js** - Do the rules look right?
+3. **Check grammar.js** - Are generated rules imported correctly?
+4. **Run `tree-sitter generate --debug`** for detailed errors
+
+---
+
+## Integration with CLI
+
+The CLI gets Rust types via standard tree-sitter tooling:
+
+```
+tree-sitter-actions/src/node-types.json (auto-generated)
+    ↓ [Jakobeha/type-sitter]
+clearhead-cli/src/generated/actions.rs (type-safe Rust)
 ```
 
-### Phase 2: Generate TypeScript Types
+**No custom integration needed** - uses tree-sitter's standard node-types format.
 
-```bash
-# Generate JTD schemas from V3 + SHACL
-cd ../ontology
-uv run python scripts/generate_jtd.py
+---
 
-# Generate TypeScript types from JTD
-cd ../tree-sitter-actions
-jtd-codegen ../ontology/schemas/jtd/actionplan.jtd.json \
-  --typescript-out src/types/
+## Testing
+
+### Corpus Tests (Phase 3 - TODO)
+
+```
+test/corpus/
+  basics.txt           # Simple actions
+  properties.txt       # All property types
+  hierarchy.txt        # Nested children
+  edge_cases.txt       # Special syntax
 ```
 
-### Phase 3: Generate Grammar
+### Example Files (Current)
 
-```bash
-# Use type-sitter to generate grammar.js from types + ontology
-type-sitter generate \
-  --input src/types/ \
-  --ontology parser-ontology.ttl \
-  --output grammar.js
-
-# grammar.js is now GENERATED!
+```
+examples/
+  minimal.actions           # [ ] test
+  with_priority.actions     # [x] task !1
+  with_children.actions     # Parent > child >> grandchild
 ```
 
-### Phase 4: Build and Test
+### Running Tests
 
 ```bash
-# Build parser
-npm run build
-
-# Run corpus tests
-npm test
-
-# Test against examples
+# Parse examples
 tree-sitter parse examples/*.actions
-```
 
----
-
-## Key Files and Folders
-
-### Source Files
-- `parser-ontology.ttl` - **(To create)** Extends V3 with parser concepts
-- `src/types/` - **(Generated)** TypeScript types from JTD
-- `grammar.js` - **(Generated)** Tree-sitter grammar from types
-- `src/node-types.json` - **(Generated)** AST node type definitions
-
-### Test Files
-- `test/corpus/` - Parser corpus tests
-- `examples/` - Example `.actions` files
-- `test/trees/` - Expected S-expression parse trees
-
-### Documentation
-- `docs/actions-fileformat-spec.md` - File format specification
-- `docs/action_specification.md` - Action semantics
-- `README.md` - Project overview
-- `CLAUDE.md` - This file
-
----
-
-## Important Notes
-
-### Grammar is Generated, Not Hand-Written
-
-**Do NOT manually edit `grammar.js`** - it's generated from TypeScript types.
-
-**To change grammar:**
-1. Update V3 ontology or SHACL shapes
-2. OR update parser ontology annotations
-3. Regenerate JTD → TypeScript → Grammar
-
-### Tests Are Hand-Written
-
-**DO manually write corpus tests** in `test/corpus/`:
-- Input `.actions` files can be generated from ontology examples
-- Expected parse trees must be hand-written (automated generation would propagate bugs)
-
-### Ontology Extension Pattern
-
-**Parser ontology extends V3, doesn't modify it:**
-- ✅ `actions:hasPriority parser:symbol "!"`  (annotation)
-- ❌ Changing `actions:hasPriority` definition in V3
-
-This ensures:
-- V3 remains canonical
-- Parser-specific concepts are clearly separated
-- Other tools can use V3 without parser concepts
-
----
-
-## Tooling
-
-### Tree-Sitter CLI
-
-```bash
-# Generate parser
-tree-sitter generate
-
-# Build parser
-tree-sitter build
-
-# Test parser
-tree-sitter test
-
-# Parse a file
-tree-sitter parse examples/simple.actions
-
-# Show parse tree
-tree-sitter parse examples/simple.actions --debug
-
-# Run specific test
-tree-sitter test -f "test name"
-```
-
-### NPM Scripts
-
-```bash
-# Install dependencies
-npm install
-
-# Build parser
-npm run build
-
-# Run tests
+# Run test suite (Phase 3)
 npm test
-
-# Generate bindings
-npm run generate
 ```
 
 ---
 
-## Integration Points
+## Common Tasks
 
-### With Ontology
-- Fetches V3 ontology from `https://vocab.clearhead.io/actions/v3`
-- Falls back to bundled copy if URL unavailable
-- Extends V3 with parser ontology
+### Generate mapping only
 
-### With CLI
-- Parser published as npm package: `@clearhead/tree-sitter-actions`
-- CLI imports parser: `import parser from '@clearhead/tree-sitter-actions'`
-- CLI uses type-sitter to generate Rust structs from AST nodes
+```bash
+npm run generate:mapping
+# Output: syntax_mapping.json
+```
 
----
+### Generate grammar only
 
-## Decision Rationale
+```bash
+npm run generate:grammar
+# Output: grammar-generated.js
+```
 
-### Why Generate Grammar Instead of Hand-Writing?
+### Full pipeline
 
-**Previous approach:** Hand-write grammar.js, manually keep in sync with ontology
+```bash
+npm run generate
+# Runs both mapping + grammar generation
+```
 
-**Current approach:** Generate from TypeScript types
+### Build parser
 
-**Benefits:**
-- Guaranteed consistency with semantic model
-- Automatic updates when ontology changes
-- Less manual maintenance
-- Types drive both parsing and code generation
+```bash
+npm run build:parser
+# Compiles C parser and binary
+```
 
-**Trade-offs:**
-- Less fine-grained control over grammar
-- Requires understanding of type-sitter
-- But: automation and consistency win
+### Parse a file
 
-### Why TypeScript as Intermediate?
+```bash
+tree-sitter parse path/to/file.actions
+```
 
-**Why not generate grammar directly from ontology?**
+### Debug parsing
 
-Because tree-sitter and type-sitter work well with TypeScript:
-- type-sitter is designed for TypeScript → grammar conversion
-- TypeScript type system maps well to AST node types
-- Existing tooling and ecosystem
-
-The flow ontology → JTD → TypeScript → grammar leverages existing tools rather than building custom ones.
+```bash
+tree-sitter parse --debug path/to/file.actions
+```
 
 ---
 
-## References
+## Grammar Rule Types
 
-- **[V3 Ontology](../ontology/)** - Semantic foundation
-- **[Tree-Sitter Documentation](https://tree-sitter.github.io/tree-sitter/)** - Parser framework
-- **[type-sitter](https://github.com/3p3r/type-sitter)** - TypeScript to grammar
-- **[JTD Specification](https://jsontypedef.com/)** - JSON Type Definition
-- **[Platform README](../README.md)** - Overall vision
+The generator supports these rule types:
+
+### CHOICE - Fixed value sets
+
+```turtle
+parser:ruleType "choice" ;
+parser:values ("1" "2" "3" "4") .
+```
+
+Generates:
+```javascript
+choice('1', '2', '3', '4')
+```
+
+### PATTERN - Regex patterns
+
+```turtle
+parser:ruleType "pattern" ;
+parser:pattern "@[a-zA-Z0-9_-]+" .
+```
+
+Generates:
+```javascript
+/@[a-zA-Z0-9_-]+/
+```
+
+### INTEGER - Numeric values
+
+```turtle
+parser:ruleType "integer" .
+```
+
+Generates:
+```javascript
+/\d+/
+```
+
+### UUID_V7 - UUIDs
+
+```turtle
+parser:ruleType "uuid_v7" .
+```
+
+Generates:
+```javascript
+/[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/
+```
+
+### DATE_TIME - ISO 8601
+
+```turtle
+parser:ruleType "date_time" .
+```
+
+Generates:
+```javascript
+choice($.iso_date_time, $.iso_date, $.iso_time)
+```
+
+### TEXT - Free text
+
+```turtle
+parser:ruleType "text" .
+```
+
+Generates:
+```javascript
+$.safe_text
+```
+
+### Special Syntax
+
+- **BracketSyntax** - State: `[x]`, `[-]`, etc.
+- **DepthMarker** - Hierarchy: `>`, `>>`, etc. (hand-maintained)
+- **ListSyntax** - Lists: `+@office,@work`
+
+---
+
+## Troubleshooting
+
+### Parser won't compile
+
+**Symptom:** `tree-sitter generate` fails
+
+**Check:**
+1. Is `grammar.js` valid JavaScript?
+2. Run `node grammar.js` to test
+3. Check `grammar-generated.js` for syntax errors
+4. Look for unbalanced parentheses, missing commas
+
+### Generated rules are wrong
+
+**Symptom:** Rules don't match expected grammar
+
+**Check:**
+1. Inspect `syntax_mapping.json` - is data correct?
+2. Check rule type in parser-ontology.ttl
+3. Verify generator handles that rule type
+4. Check for value mappings (e.g., DAILY→D)
+
+### Parser doesn't recognize syntax
+
+**Symptom:** Parse errors on valid `.actions` files
+
+**Check:**
+1. Does grammar.js have the rule?
+2. Is rule imported from grammar-generated.js?
+3. Check conflicts array (may need to add)
+4. Verify file format matches spec exactly
+
+---
+
+## Documentation
+
+**Core docs:**
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Complete architecture guide
+- [ROADMAP.md](./ROADMAP.md) - Development phases and timeline
+- [PROGRESS.md](./PROGRESS.md) - Current status and completed work
+- [PHASE2_COMPLETE.md](./PHASE2_COMPLETE.md) - Phase 2 technical details
+
+**Specifications:**
+- [docs/action_specification.md](./docs/action_specification.md) - File format spec
+- [docs/actions-fileformat-spec.md](./docs/actions-fileformat-spec.md) - Detailed syntax
+
+**External:**
+- [Tree-Sitter Documentation](https://tree-sitter.github.io/tree-sitter/)
+- [Jakobeha/type-sitter](https://github.com/Jakobeha/type-sitter) - Rust type generation
+
+---
+
+## Current Status
+
+### ✅ Phase 1 Complete - Syntax Mapping Generation
+- parser-ontology.ttl with 16 annotated properties
+- JavaScript-based ontology parser
+- syntax_mapping.json generation working
+- npm scripts configured
+
+### ✅ Phase 2 Complete - Grammar Rule Generation
+- grammar_generator.js templating all rule types
+- Hybrid grammar strategy (generated + hand-maintained)
+- Parser compiles successfully
+- Parses real .actions files correctly
+
+### 🚧 Phase 3 Next - Parser Integration & Testing
+- Create corpus test suite
+- Test all property types
+- Validate edge cases
+- Performance testing
+
+### 📋 Phase 4 Planned - SHACL Integration
+- Fetch constraints from V3 SHACL shapes
+- Auto-update value ranges
+- Remove hardcoded constraints
+
+### 📋 Phase 5 Future - Advanced Features
+- Optional: TypeScript types from node-types.json
+- Optional: Multi-format support (YAML, JSON)
+- Security: Replace eval() with safer alternative
+
+---
+
+## Contributing
+
+When contributing:
+
+1. **Don't edit generated files** - Edit source (parser-ontology.ttl)
+2. **Always regenerate** - Run `npm run generate` after changes
+3. **Test thoroughly** - Parse examples and run tests
+4. **Document rationale** - Why this syntax change?
+5. **Update tests** - Add examples for new features
 
 ---
 
 ## Questions?
 
-See main [README.md](../README.md) for overall architecture or [ARCHITECTURE.md](../ARCHITECTURE.md) for detailed technical design.
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed technical architecture or [ROADMAP.md](./ROADMAP.md) for project planning.
+
+---
+
+**Version:** 1.0 (Phase 2 Complete)
+**Status:** Production-ready for testing
+**Last Updated:** 2025-11-04

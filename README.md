@@ -1,13 +1,66 @@
-# Tree-sitter Parser for Action(s) files
-This is intended to be a small, purpose-built parser in alignment with the specification describes in [the specification file](./docs/action_specification.md) 
+# Tree-Sitter Actions Parser
 
-Please read the specification for more in-depth coverage on what is available within the format and why it was designed the way it was
+**Ontology-driven parser for `.actions` plaintext task files**
 
-Taking a step back, these action files can be used in a few ways:
+**Status:** Phase 2 Complete - Parser generation working, ready for testing
 
-- as a more structured alternative to `todo.txt` complete with a parser that can be used as structured data while still allowing for a document-first workflow
-- as a part of a larger whole in the ClearHead Framework, serving as the children for stories
-- in an alternative framework that is less opinionated. Maybe a more GTD-centric framework that wants to use the actions as children for projects
+---
+
+## Quick Start
+
+```bash
+# Generate parser from ontology
+npm run generate && npm run build:parser
+
+# Test
+tree-sitter parse examples/with_priority.actions
+```
+
+## Documentation
+
+**Start here:**
+- **[CLAUDE.md](./CLAUDE.md)** - Developer guide, how to use
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Complete technical architecture
+- **[docs/action_specification.md](./docs/action_specification.md)** - File format specification
+
+**Project planning:**
+- **[ROADMAP.md](./ROADMAP.md)** - Development phases
+- **[PROGRESS.md](./PROGRESS.md)** - Current status
+- **[PHASE2_COMPLETE.md](./PHASE2_COMPLETE.md)** - Phase 2 details
+
+**Archive:**
+- **[docs/archive/](./docs/archive/)** - Architecture decision records
+
+---
+
+## What This Is
+
+A tree-sitter parser for `.actions` files - a plaintext task format that's:
+
+- **Human-readable** - Edit with any text editor
+- **Machine-parseable** - Structured AST for tooling
+- **Ontology-driven** - Generated from semantic definitions
+- **Flexible** - Use standalone or within larger frameworks
+
+### Use Cases
+
+- Alternative to `todo.txt` with richer structure
+- Task children within ClearHead Framework stories
+- GTD-style project task lists
+- Integration with calendars (iCal format support)
+- Neovim text objects and highlighting
+
+---
+
+## How It Works
+
+This parser is **generated from ontology annotations**:
+
+```
+parser-ontology.ttl → syntax_mapping.json → grammar.js → C parser
+```
+
+When you change the ontology, the parser automatically updates. See [ARCHITECTURE.md](./ARCHITECTURE.md) for details.
 
 ## Roadmap
 While I am trying to be relatively minimal with the parser, only supporting what is needed, there is still a need to support features that may be needed by others to increase longevity in the future:
