@@ -6,95 +6,74 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+const generatedRulesStrings = require('./grammar-generated'); // Renamed for clarity
+
 module.exports = grammar({
   name: "actions",
 
-  rules: {
-    action_list: $ => repeat($.root_action),
+  rules: ($) => { // rules property is now a function that returns an object
+    const allRules = {
+      action_list: $ => repeat($.root_action),
 
-    root_action: $ => seq(
-      field("properties", $.core_properties),
-      optional(field("story", seq(field('icon', '*'), field('text', $.safe_text)))),
-      optional(field("children", repeat1($.child_action)))
-    ),
+      root_action: $ => seq(
+        $.state,
+        $.name,
+        optional($.priority),
+        optional($.context),
+        optional($.description),
+        optional($.project),
+        optional($.do_date_or_time),
+        optional($.completed_date),
+        optional($.duration),
+        optional($.recurrence),
+        optional($.recurrence_interval),
+        optional($.recurrence_count),
+        optional($.recurrence_until),
+        optional($.id),
+        optional(field("children", repeat1($.child_action)))
+      ),
 
-    child_action: $ => seq(
-      field("depth", '>'),
-      field("properties", $.core_properties),
-      optional(field("children", repeat1($.grandchild_action)))
-    ),
+      child_action: $ => seq(
+        $.depth,
+        $.state,
+        $.name,
+        optional($.priority),
+        optional($.context),
+        optional($.description),
+        optional($.do_date_or_time),
+        optional($.completed_date),
+        optional($.duration),
+        optional($.recurrence),
+        optional($.recurrence_interval),
+        optional($.recurrence_count),
+        optional($.recurrence_until),
+        optional($.id),
+        optional(field("children", repeat1($.child_action)))
+      ),
 
-    grandchild_action: $ => seq(
-      field("depth", '>>'),
-      field("properties", $.core_properties),
-      optional(field("children", repeat1($.great_grandchild_action)))
-    ),
+      // Utility rules (hand-maintained)
+      safe_text: $ => /[^$!*+@%>#\(]+/,
+      iso_date: $ => /\d{4}-\d{2}-\d{2}/,
+      iso_time: $ => /\d{2}:\d{2}/,
+      iso_date_time: $ => /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/,
 
-    great_grandchild_action: $ => seq(
-      field('depth', '>>>'),
-      field("properties", $.core_properties),
-      optional(field("children", repeat1($.double_great_grandchild_action)))
-    ),
+      // Depth markers
+      depth: $ => choice(
+        '>',
+        '>>',
+        '>>>',
+        '>>>>',
+        '>>>>>'
+      ),
+    };
 
-    double_great_grandchild_action: $ => seq(
-      field('depth', '>>>>'),
-      field("properties", $.core_properties),
-      optional(field("children", repeat1($.leaf_action)))
-    ),
+    // Integrate generated rules
+    for (const [key, valueString] of Object.entries(generatedRulesStrings)) {
+      // Each valueString is already a function body string like "($) => seq(...)"
+      // So, create a new function from this string
+      allRules[key] = eval(valueString);
+    }
 
-    leaf_action: $ => seq(
-      field('depth', '>>>>>'),
-      field("properties", $.core_properties)
-    ),
-
-    core_properties: $ => seq(
-      field("state", seq(field('opening', '['), field('icon', choice(' ', 'x', '-', '=', '_')), field("closing", ']'))),
-      field("name", $.safe_text),
-      optional(repeat1(choice(
-        (field("description", seq(field('icon', '$'), field('text', $.safe_text)))),
-        (field("priority", seq(field('icon', '!'), field('number', choice('1', '2', '3', '4'))))),
-        (field("context", seq(field('icon', '+'), field('list', repeat1(seq(field('text', $.safe_text, optional(field('separator', ','))))))))),
-        (field("do_date_time", $.do_date_or_time)),
-        (field("completed_date_time", $.completed_date)),
-        (field("id", $.id)))))
-    ),
-
-
-    do_date_or_time: $ => seq(field('icon', '@'), $.extended_date_spec, optional($.recurrance)),
-    completed_date: $ => seq(field('icon', '%'), $.date_spec),
-
-    recurrance: $ => seq($.recurrance_icon, $.recurrance_structure),
-    recurrance_icon: $ => 'R',
-    recurrance_structure: $ => choice($.daily_recurrance, $.weekly_recurrance),
-    daily_recurrance: $ => seq('Da', optional($.time)),
-    weekly_recurrance: $ => seq('W', optional(seq($.weekly_recurrance_days, optional($.time)))),
-    weekly_recurrance_days: $ => repeat1(choice('Mon', 'Tue', 'Wen', 'Thurs', 'Fri', 'Sat', 'Sun')),
-
-    extended_date_spec: $ => seq($.date_time, optional($.duration)),
-
-    date_time: $ => seq($.date, 'T', $.time),
-    date: $ => seq(field('year', /[0-9]{4}/), '-', field("month", /[0-9]{2}/), '-', field('day', /[0-9]{2}/)),
-    time: $ => seq(field('hour', /[0-9]{2}/), ':', field('minute', /[0-9]{2}/)),
-
-
-    duration: $ => seq($.duration_designator, $.duration_value),
-    duration_designator: $ => 'D',
-    duration_value: $ => /[0-9]+/,
-
-    //expects uuid v7
-    id: $ => seq($.id_icon, $.uuid),
-    id_icon: $ => '#',
-    uuid: $ => seq($.uuid_time_high, optional('-'), $.uuid_time_mid, optional('-'), $.uuid_version_random, optional('-'), $.uuid_variant_random, optional('-'), $.uuid_random),
-    uuid_time_high: $ => /[0-9a-f]{8}/,
-    uuid_time_mid: $ => $._uuid_chunk,
-    uuid_version_random: $ => $._uuid_chunk,
-    uuid_variant_random: $ => $._uuid_chunk,
-    uuid_random: $ => /[0-9a-f]{12}/,
-
-    _uuid_chunk: $ => /[0-9a-f]{4}/,
-
-
-    //shared safe_text root
-    safe_text: $ => /[^$!*+@%>#\(]+/,
-  },
+    return allRules;
+  }),
 });

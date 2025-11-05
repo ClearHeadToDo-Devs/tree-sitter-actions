@@ -171,6 +171,11 @@ function loadParserOntology(filePath) {
             annotations[currentProperty].computed = true;
         }
 
+        const usesSyntaxMatch = line.match(/parser:usesSyntax\s+parser:(\w+)/);
+        if (usesSyntaxMatch) {
+            annotations[currentProperty].special_syntax = usesSyntaxMatch[1];
+        }
+
         // Value mappings
         const ontologyValueMatch = line.match(/parser:ontologyValue\s+"([^"]+)"/);
         const syntaxValueMatch = line.match(/parser:syntaxValue\s+"([^"]+)"/);
@@ -241,6 +246,7 @@ function generateMapping(annotations) {
         if (data.example) propEntry.example = data.example;
         if (data.canRepeat) propEntry.can_repeat = true;
         if (data.computed) propEntry.computed = true;
+        if (data.special_syntax) propEntry.special_syntax = data.special_syntax;
 
         mapping.properties[propName] = propEntry;
     }

@@ -3,7 +3,7 @@
     "generated_from": "parser-ontology.ttl",
     "imports": "https://clearhead.us/vocab/actions/v3",
     "version": "1.0.0",
-    "generated_at": "2025-11-05T02:28:52.042Z"
+    "generated_at": "2025-11-05T02:57:53.947Z"
   },
   "rule_types": {
     "choice": "Fixed set of values from constraints",
@@ -55,6 +55,7 @@
       "context": "any_level",
       "format_hint": "[ ]=not started, [x]=completed, [-]=in progress, [=]=blocked, [_]=cancelled",
       "example": "[x]",
+      "special_syntax": "BracketSyntax",
       "values": [
         " ",
         "x",
@@ -71,6 +72,7 @@
       "format_hint": "GTD contexts: +@office,@computer,@phone",
       "example": "+@office,@computer",
       "can_repeat": true,
+      "special_syntax": "ListSyntax",
       "pattern": "@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*"
     },
     "description": {
@@ -95,7 +97,8 @@
       "grammar_rule_name": "depth",
       "context": "child_only",
       "format_hint": "Hierarchical depth: > child, >> grandchild, etc.",
-      "example": "> Child action"
+      "example": "> Child action",
+      "special_syntax": "DepthMarker"
     },
     "hasDepth": {
       "symbol": "",

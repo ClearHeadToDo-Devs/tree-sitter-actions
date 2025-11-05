@@ -63,7 +63,6 @@
     "parse-simple": "node parser.js test/files/simple.actions",
     "generate:mapping": "node scripts/generate-syntax-mapping.js --output syntax_mapping.json",
     "generate:grammar": "node src/grammar_generator.js --generate-rules",
-    "generate": "npm run generate:mapping && npm run generate:grammar",
-    "build:parser": "tree-sitter generate && tree-sitter build"
+    "generate": "npm run generate:mapping && npm run generate:grammar",    "build:parser": "tree-sitter generate && tree-sitter build"
   }
 }
