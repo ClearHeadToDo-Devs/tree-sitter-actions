@@ -3,7 +3,7 @@
     "generated_from": "parser-ontology.ttl",
     "imports": "https://clearhead.us/vocab/actions/v3",
     "version": "1.0.0",
-    "generated_at": "2025-11-05T01:13:32.509Z"
+    "generated_at": "2025-11-05T02:28:52.042Z"
   },
   "rule_types": {
     "choice": "Fixed set of values from constraints",
@@ -54,7 +54,14 @@
       "grammar_rule_name": "state",
       "context": "any_level",
       "format_hint": "[ ]=not started, [x]=completed, [-]=in progress, [=]=blocked, [_]=cancelled",
-      "example": "[x]"
+      "example": "[x]",
+      "values": [
+        " ",
+        "x",
+        "-",
+        "=",
+        "_"
+      ]
     },
     "hasContext": {
       "symbol": "+",
@@ -63,7 +70,8 @@
       "context": "any_level",
       "format_hint": "GTD contexts: +@office,@computer,@phone",
       "example": "+@office,@computer",
-      "can_repeat": true
+      "can_repeat": true,
+      "pattern": "@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*"
     },
     "description": {
       "symbol": "$",

@@ -1,81 +1,108 @@
 #!/usr/bin/env node
 /**
- * @fileoverview Grammar Generator from Ontology JSON Schemas
- * 
- * This tool generates tree-sitter grammar rules from the ontology JSON schemas
- * using the syntax mapping configuration. It demonstrates how semantic constraints
- * from SHACL shapes can automatically generate precise grammar rules.
- * 
+ * @fileoverview Grammar Generator from Generated Syntax Mapping
+ *
+ * This tool generates tree-sitter grammar rules from the generated syntax_mapping.json
+ * which is produced by the ontology-driven pipeline.
+ *
+ * Pipeline: parser-ontology.ttl → syntax_mapping.json → grammar.js
+ *
  * Usage:
  *   node src/grammar_generator.js --generate-rules
- *   node src/grammar_generator.js --validate-current
- * 
+ *   node src/grammar_generator.js --output grammar-generated.js
+ *
  * @author primary_desktop
  */
 
 const fs = require('fs');
 const path = require('path');
-const { SYNTAX_MAPPING, RuleType, getPropertiesBySymbol } = require('./syntax_mapping.js');
 
 /**
- * Load JSON schema from ontology project
- * @param {string} schemaName - Name of schema (e.g., 'action')
- * @returns {Object|null} Parsed JSON schema
+ * Load generated syntax mapping from JSON file
+ * @param {string} mappingPath - Path to syntax_mapping.json
+ * @returns {Object} Parsed syntax mapping
  */
-function loadOntologySchema(schemaName) {
-    const schemaPath = `../ontology/schemas/${schemaName}.schema.json`;
+function loadSyntaxMapping(mappingPath = 'syntax_mapping.json') {
     try {
-        const content = fs.readFileSync(schemaPath, 'utf8');
-        return JSON.parse(content);
+        const content = fs.readFileSync(mappingPath, 'utf8');
+        const mapping = JSON.parse(content);
+        console.log(`📖 Loaded syntax mapping from ${mappingPath}`);
+        console.log(`   Properties: ${Object.keys(mapping.properties || {}).length}`);
+        console.log(`   State mappings: ${Object.keys(mapping.state_mappings || {}).length}`);
+        return mapping;
     } catch (error) {
-        console.error(`❌ Could not load schema ${schemaName}: ${error.message}`);
-        return null;
+        console.error(`❌ Could not load syntax mapping: ${error.message}`);
+        process.exit(1);
     }
+}
+
+// Load syntax mapping on module load
+const SYNTAX_MAPPING_DATA = loadSyntaxMapping();
+const SYNTAX_MAPPING = SYNTAX_MAPPING_DATA.properties || {};
+const STATE_MAPPINGS = SYNTAX_MAPPING_DATA.state_mappings || {};
+const RULE_TYPES = SYNTAX_MAPPING_DATA.rule_types || {};
+
+// Backwards compatibility - convert to old format where needed
+const RuleType = {
+    CHOICE: 'choice',
+    PATTERN: 'pattern',
+    UUID_V7: 'uuid_v7',
+    DATE_TIME: 'date_time',
+    INTEGER: 'integer',
+    TEXT: 'text',
+    REFERENCE: 'reference',
+    COMPUTED: 'computed'
+};
+
+/**
+ * Get properties that use a specific symbol
+ * @param {string} symbol - The symbol to search for
+ * @returns {Array<string>} Property names using that symbol
+ */
+function getPropertiesBySymbol(symbol) {
+    return Object.entries(SYNTAX_MAPPING)
+        .filter(([_, rule]) => rule.symbol === symbol)
+        .map(([propertyName, _]) => propertyName);
 }
 
 /**
  * Generate tree-sitter grammar rule from property constraints
  * @param {string} propertyName - Name of the property
- * @param {Object} propertySchema - JSON schema for the property
- * @param {Object} syntaxRule - Syntax rule from mapping
- * @returns {Object} Tree-sitter grammar rule
+ * @param {Object} syntaxRule - Syntax rule from mapping (contains constraints from SHACL)
+ * @returns {Object} Tree-sitter grammar rule structure
  */
-function generatePropertyRule(propertyName, propertySchema, syntaxRule) {
-    const ruleName = syntaxRule.grammarRuleName;
-    
-    switch (syntaxRule.ruleType) {
+function generatePropertyRule(propertyName, syntaxRule) {
+    const ruleName = syntaxRule.grammar_rule_name;
+    const ruleType = syntaxRule.rule_type;
+
+    switch (ruleType) {
         case RuleType.CHOICE:
-            // Generate choice rule from SHACL constraints or predefined values
-            let choices = syntaxRule.values;
-            
-            // If JSON schema has enum, use that
-            if (propertySchema.enum) {
-                choices = propertySchema.enum.map(String);
+            // Generate choice rule from values (from SHACL or explicit)
+            const choices = syntaxRule.values || [];
+
+            if (choices.length === 0) {
+                console.warn(`⚠️  No choices defined for ${propertyName}`);
+                return { type: 'STRING', value: 'INVALID' };
             }
-            // If it has min/max integer constraints, generate range
-            else if (propertySchema.type === 'integer' && 
-                     propertySchema.minimum !== undefined && 
-                     propertySchema.maximum !== undefined) {
-                choices = [];
-                for (let i = propertySchema.minimum; i <= propertySchema.maximum; i++) {
-                    choices.push(String(i));
-                }
-            }
-            
+
             return {
                 type: 'SEQ',
                 members: [
                     { type: 'STRING', value: syntaxRule.symbol },
                     {
                         type: 'CHOICE',
-                        members: choices.map(choice => ({ type: 'STRING', value: choice }))
+                        members: choices.map(choice => ({ type: 'STRING', value: String(choice) }))
                     }
                 ]
             };
-            
+
         case RuleType.PATTERN:
-            // Use pattern from SHACL shape or syntax mapping
-            const pattern = propertySchema.pattern || syntaxRule.pattern;
+            // Use pattern from syntax mapping
+            const pattern = syntaxRule.pattern;
+            if (!pattern) {
+                console.warn(`⚠️  No pattern defined for ${propertyName}`);
+                return { type: 'STRING', value: 'INVALID' };
+            }
             return {
                 type: 'SEQ',
                 members: [
@@ -83,202 +110,166 @@ function generatePropertyRule(propertyName, propertySchema, syntaxRule) {
                     { type: 'PATTERN', value: pattern }
                 ]
             };
-            
+
         case RuleType.INTEGER:
-            // Generate integer rule with optional min/max validation
-            let integerRule = { type: 'PATTERN', value: '/\\\\d+/' };
-            
-            // If we have constraints from JSON schema, we could add validation
-            // but tree-sitter focuses on parsing, not validation
+            // Generate integer rule (tree-sitter doesn't validate ranges)
             return {
                 type: 'SEQ',
                 members: [
                     { type: 'STRING', value: syntaxRule.symbol },
-                    integerRule
+                    { type: 'PATTERN', value: '/\\d+/' }
                 ]
             };
-            
+
         case RuleType.UUID_V7:
-            // Reference existing UUID rule
+            // UUID v7 pattern
+            const uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
             return {
                 type: 'SEQ',
                 members: [
                     { type: 'STRING', value: syntaxRule.symbol },
-                    { type: 'SYMBOL', name: 'uuid' }
+                    { type: 'PATTERN', value: `/${uuidPattern}/` }
                 ]
             };
-            
+
         case RuleType.DATE_TIME:
-            // Reference existing date/time rules
+            // ISO 8601 date/time pattern (simplified)
             return {
                 type: 'SEQ',
                 members: [
                     { type: 'STRING', value: syntaxRule.symbol },
-                    { type: 'SYMBOL', name: 'extended_date_spec' }
+                    { type: 'SYMBOL', name: 'iso_datetime' }
                 ]
             };
-            
+
         case RuleType.TEXT:
-            // Use safe_text rule
+            // Use safe_text rule (will be defined separately)
+            if (syntaxRule.symbol) {
+                return {
+                    type: 'SEQ',
+                    members: [
+                        { type: 'STRING', value: syntaxRule.symbol },
+                        { type: 'SYMBOL', name: 'safe_text' }
+                    ]
+                };
+            } else {
+                return { type: 'SYMBOL', name: 'safe_text' };
+            }
+
+        case RuleType.REFERENCE:
+            // Reference to another entity (depth markers)
             return {
-                type: 'SEQ',
-                members: syntaxRule.symbol ? [
-                    { type: 'STRING', value: syntaxRule.symbol },
-                    { type: 'SYMBOL', name: 'safe_text' }
-                ] : [
-                    { type: 'SYMBOL', name: 'safe_text' }
-                ]
+                type: 'SYMBOL',
+                name: syntaxRule.grammar_rule_name
             };
-            
+
+        case 'computed':
+            // Computed properties don't have direct syntax
+            return null;
+
         default:
-            console.warn(`⚠️  Unknown rule type: ${syntaxRule.ruleType} for ${propertyName}`);
+            console.warn(`⚠️  Unknown rule type: ${ruleType} for ${propertyName}`);
             return { type: 'STRING', value: 'UNKNOWN' };
     }
 }
 
 /**
- * Generate core_properties rule from all mapped properties
- * @param {Object} schema - JSON schema object
- * @returns {Object} Tree-sitter grammar rule for core_properties
- */
-function generateCorePropertiesRule(schema) {
-    const propertyChoices = [];
-    const requiredFields = [];
-    
-    // Start with required state and name
-    requiredFields.push(
-        { type: 'SYMBOL', name: 'state' },
-        { type: 'SYMBOL', name: 'name' }
-    );
-    
-    // Add optional properties
-    for (const [propName, propSchema] of Object.entries(schema.properties || {})) {
-        const syntaxRule = SYNTAX_MAPPING[propName];
-        
-        // Skip properties without syntax mapping or already handled
-        if (!syntaxRule || propName === 'name' || propName === 'state') {
-            continue;
-        }
-        
-        // Generate rule for this property
-        const rule = generatePropertyRule(propName, propSchema, syntaxRule);
-        propertyChoices.push({
-            type: 'SYMBOL',
-            name: syntaxRule.grammarRuleName
-        });
-    }
-    
-    return {
-        type: 'SEQ',
-        members: [
-            ...requiredFields,
-            {
-                type: 'REPEAT',
-                content: {
-                    type: 'CHOICE',
-                    members: propertyChoices
-                }
-            }
-        ]
-    };
-}
-
-/**
- * Generate enhanced grammar rules from ontology schemas
+ * Generate grammar rules from syntax mapping
  * @returns {Object} Generated grammar rules
  */
 function generateGrammarRules() {
-    console.log('🏗️  Generating grammar rules from ontology schemas...');
-    
-    // Load main action schema
-    const actionSchema = loadOntologySchema('action');
-    if (!actionSchema) {
-        console.error('❌ Could not load action schema');
-        return {};
-    }
-    
+    console.log('\n🏗️  Generating grammar rules from syntax mapping...');
+
     const generatedRules = {};
-    
+
     console.log('\n🔍 Processing properties:');
-    
+
     // Generate individual property rules
-    for (const [propName, propSchema] of Object.entries(actionSchema.properties)) {
-        const syntaxRule = SYNTAX_MAPPING[propName];
-        
-        if (!syntaxRule) {
-            console.log(`   ⏭️  ${propName}: No syntax mapping`);
+    for (const [propName, syntaxRule] of Object.entries(SYNTAX_MAPPING)) {
+        // Skip computed properties
+        if (syntaxRule.computed) {
+            console.log(`   ⏭️  ${propName}: Computed property (skipped)`);
             continue;
         }
-        
-        console.log(`   ✅ ${propName}: ${syntaxRule.symbol} → ${syntaxRule.grammarRuleName}`);
-        
-        const rule = generatePropertyRule(propName, propSchema, syntaxRule);
-        generatedRules[syntaxRule.grammarRuleName] = rule;
-        
-        // Show constraint information
-        if (propSchema.minimum !== undefined || propSchema.maximum !== undefined) {
-            console.log(`      📏 Range: ${propSchema.minimum}-${propSchema.maximum}`);
-        }
-        if (propSchema.pattern) {
-            console.log(`      🎭 Pattern: ${propSchema.pattern}`);
-        }
-        if (propSchema.enum) {
-            console.log(`      🎯 Enum: ${propSchema.enum.join(', ')}`);
+
+        const ruleName = syntaxRule.grammar_rule_name;
+        console.log(`   ✅ ${propName}: ${syntaxRule.symbol} → ${ruleName}`);
+
+        const rule = generatePropertyRule(propName, syntaxRule);
+
+        if (rule) {
+            generatedRules[ruleName] = rule;
+
+            // Show constraint information
+            if (syntaxRule.min_value !== undefined || syntaxRule.max_value !== undefined) {
+                console.log(`      📏 Range: ${syntaxRule.min_value || 'none'}-${syntaxRule.max_value || 'none'}`);
+            }
+            if (syntaxRule.pattern) {
+                console.log(`      🎭 Pattern: ${syntaxRule.pattern}`);
+            }
+            if (syntaxRule.values) {
+                console.log(`      🎯 Values: ${syntaxRule.values.join(', ')}`);
+            }
+            if (syntaxRule.value_mappings) {
+                const mappings = syntaxRule.value_mappings.map(m => `${m.from}→${m.to}`).join(', ');
+                console.log(`      🔄 Mappings: ${mappings}`);
+            }
         }
     }
-    
-    // Generate core_properties rule
-    console.log('\\n🏗️  Generating core_properties rule...');
-    generatedRules.core_properties = generateCorePropertiesRule(actionSchema);
-    
-    console.log(`\\n✅ Generated ${Object.keys(generatedRules).length} grammar rules`);
-    
+
+    console.log(`\n✅ Generated ${Object.keys(generatedRules).length} grammar rules`);
+
     return generatedRules;
 }
 
 /**
  * Compare generated rules with current grammar
- * @param {Object} generatedRules - Rules generated from ontology
+ * @param {Object} generatedRules - Rules generated from syntax mapping
  */
 function compareWithCurrentGrammar(generatedRules) {
-    console.log('\\n🔍 Comparing with current grammar...');
-    
+    console.log('\n🔍 Comparing with current grammar...');
+
     try {
         const grammarPath = 'grammar.js';
         const grammarContent = fs.readFileSync(grammarPath, 'utf8');
-        
+
         console.log('   📄 Current grammar loaded');
-        
+
         // Basic analysis - count rules
-        const currentRuleMatches = grammarContent.match(/\\w+:\\s*\\$\\s*=>/g) || [];
+        const currentRuleMatches = grammarContent.match(/\w+:\s*\$\s*=>/g) || [];
         console.log(`   📊 Current grammar has ~${currentRuleMatches.length} rules`);
-        console.log(`   📊 Generated ${Object.keys(generatedRules).length} enhanced rules`);
-        
+        console.log(`   📊 Generated ${Object.keys(generatedRules).length} rules from ontology`);
+
         // Check for specific improvements
         const improvements = [];
-        
+
         // Priority rule enhancement
         if (generatedRules.priority) {
-            improvements.push('🎯 Priority: Limited to 1-4 from SHACL constraints');
+            improvements.push('🎯 Priority: Values 1-4 from SHACL constraints');
         }
-        
+
         // Context pattern enforcement
         if (generatedRules.context) {
             improvements.push('🎭 Context: Pattern validation from ontology');
         }
-        
+
         // UUID validation
         if (generatedRules.id) {
-            improvements.push('🆔 UUID: Version 7 validation from schema');
+            improvements.push('🆔 UUID: Version 7 validation enforced');
         }
-        
+
+        // Recurrence with mappings
+        if (generatedRules.recurrence) {
+            improvements.push('🔄 Recurrence: Value mappings (DAILY→D) from ontology');
+        }
+
         if (improvements.length > 0) {
-            console.log('\\n📈 Potential improvements:');
+            console.log('\n📈 Ontology-driven enhancements:');
             for (const improvement of improvements) {
                 console.log(`   ${improvement}`);
             }
         }
-        
+
     } catch (error) {
         console.error(`   ❌ Could not read current grammar: ${error.message}`);
     }

@@ -320,6 +320,16 @@ async function main() {
             }
         }
 
+        // Special handling for state - generate values from state_mappings
+        if (mapping.properties.hasState) {
+            mapping.properties.hasState.values = Object.values(mapping.state_mappings);
+        }
+
+        // Special handling for context - add default pattern for list syntax
+        if (mapping.properties.hasContext && !mapping.properties.hasContext.pattern) {
+            mapping.properties.hasContext.pattern = '@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*';
+        }
+
         // Write output
         console.log(`\n💾 Writing to ${outputPath}...`);
         fs.writeFileSync(outputPath, JSON.stringify(mapping, null, 2));

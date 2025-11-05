@@ -182,7 +182,8 @@ actions:hasContext
     parser:usesSyntax parser:ListSyntax ;
     parser:canRepeat "true"^^xsd:boolean ;
     parser:formatHint "GTD contexts: +@office,@computer,@phone" ;
-    parser:example "+@office,@computer" .
+    parser:example "+@office,@computer" ;
+    rdfs:comment "Pattern matches: @office or @office,@computer (comma-separated list with @ prefix)" .
 
 schema:description
     parser:symbol "$" ;
