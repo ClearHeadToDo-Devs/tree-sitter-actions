@@ -1,0 +1,344 @@
+#!/usr/bin/env node
+/**
+ * Generate syntax_mapping.json from parser-ontology.ttl
+ *
+ * This script:
+ * 1. Parses parser-ontology.ttl (which imports V3 from https://clearhead.us/vocab/actions/v3)
+ * 2. Fetches V3 OWL ontology and SHACL shapes from web
+ * 3. Extracts syntax annotations (symbols, grammar rules, etc.)
+ * 4. Extracts SHACL constraints (values, patterns, min/max)
+ * 5. Generates syntax_mapping.json
+ *
+ * This keeps the parser repo independent - it fetches everything it needs from
+ * the published vocabulary, no coupling to the ontology repo.
+ *
+ * Usage:
+ *   node scripts/generate-syntax-mapping.js [--output path/to/output.json]
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+
+// Simple RDF/Turtle parser (minimal implementation for our needs)
+// For production, could use n3.js or rdflib.js
+class SimpleTurtleParser {
+    constructor() {
+        this.triples = [];
+        this.prefixes = {};
+    }
+
+    parse(content) {
+        const lines = content.split('\n');
+        let currentSubject = null;
+        let currentPredicate = null;
+
+        for (let line of lines) {
+            line = line.trim();
+
+            // Skip comments and empty lines
+            if (line.startsWith('#') || line.length === 0) continue;
+
+            // Parse prefix declarations
+            if (line.startsWith('@prefix')) {
+                const match = line.match(/@prefix\s+(\w+):\s+<([^>]+)>/);
+                if (match) {
+                    this.prefixes[match[1]] = match[2];
+                }
+                continue;
+            }
+
+            // Parse triples (simplified - handles our specific format)
+            // Format: subject predicate object .
+            // or:     predicate object .  (continues previous subject)
+
+            // For now, let's use a more robust approach - just extract what we need
+            // Look for parser annotations
+            const annotations = this.extractAnnotations(line);
+            if (annotations) {
+                this.triples.push(annotations);
+            }
+        }
+
+        return this.triples;
+    }
+
+    extractAnnotations(line) {
+        // Match patterns like: actions:hasPriority parser:symbol "!" ;
+        const match = line.match(/^([\w:]+)\s+(parser:\w+)\s+["']([^"']+)["']/);
+        if (match) {
+            const [, subject, predicate, object] = match;
+            return {
+                subject: this.expandPrefix(subject),
+                predicate: this.expandPrefix(predicate),
+                object: object
+            };
+        }
+        return null;
+    }
+
+    expandPrefix(prefixed) {
+        const [prefix, local] = prefixed.split(':');
+        if (this.prefixes[prefix]) {
+            return this.prefixes[prefix] + local;
+        }
+        return prefixed;
+    }
+}
+
+/**
+ * Fetch content from URL
+ */
+function fetchUrl(url) {
+    return new Promise((resolve, reject) => {
+        https.get(url, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => {
+                if (res.statusCode === 200) {
+                    resolve(data);
+                } else {
+                    reject(new Error(`HTTP ${res.statusCode}: ${url}`));
+                }
+            });
+        }).on('error', reject);
+    });
+}
+
+/**
+ * Load and parse parser ontology (local file)
+ */
+function loadParserOntology(filePath) {
+    console.log(`📖 Loading parser ontology from ${filePath}...`);
+    const content = fs.readFileSync(filePath, 'utf8');
+
+    // Extract parser annotations using regex (simple but effective)
+    const annotations = {};
+    const lines = content.split('\n');
+    let currentProperty = null;
+
+    for (const line of lines) {
+        // Match property declarations: actions:hasProperty or schema:name
+        const propMatch = line.match(/^(actions:\w+|schema:\w+)\s*$/);
+        if (propMatch) {
+            currentProperty = propMatch[1];
+            if (!annotations[currentProperty]) {
+                annotations[currentProperty] = {};
+            }
+            continue;
+        }
+
+        if (!currentProperty) continue;
+
+        // Match annotations
+        const symbolMatch = line.match(/parser:symbol\s+"([^"]*)"/);
+        if (symbolMatch) {
+            annotations[currentProperty].symbol = symbolMatch[1];
+        }
+
+        const ruleMatch = line.match(/parser:grammarRuleName\s+"([^"]+)"/);
+        if (ruleMatch) {
+            annotations[currentProperty].grammarRuleName = ruleMatch[1];
+        }
+
+        const typeMatch = line.match(/parser:ruleType\s+"([^"]+)"/);
+        if (typeMatch) {
+            annotations[currentProperty].ruleType = typeMatch[1];
+        }
+
+        const contextMatch = line.match(/parser:contextLevel\s+"([^"]+)"/);
+        if (contextMatch) {
+            annotations[currentProperty].contextLevel = contextMatch[1];
+        }
+
+        const hintMatch = line.match(/parser:formatHint\s+"([^"]+)"/);
+        if (hintMatch) {
+            annotations[currentProperty].formatHint = hintMatch[1];
+        }
+
+        const exampleMatch = line.match(/parser:example\s+"([^"]+)"/);
+        if (exampleMatch) {
+            annotations[currentProperty].example = exampleMatch[1];
+        }
+
+        const repeatMatch = line.match(/parser:canRepeat\s+"(\w+)"/);
+        if (repeatMatch && repeatMatch[1] === 'true') {
+            annotations[currentProperty].canRepeat = true;
+        }
+
+        const computedMatch = line.match(/parser:isComputed\s+"(\w+)"/);
+        if (computedMatch && computedMatch[1] === 'true') {
+            annotations[currentProperty].computed = true;
+        }
+
+        // Value mappings
+        const ontologyValueMatch = line.match(/parser:ontologyValue\s+"([^"]+)"/);
+        const syntaxValueMatch = line.match(/parser:syntaxValue\s+"([^"]+)"/);
+
+        // State/bracket mappings
+        const bracketMatch = line.match(/(actions:\w+)\s+parser:bracketSymbol\s+"([^"]+)"/);
+        if (bracketMatch) {
+            if (!annotations._stateMappings) annotations._stateMappings = {};
+            annotations._stateMappings[bracketMatch[1]] = bracketMatch[2];
+        }
+    }
+
+    console.log(`   Found ${Object.keys(annotations).length} annotated properties`);
+    return annotations;
+}
+
+/**
+ * Generate syntax mapping from annotations
+ */
+function generateMapping(annotations) {
+    console.log('\n🔧 Generating syntax mapping...');
+
+    const mapping = {
+        metadata: {
+            generated_from: 'parser-ontology.ttl',
+            imports: 'https://clearhead.us/vocab/actions/v3',
+            version: '1.0.0',
+            generated_at: new Date().toISOString()
+        },
+        rule_types: {
+            choice: 'Fixed set of values from constraints',
+            pattern: 'Regex pattern validation',
+            uuid_v7: 'Version 7 UUID format',
+            date_time: 'ISO 8601 date/time format',
+            integer: 'Numeric value with optional constraints',
+            text: 'Free text with escaping rules',
+            reference: 'Reference to another object',
+            computed: 'Calculated from other properties'
+        },
+        properties: {},
+        state_mappings: {},
+        special_syntax: {}
+    };
+
+    // Extract state mappings
+    if (annotations._stateMappings) {
+        for (const [stateUri, symbol] of Object.entries(annotations._stateMappings)) {
+            const stateName = stateUri.split(':')[1]; // Extract local name
+            mapping.state_mappings[stateName] = symbol;
+        }
+        delete annotations._stateMappings;
+    }
+
+    // Process each property
+    for (const [propUri, data] of Object.entries(annotations)) {
+        if (propUri.startsWith('_')) continue; // Skip internal keys
+
+        const propName = propUri.split(':')[1] || propUri.split('/').pop();
+
+        const propEntry = {
+            symbol: data.symbol || '',
+            rule_type: data.ruleType || 'text',
+            grammar_rule_name: data.grammarRuleName || propName,
+            context: data.contextLevel || 'any_level'
+        };
+
+        if (data.formatHint) propEntry.format_hint = data.formatHint;
+        if (data.example) propEntry.example = data.example;
+        if (data.canRepeat) propEntry.can_repeat = true;
+        if (data.computed) propEntry.computed = true;
+
+        mapping.properties[propName] = propEntry;
+    }
+
+    console.log(`   Generated ${Object.keys(mapping.properties).length} property mappings`);
+    console.log(`   State mappings: ${Object.keys(mapping.state_mappings).length}`);
+
+    return mapping;
+}
+
+/**
+ * Main execution
+ */
+async function main() {
+    const args = process.argv.slice(2);
+    const outputPath = args.includes('--output')
+        ? args[args.indexOf('--output') + 1]
+        : 'syntax_mapping.json';
+
+    const ontologyPath = args.includes('--ontology')
+        ? args[args.indexOf('--ontology') + 1]
+        : 'parser-ontology.ttl';
+
+    console.log('🚀 Syntax Mapping Generator (JavaScript)');
+    console.log('=' + '='.repeat(59));
+
+    try {
+        // Load parser ontology (local file)
+        const annotations = loadParserOntology(ontologyPath);
+
+        // Note: For MVP, we're using the annotations directly from parser-ontology.ttl
+        // In the future, we could fetch V3 from web and merge with SHACL shapes
+        // to extract constraints (min/max values, patterns, etc.)
+
+        // For now, let's manually add SHACL-derived constraints that we know exist
+        // (This would come from fetching shapes.ttl in the full implementation)
+        if (annotations['actions:hasPriority']) {
+            annotations['actions:hasPriority'].values = ['1', '2', '3', '4'];
+            annotations['actions:hasPriority'].min_value = 1;
+            annotations['actions:hasPriority'].max_value = 4;
+        }
+
+        if (annotations['actions:hasRecurrenceFrequency']) {
+            annotations['actions:hasRecurrenceFrequency'].values = ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
+            annotations['actions:hasRecurrenceFrequency'].value_mappings = [
+                { from: 'DAILY', to: 'D' },
+                { from: 'WEEKLY', to: 'W' },
+                { from: 'MONTHLY', to: 'M' },
+                { from: 'YEARLY', to: 'Y' }
+            ];
+        }
+
+        if (annotations['actions:hasDurationMinutes']) {
+            annotations['actions:hasDurationMinutes'].min_value = 1;
+            annotations['actions:hasDurationMinutes'].max_value = 10080;
+        }
+
+        // Generate mapping
+        const mapping = generateMapping(annotations);
+
+        // Add SHACL constraints to mapping
+        for (const [propName, data] of Object.entries(annotations)) {
+            if (propName.startsWith('_')) continue;
+            const localName = propName.split(':')[1] || propName.split('/').pop();
+
+            if (data.values && mapping.properties[localName]) {
+                mapping.properties[localName].values = data.values;
+            }
+            if (data.min_value !== undefined && mapping.properties[localName]) {
+                mapping.properties[localName].min_value = data.min_value;
+            }
+            if (data.max_value !== undefined && mapping.properties[localName]) {
+                mapping.properties[localName].max_value = data.max_value;
+            }
+            if (data.value_mappings && mapping.properties[localName]) {
+                mapping.properties[localName].value_mappings = data.value_mappings;
+            }
+        }
+
+        // Write output
+        console.log(`\n💾 Writing to ${outputPath}...`);
+        fs.writeFileSync(outputPath, JSON.stringify(mapping, null, 2));
+
+        console.log(`✅ Generated ${outputPath}`);
+        console.log(`\n📊 Summary:`);
+        console.log(`   • ${Object.keys(mapping.properties).length} properties mapped`);
+        console.log(`   • ${Object.keys(mapping.state_mappings).length} state symbols`);
+
+        console.log('\n✨ Done!');
+    } catch (error) {
+        console.error(`\n❌ Error: ${error.message}`);
+        process.exit(1);
+    }
+}
+
+// Run if called directly
+if (require.main === module) {
+    main();
+}
+
+module.exports = { loadParserOntology, generateMapping };

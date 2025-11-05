@@ -60,6 +60,10 @@
     "test": "node --test bindings/node/*_test.js && node --test test/parser_test.js",
     "test-parser": "node --test test/parser_test.js",
     "parse": "node parser.js",
-    "parse-simple": "node parser.js test/files/simple.actions"
+    "parse-simple": "node parser.js test/files/simple.actions",
+    "generate:mapping": "node scripts/generate-syntax-mapping.js --output syntax_mapping.json",
+    "generate:grammar": "node src/grammar_generator.js --generate-rules",
+    "generate": "npm run generate:mapping && npm run generate:grammar",
+    "build:parser": "tree-sitter generate && tree-sitter build"
   }
 }

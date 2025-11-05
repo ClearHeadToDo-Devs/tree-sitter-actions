@@ -1,13 +1,9 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tree-sitter-actions/syntax-mapping.schema.json",
-  "title": "Actions Syntax Mapping Configuration",
-  "description": "Maps semantic properties from Actions Ontology to syntactic representation in .actions files",
   "metadata": {
+    "generated_from": "parser-ontology.ttl",
+    "imports": "https://clearhead.us/vocab/actions/v3",
     "version": "1.0.0",
-    "generated": "2025-01-20",
-    "ontology_source": "../ontology/schemas/",
-    "grammar_target": "grammar.js"
+    "generated_at": "2025-11-05T01:11:32.203Z"
   },
   "rule_types": {
     "choice": "Fixed set of values from constraints",
@@ -19,25 +15,12 @@
     "reference": "Reference to another object",
     "computed": "Calculated from other properties"
   },
-  "contexts": {
-    "root_only": "Only appears on root-level actions",
-    "child_only": "Only appears on child actions",
-    "any_level": "Can appear at any hierarchical level"
-  },
-  "state_mapping": {
-    "not_started": " ",
-    "completed": "x",
-    "in_progress": "-",
-    "blocked": "=",
-    "cancelled": "_"
-  },
   "properties": {
-    "uuid": {
+    "hasUUID": {
       "symbol": "#",
       "rule_type": "uuid_v7",
       "grammar_rule_name": "id",
       "context": "any_level",
-      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
       "format_hint": "Version 7 UUID with optional dashes",
       "example": "#01951111-cfa6-718d-b303-d7107f4005b3"
     },
@@ -46,15 +29,16 @@
       "rule_type": "text",
       "grammar_rule_name": "name",
       "context": "any_level",
-      "is_required": true,
       "format_hint": "Free text, escape special chars with backslash",
       "example": "Review quarterly reports"
     },
-    "priority": {
+    "hasPriority": {
       "symbol": "!",
       "rule_type": "choice",
       "grammar_rule_name": "priority",
       "context": "any_level",
+      "format_hint": "Eisenhower matrix: 1=urgent+important, 4=neither",
+      "example": "!2",
       "values": [
         "1",
         "2",
@@ -62,36 +46,24 @@
         "4"
       ],
       "min_value": 1,
-      "max_value": 4,
-      "format_hint": "Eisenhower matrix: 1=urgent+important, 4=neither",
-      "example": "!2"
+      "max_value": 4
     },
-    "state": {
+    "hasState": {
       "symbol": "",
       "rule_type": "choice",
       "grammar_rule_name": "state",
       "context": "any_level",
-      "values": [
-        " ",
-        "x",
-        "-",
-        "=",
-        "_"
-      ],
-      "is_required": true,
-      "default_value": " ",
       "format_hint": "[ ]=not started, [x]=completed, [-]=in progress, [=]=blocked, [_]=cancelled",
       "example": "[x]"
     },
-    "context": {
+    "hasContext": {
       "symbol": "+",
       "rule_type": "pattern",
       "grammar_rule_name": "context",
       "context": "any_level",
-      "pattern": "@[a-zA-Z0-9_-]+",
-      "can_repeat": true,
       "format_hint": "GTD contexts: +@office,@computer,@phone",
-      "example": "+@office,@computer"
+      "example": "+@office,@computer",
+      "can_repeat": true
     },
     "description": {
       "symbol": "$",
@@ -101,15 +73,15 @@
       "format_hint": "Extended description text",
       "example": "$ Make sure you get the stuff from the butcher directly"
     },
-    "project": {
+    "hasProject": {
       "symbol": "*",
       "rule_type": "text",
-      "grammar_rule_name": "story",
+      "grammar_rule_name": "project",
       "context": "root_only",
       "format_hint": "Project/story name for root actions only",
       "example": "*Run Errands"
     },
-    "parentAction": {
+    "hasParentPlan": {
       "symbol": ">",
       "rule_type": "reference",
       "grammar_rule_name": "depth",
@@ -117,17 +89,15 @@
       "format_hint": "Hierarchical depth: > child, >> grandchild, etc.",
       "example": "> Child action"
     },
-    "depth": {
+    "hasDepth": {
       "symbol": "",
       "rule_type": "integer",
       "grammar_rule_name": "calculated_depth",
       "context": "any_level",
-      "min_value": 0,
-      "max_value": 5,
-      "computed": true,
-      "format_hint": "Auto-calculated from nesting level"
+      "format_hint": "Auto-calculated from nesting level (0-5)",
+      "computed": true
     },
-    "doDateTime": {
+    "hasDoDateTime": {
       "symbol": "@",
       "rule_type": "date_time",
       "grammar_rule_name": "do_date_or_time",
@@ -135,31 +105,7 @@
       "format_hint": "ISO 8601: @2025-01-20T14:30 or @2025-01-20 or @14:30",
       "example": "@2025-01-20T14:30"
     },
-    "doDate": {
-      "symbol": "@",
-      "rule_type": "date_time",
-      "grammar_rule_name": "do_date_or_time",
-      "context": "any_level",
-      "format_hint": "Date only: @2025-01-20",
-      "example": "@2025-01-20"
-    },
-    "doTime": {
-      "symbol": "@",
-      "rule_type": "date_time",
-      "grammar_rule_name": "do_date_or_time",
-      "context": "any_level",
-      "format_hint": "Time only: @14:30",
-      "example": "@14:30"
-    },
-    "dueDateTime": {
-      "symbol": "@",
-      "rule_type": "date_time",
-      "grammar_rule_name": "due_date_or_time",
-      "context": "any_level",
-      "format_hint": "Due date/time - syntax same as do date",
-      "example": "@2025-01-30T17:00"
-    },
-    "completedDateTime": {
+    "hasCompletedDateTime": {
       "symbol": "%",
       "rule_type": "date_time",
       "grammar_rule_name": "completed_date",
@@ -167,68 +113,65 @@
       "format_hint": "Auto-generated completion timestamp",
       "example": "%2025-01-19T10:30"
     },
-    "durationMinutes": {
+    "hasDurationMinutes": {
       "symbol": "D",
       "rule_type": "integer",
       "grammar_rule_name": "duration",
       "context": "any_level",
-      "min_value": 1,
-      "max_value": 10080,
       "format_hint": "Duration in minutes: D90",
-      "example": "D30"
+      "example": "D30",
+      "min_value": 1,
+      "max_value": 10080
     },
-    "recurrenceFrequency": {
+    "hasRecurrenceFrequency": {
       "symbol": "R",
       "rule_type": "choice",
-      "grammar_rule_name": "recurrance",
+      "grammar_rule_name": "recurrence",
       "context": "any_level",
-      "values": [
-        "D",
-        "W",
-        "M",
-        "Y"
-      ],
       "format_hint": "Recurrence: RD=daily, RW=weekly, RM=monthly, RY=yearly",
-      "example": "RW"
-    },
-    "byDay": {
-      "symbol": "",
-      "rule_type": "choice",
-      "grammar_rule_name": "weekly_recurrance_days",
-      "context": "any_level",
+      "example": "RW",
       "values": [
-        "Mon",
-        "Tue",
-        "Wed",
-        "Thu",
-        "Fri",
-        "Sat",
-        "Sun"
+        "DAILY",
+        "WEEKLY",
+        "MONTHLY",
+        "YEARLY"
       ],
-      "can_repeat": true,
-      "format_hint": "Days for weekly recurrence",
-      "example": "Mon Tue"
+      "value_mappings": [
+        {
+          "from": "DAILY",
+          "to": "D"
+        },
+        {
+          "from": "WEEKLY",
+          "to": "W"
+        },
+        {
+          "from": "MONTHLY",
+          "to": "M"
+        },
+        {
+          "from": "YEARLY",
+          "to": "Y"
+        }
+      ]
     },
-    "recurrenceInterval": {
+    "hasRecurrenceInterval": {
       "symbol": "I",
       "rule_type": "integer",
       "grammar_rule_name": "recurrence_interval",
       "context": "any_level",
-      "min_value": 1,
-      "default_value": "1",
       "format_hint": "Recurrence interval: I2 = every 2nd occurrence",
       "example": "I2"
     },
-    "recurrenceCount": {
+    "hasRecurrenceCount": {
       "symbol": "C",
       "rule_type": "integer",
       "grammar_rule_name": "recurrence_count",
       "context": "any_level",
-      "min_value": 1,
       "format_hint": "Max recurrence count: C10",
       "example": "C10"
     },
-    "recurrenceUntil": {
+    "hasRecurrenceUntil": {
       "symbol": "U",
       "rule_type": "date_time",
       "grammar_rule_name": "recurrence_until",
@@ -237,17 +180,12 @@
       "example": "U2025-12-31"
     }
   },
-  "computed_properties": [
-    "depth",
-    "parentAction"
-  ],
-  "internal_properties": [
-    "byMinute",
-    "byHour",
-    "byMonthDay",
-    "byMonth",
-    "dueDate",
-    "dueTime"
-  ]
+  "state_mappings": {
+    "NotStarted": " ",
+    "Completed": "x",
+    "InProgress": "-",
+    "Blocked": "=",
+    "Cancelled": "_"
+  },
+  "special_syntax": {}
 }
-
