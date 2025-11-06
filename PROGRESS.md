@@ -1,6 +1,6 @@
 # Parser Generation Progress Tracker
 
-Last Updated: 2025-11-06 (Phase 3 COMPLETE - Specification Alignment)
+Last Updated: 2025-11-06 (Phase 3 COMPLETE - Phase 4 REPLANNED)
 
 ## Phase Status
 
@@ -9,8 +9,47 @@ Last Updated: 2025-11-06 (Phase 3 COMPLETE - Specification Alignment)
 | 1. Syntax Mapping Generation | ✅ COMPLETE | 100% | Manual inspection of JSON |
 | 2. Grammar Rule Generation | ✅ COMPLETE | 100% | Tree-sitter compile SUCCESS |
 | 3. Parser Integration & Testing | ✅ COMPLETE | 100% | All examples parsing successfully |
-| 4. SHACL Integration | 📋 NEXT | 0% | Auto-constraint extraction |
+| 4. Complete Generation (REVISED) | 📋 PLANNED | 0% | Zero hand-maintained code |
 | 5. Advanced Features | 📋 FUTURE | 0% | Feature-specific |
+
+## ⚠️ Critical Insight: Phase 4 Replanned
+
+**Previous Plan:** Phase 4 = SHACL integration for constraints
+**New Understanding:** We still have 95 lines of hand-maintained grammar code!
+
+**New Goal:** Phase 4 = **Complete Generation** - Zero hand-maintained code
+
+### What's Still Hand-Maintained
+
+- ❌ `action_list` - File-level structure
+- ❌ `root_action` - Action sequence (despite being in ontology!)
+- ❌ `child_action` - Child action sequence (despite being in ontology!)
+- ❌ `do_date_or_time` - Composition with duration
+- ❌ `safe_text`, `iso_date`, `iso_time`, `iso_date_time` - Utility patterns
+- ❌ `depth` - Depth marker enumeration
+- ❌ `extras`, `conflicts` - Grammar metadata
+
+**Root Cause:** Generator doesn't use structure definitions already in ontology (lines 131-173)!
+
+### Phase 4 Revised: Complete Generation (12 hours)
+
+**Sub-phases:**
+- **4A:** Structure Generation (2h) - Use existing ontology structures
+- **4B:** SHACL Integration (3h) - Fetch shapes for patterns/constraints
+- **4C:** Utility Patterns (2h) - Generate from SHACL patterns
+- **4D:** Composition Rules (2h) - Generate nested structures
+- **4E:** File Structure (1h) - Generate top-level + metadata
+- **4F:** Full Generation (1h) - Eliminate grammar.js
+- **4G:** Validation (1h) - Prove 100% generation
+
+**Expected Outcome:**
+```javascript
+// grammar.js - FULLY GENERATED - DO NOT EDIT
+// Generated from: parser-ontology.ttl + actions-shapes-v3.ttl
+module.exports = require('./tree-sitter-grammar-generated');
+```
+
+**See:** [COMPLETE_GENERATION_PLAN.md](./COMPLETE_GENERATION_PLAN.md) for full details
 
 ## Current Status: Phase 3 Complete! ✅
 
@@ -297,38 +336,67 @@ Working Parser ✅
 
 ## Next Steps
 
-### Phase 4: SHACL Integration (Priority: HIGH)
+### Phase 4: Complete Generation - Zero Hand-Maintained Code (Priority: CRITICAL)
 
-**Goal:** Auto-extract constraints from SHACL shapes instead of hardcoding
+**Goal:** Eliminate ALL hand-maintained grammar code - achieve 100% generation from ontology + SHACL
 
-**Tasks:**
-1. **Fetch SHACL shapes from ontology repo**
-   - Load `actions-shapes-v3.ttl` from web or submodule
-   - Parse SHACL constraints (sh:minInclusive, sh:maxInclusive, sh:pattern, sh:in)
+**Why This Matters:**
+The current 95 lines of hand-maintained code defeat the purpose of ontology-driven development. Changes require manual sync between ontology and grammar. This must be fixed.
 
-2. **Extract constraints and merge with syntax mapping**
-   - Priority: Extract 1-4 range from SHACL
-   - Duration: Extract 1-10080 range from SHACL
-   - Recurrence: Extract DAILY/WEEKLY/MONTHLY/YEARLY from SHACL
-   - Context: Extract pattern from SHACL
+**The Plan:** See [COMPLETE_GENERATION_PLAN.md](./COMPLETE_GENERATION_PLAN.md) for full 12-hour implementation plan
 
-3. **Update generation pipeline**
-   - Remove hardcoded constraints from `generate-syntax-mapping.js`
-   - Add SHACL parser to extract constraints
-   - Merge SHACL constraints with parser annotations
+**Key Phases:**
 
-4. **Validate constraint application**
-   - Ensure generated grammar enforces SHACL rules
-   - Test with invalid values (priority=5, duration=20000, etc.)
-   - Verify error messages
+1. **4A: Structure Generation (2h)** - LOW RISK
+   - Use existing structure definitions in parser-ontology.ttl (lines 131-173)
+   - Generate `root_action` and `child_action` sequences
+   - Eliminate 32 lines of hand-maintained code
 
-**Estimated Time:** 4-6 hours
+2. **4B: SHACL Integration (3h)** - MEDIUM RISK
+   - Fetch actions-shapes-v3.ttl from ontology repo
+   - Parse SHACL patterns, constraints, composition rules
+   - Auto-extract min/max, patterns, orderings
+
+3. **4C: Utility Pattern Generation (2h)** - LOW RISK
+   - Generate `safe_text` from name/description SHACL patterns
+   - Generate `iso_date`, `iso_time`, `iso_date_time` from datetime shapes
+   - Eliminate 4 lines of hand-maintained patterns
+
+4. **4D: Composition Rules (2h)** - MEDIUM RISK
+   - Generate `do_date_or_time` with nested duration from SHACL sh:node
+   - Handle parent-child relationships in grammar
+   - Eliminate 5 lines of hand-maintained composition
+
+5. **4E: File Structure & Metadata (1h)** - LOW RISK
+   - Generate `action_list` from file structure annotations
+   - Generate `extras`, `conflicts` from grammar metadata
+   - Eliminate 10 lines of hand-maintained metadata
+
+6. **4F: Full Generation (1h)** - LOW RISK
+   - Output complete grammar.js with header
+   - Move current grammar.js to backup
+   - Validate generated = hand-maintained
+
+7. **4G: Validation & Docs (1h)** - LOW RISK
+   - Delete grammar.js, regenerate, verify identical
+   - Run all tests
+   - Update all documentation
+
+**Total Time:** 12 hours over 2-3 days
+
+**Success Criteria:**
+- ✅ 0 lines hand-maintained grammar code
+- ✅ 100% generated from ontology + SHACL
+- ✅ Can delete grammar.js and regenerate perfectly
+- ✅ All examples parse identically
+- ✅ Documentation traces every rule to source
 
 **Benefits:**
-- Single source of truth for constraints
-- Easier to update ranges/patterns
-- Better alignment between validation and parsing
-- Reduces duplication
+- **True ontology-driven development** - Change ontology, regenerate parser, done
+- **Extensibility** - Users can extend ontology, parser auto-updates
+- **Maintainability** - Single source of truth, no manual sync
+- **Validation alignment** - SHACL constraints = parser constraints
+- **Documentation** - Ontology IS the documentation
 
 ### Phase 5: Advanced Features (Priority: MEDIUM)
 
