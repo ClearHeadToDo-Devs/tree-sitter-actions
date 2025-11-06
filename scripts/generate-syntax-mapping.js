@@ -1,240 +1,352 @@
 #!/usr/bin/env node
 /**
- * Generate syntax_mapping.json from parser-ontology.ttl
+ * Generate syntax_mapping.json from parser-ontology.ttl using N3.js
  *
- * This script:
- * 1. Parses parser-ontology.ttl (which imports V3 from https://clearhead.us/vocab/actions/v3)
- * 2. Fetches V3 OWL ontology and SHACL shapes from web
- * 3. Extracts syntax annotations (symbols, grammar rules, etc.)
- * 4. Extracts SHACL constraints (values, patterns, min/max)
- * 5. Generates syntax_mapping.json
- *
- * This keeps the parser repo independent - it fetches everything it needs from
- * the published vocabulary, no coupling to the ontology repo.
- *
- * Usage:
- *   node scripts/generate-syntax-mapping.js [--output path/to/output.json]
+ * This version uses proper RDF parsing instead of regex to query the ontology.
+ * Much more robust and maintainable!
  */
 
 const fs = require('fs');
-const path = require('path');
-const https = require('https');
+const N3 = require('n3');
+const { DataFactory } = N3;
+const { namedNode, literal, quad } = DataFactory;
 
-// Simple RDF/Turtle parser (minimal implementation for our needs)
-// For production, could use n3.js or rdflib.js
-class SimpleTurtleParser {
-    constructor() {
-        this.triples = [];
-        this.prefixes = {};
-    }
-
-    parse(content) {
-        const lines = content.split('\n');
-        let currentSubject = null;
-        let currentPredicate = null;
-
-        for (let line of lines) {
-            line = line.trim();
-
-            // Skip comments and empty lines
-            if (line.startsWith('#') || line.length === 0) continue;
-
-            // Parse prefix declarations
-            if (line.startsWith('@prefix')) {
-                const match = line.match(/@prefix\s+(\w+):\s+<([^>]+)>/);
-                if (match) {
-                    this.prefixes[match[1]] = match[2];
-                }
-                continue;
-            }
-
-            // Parse triples (simplified - handles our specific format)
-            // Format: subject predicate object .
-            // or:     predicate object .  (continues previous subject)
-
-            // For now, let's use a more robust approach - just extract what we need
-            // Look for parser annotations
-            const annotations = this.extractAnnotations(line);
-            if (annotations) {
-                this.triples.push(annotations);
-            }
-        }
-
-        return this.triples;
-    }
-
-    extractAnnotations(line) {
-        // Match patterns like: actions:hasPriority parser:symbol "!" ;
-        const match = line.match(/^([\w:]+)\s+(parser:\w+)\s+["']([^"']+)["']/);
-        if (match) {
-            const [, subject, predicate, object] = match;
-            return {
-                subject: this.expandPrefix(subject),
-                predicate: this.expandPrefix(predicate),
-                object: object
-            };
-        }
-        return null;
-    }
-
-    expandPrefix(prefixed) {
-        const [prefix, local] = prefixed.split(':');
-        if (this.prefixes[prefix]) {
-            return this.prefixes[prefix] + local;
-        }
-        return prefixed;
-    }
-}
+// Namespace prefixes
+const PREFIXES = {
+    parser: 'https://vocab.clearhead.io/parser#',
+    actions: 'https://clearhead.us/vocab/actions/v3#',
+    schema: 'http://schema.org/',
+    rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+    owl: 'http://www.w3.org/2002/07/owl#',
+    xsd: 'http://www.w3.org/2001/XMLSchema#',
+    sh: 'http://www.w3.org/ns/shacl#'
+};
 
 /**
- * Fetch content from URL
+ * Load and parse Turtle file into RDF store
  */
-function fetchUrl(url) {
+async function loadOntology(filePath) {
+    console.log(`📖 Loading ontology from ${filePath}...`);
+
+    const content = fs.readFileSync(filePath, 'utf8');
+    const parser = new N3.Parser({ baseIRI: PREFIXES.parser });
+    const store = new N3.Store();
+
     return new Promise((resolve, reject) => {
-        https.get(url, (res) => {
-            let data = '';
-            res.on('data', (chunk) => data += chunk);
-            res.on('end', () => {
-                if (res.statusCode === 200) {
-                    resolve(data);
-                } else {
-                    reject(new Error(`HTTP ${res.statusCode}: ${url}`));
-                }
-            });
-        }).on('error', reject);
+        parser.parse(content, (error, quad, prefixes) => {
+            if (error) {
+                reject(error);
+            } else if (quad) {
+                store.addQuad(quad);
+            } else {
+                // Parsing complete
+                console.log(`   Loaded ${store.size} triples`);
+                resolve(store);
+            }
+        });
     });
 }
 
 /**
- * Load and parse parser ontology (local file)
+ * Get the local name from a URI
  */
-function loadParserOntology(filePath) {
-    console.log(`📖 Loading parser ontology from ${filePath}...`);
-    const content = fs.readFileSync(filePath, 'utf8');
+function getLocalName(uri) {
+    if (!uri) return null;
+    if (typeof uri === 'object' && uri.value) uri = uri.value;
 
-    const annotations = { _structures: {} };
-    const lines = content.split('\n');
-    let currentProperty = null;
-    let inStructureBlock = false;
-    let currentStructureName = null;
-
-    for (const line of lines) {
-        // Check for start of a structure block
-        const structureStartMatch = line.match(/parser:(\w+GrammarStructure)/);
-        if (structureStartMatch) {
-            currentProperty = null; // End property block
-            inStructureBlock = true;
-            currentStructureName = structureStartMatch[1].includes('Root') ? 'root_action' : 'child_action';
-            annotations._structures[currentStructureName] = [];
-            continue;
-        }
-
-        // Check for end of a structure block
-        if (inStructureBlock && line.includes(') .')) {
-            inStructureBlock = false;
-            currentStructureName = null;
-            continue;
-        }
-
-        // If in a structure block, parse the ordered properties
-        if (inStructureBlock) {
-            const orderedPropMatch = line.match(/\[\s*parser:grammarRuleName\s+"([^"]+)"\s*;\s*parser:isRequired\s+"(true|false)"/);
-            if (orderedPropMatch) {
-                annotations._structures[currentStructureName].push({
-                    rule: orderedPropMatch[1],
-                    required: orderedPropMatch[2] === 'true'
-                });
-            }
-            continue;
-        }
-
-        // Match property declarations: actions:hasProperty or schema:name
-        const propMatch = line.match(/^(actions:\w+|schema:\w+)\s*$/);
-        if (propMatch) {
-            currentProperty = propMatch[1];
-            if (!annotations[currentProperty]) {
-                annotations[currentProperty] = {};
-            }
-            continue;
-        }
-
-        if (!currentProperty) continue;
-
-        // Match annotations
-        const symbolMatch = line.match(/parser:symbol\s+\"([^\"]*)\"/);
-        if (symbolMatch) {
-            annotations[currentProperty].symbol = symbolMatch[1];
-        }
-
-        const ruleMatch = line.match(/parser:grammarRuleName\s+\"([^\"]+)\"/);
-        if (ruleMatch) {
-            annotations[currentProperty].grammarRuleName = ruleMatch[1];
-        }
-
-        const typeMatch = line.match(/parser:ruleType\s+\"([^\"]+)\"/);
-        if (typeMatch) {
-            annotations[currentProperty].ruleType = typeMatch[1];
-        }
-
-        const contextMatch = line.match(/parser:contextLevel\s+\"([^\"]+)\"/);
-        if (contextMatch) {
-            annotations[currentProperty].contextLevel = contextMatch[1];
-        }
-
-        const hintMatch = line.match(/parser:formatHint\s+\"([^\"]+)\"/);
-        if (hintMatch) {
-            annotations[currentProperty].formatHint = hintMatch[1];
-        }
-
-        const exampleMatch = line.match(/parser:example\s+\"([^\"]+)\"/);
-        if (exampleMatch) {
-            annotations[currentProperty].example = exampleMatch[1];
-        }
-
-        const repeatMatch = line.match(/parser:canRepeat\s+\"(\w+)\"/);
-        if (repeatMatch && repeatMatch[1] === 'true') {
-            annotations[currentProperty].canRepeat = true;
-        }
-
-        const computedMatch = line.match(/parser:isComputed\s+\"(\w+)\"/);
-        if (computedMatch && computedMatch[1] === 'true') {
-            annotations[currentProperty].computed = true;
-        }
-
-        const usesSyntaxMatch = line.match(/parser:usesSyntax\s+parser:(\w+)/);
-        if (usesSyntaxMatch) {
-            annotations[currentProperty].special_syntax = usesSyntaxMatch[1];
-        }
-
-        // Value mappings
-        const ontologyValueMatch = line.match(/parser:ontologyValue\s+\"([^\"]+)\"/);
-        const syntaxValueMatch = line.match(/parser:syntaxValue\s+\"([^\"]+)\"/);
-
-        // State/parenthesis mappings
-        const parenMatch = line.match(/(actions:\w+)\s+parser:parenSymbol\s+\"([^\"]+)\"/);
-        if (parenMatch) {
-            if (!annotations._stateMappings) annotations._stateMappings = {};
-            annotations._stateMappings[parenMatch[1]] = parenMatch[2];
+    for (const [prefix, namespace] of Object.entries(PREFIXES)) {
+        if (uri.startsWith(namespace)) {
+            return uri.substring(namespace.length);
         }
     }
 
-    console.log(`   Found ${Object.keys(annotations).filter(k => !k.startsWith('_')).length} annotated properties`);
-    console.log(`   Found ${Object.keys(annotations._structures).length} grammar structures`);
-    return annotations;
+    // Fallback: get everything after last # or /
+    const match = uri.match(/[#\/]([^#\/]+)$/);
+    return match ? match[1] : uri;
 }
 
 /**
- * Generate syntax mapping from annotations
+ * Get literal value from an RDF term
  */
-function generateMapping(annotations) {
-    console.log('\n🔧 Generating syntax mapping...');
+function getValue(term) {
+    if (!term) return null;
+    if (term.value) return term.value;
+    return term;
+}
+
+/**
+ * Extract property annotations (symbols, grammar rules, etc.)
+ */
+function extractPropertyAnnotations(store) {
+    console.log('\n🔍 Extracting property annotations...');
+
+    const properties = {};
+
+    // Find all subjects that have parser: annotations
+    const subjects = new Set();
+
+    // Look for properties with parser:symbol
+    for (const quad of store.match(null, namedNode(PREFIXES.parser + 'symbol'), null)) {
+        subjects.add(quad.subject.value);
+    }
+
+    // Look for properties with parser:grammarRuleName
+    for (const quad of store.match(null, namedNode(PREFIXES.parser + 'grammarRuleName'), null)) {
+        subjects.add(quad.subject.value);
+    }
+
+    console.log(`   Found ${subjects.size} annotated properties`);
+
+    // Extract all annotations for each property
+    for (const subjectUri of subjects) {
+        const subject = namedNode(subjectUri);
+        const propName = getLocalName(subjectUri);
+        const propData = {};
+
+        // Get all parser: predicates for this subject
+        const predicates = [
+            'symbol', 'grammarRuleName', 'ruleType', 'contextLevel',
+            'formatHint', 'example', 'canRepeat', 'isComputed', 'usesSyntax',
+            'pattern', 'parenSymbol', 'depthSymbol', 'minDepth', 'maxDepth'
+        ];
+
+        for (const pred of predicates) {
+            const matches = store.getQuads(subject, namedNode(PREFIXES.parser + pred), null);
+            if (matches.length > 0) {
+                propData[pred] = getValue(matches[0].object);
+            }
+        }
+
+        if (Object.keys(propData).length > 0) {
+            properties[propName] = propData;
+        }
+    }
+
+    return properties;
+}
+
+/**
+ * Extract structure definitions (root_action, child_action)
+ */
+function extractStructures(store) {
+    console.log('\n🏗️  Extracting grammar structures...');
+
+    const structures = {};
+
+    // Find RootActionGrammarStructure and ChildActionGrammarStructure
+    const structureClasses = [
+        PREFIXES.parser + 'RootActionGrammarStructure',
+        PREFIXES.parser + 'ChildActionGrammarStructure'
+    ];
+
+    for (const structureUri of structureClasses) {
+        const structureNode = namedNode(structureUri);
+        const structureName = getLocalName(structureUri).includes('Root') ? 'root_action' : 'child_action';
+
+        // Get the ordered property list
+        const orderedPropQuads = store.getQuads(structureNode, namedNode(PREFIXES.parser + 'hasOrderedProperty'), null);
+
+        if (orderedPropQuads.length > 0) {
+            const listNode = orderedPropQuads[0].object;
+            const properties = parseRdfList(store, listNode);
+            structures[structureName] = properties;
+            console.log(`   Found ${structureName}: ${properties.length} properties`);
+        }
+    }
+
+    return structures;
+}
+
+/**
+ * Parse an RDF list (rdf:first, rdf:rest chain)
+ */
+function parseRdfList(store, listNode) {
+    const items = [];
+    let current = listNode;
+
+    while (current && current.value !== PREFIXES.rdf + 'nil') {
+        // Get rdf:first (the item)
+        const firstQuads = store.getQuads(current, namedNode(PREFIXES.rdf + 'first'), null);
+        if (firstQuads.length > 0) {
+            const itemNode = firstQuads[0].object;
+
+            // Extract rule name and required status from the blank node
+            const ruleNameQuads = store.getQuads(itemNode, namedNode(PREFIXES.parser + 'grammarRuleName'), null);
+            const isRequiredQuads = store.getQuads(itemNode, namedNode(PREFIXES.parser + 'isRequired'), null);
+
+            if (ruleNameQuads.length > 0) {
+                items.push({
+                    rule: getValue(ruleNameQuads[0].object),
+                    required: isRequiredQuads.length > 0 && getValue(isRequiredQuads[0].object) === 'true'
+                });
+            }
+        }
+
+        // Get rdf:rest (next item)
+        const restQuads = store.getQuads(current, namedNode(PREFIXES.rdf + 'rest'), null);
+        if (restQuads.length > 0) {
+            current = restQuads[0].object;
+        } else {
+            break;
+        }
+    }
+
+    return items;
+}
+
+/**
+ * Extract state mappings (parenthesis symbols)
+ */
+function extractStateMappings(store) {
+    console.log('\n🔘 Extracting state mappings...');
+
+    const mappings = {};
+
+    for (const quad of store.match(null, namedNode(PREFIXES.parser + 'parenSymbol'), null)) {
+        const stateName = getLocalName(quad.subject.value);
+        const symbol = getValue(quad.object);
+        mappings[stateName] = symbol;
+    }
+
+    console.log(`   Found ${Object.keys(mappings).length} state symbols`);
+    return mappings;
+}
+
+/**
+ * Extract utility patterns from parser-shapes.ttl
+ */
+function extractUtilityPatterns(store) {
+    console.log('\n🛠️  Extracting utility patterns...');
+
+    const patterns = {};
+
+    // Find all sh:NodeShape subjects that have parser:grammarRuleName
+    const patternShapes = new Set();
+
+    for (const quad of store.match(null, namedNode(PREFIXES.parser + 'grammarRuleName'), null)) {
+        const subject = quad.subject;
+
+        // Check if this is a NodeShape (pattern definition)
+        const typeQuads = store.getQuads(subject, namedNode(PREFIXES.rdf + 'type'), namedNode(PREFIXES.sh + 'NodeShape'));
+
+        if (typeQuads.length > 0) {
+            patternShapes.add(subject.value);
+        }
+    }
+
+    // Extract pattern data from each shape
+    for (const shapeUri of patternShapes) {
+        const subject = namedNode(shapeUri);
+        const patternData = {};
+
+        // Get grammar rule name to use as key
+        const ruleNameQuads = store.getQuads(subject, namedNode(PREFIXES.parser + 'grammarRuleName'), null);
+        if (ruleNameQuads.length === 0) continue;
+
+        const ruleName = getValue(ruleNameQuads[0].object);
+
+        // Extract all parser: properties
+        const props = ['grammarRuleName', 'pattern', 'ruleType', 'repeatMode', 'exclude', 'computedFrom'];
+        for (const prop of props) {
+            const quads = store.getQuads(subject, namedNode(PREFIXES.parser + prop), null);
+            if (quads.length > 0) {
+                patternData[prop] = getValue(quads[0].object);
+            }
+        }
+
+        // Also check for sh:property [ sh:path parser:pattern ; sh:hasValue "..." ]
+        const propertyQuads = store.getQuads(subject, namedNode(PREFIXES.sh + 'property'), null);
+        for (const propQuad of propertyQuads) {
+            const blankNode = propQuad.object;
+
+            // Get sh:hasValue for pattern
+            const hasValueQuads = store.getQuads(blankNode, namedNode(PREFIXES.sh + 'hasValue'), null);
+            if (hasValueQuads.length > 0 && !patternData.pattern) {
+                patternData.pattern = getValue(hasValueQuads[0].object);
+            }
+
+            // Get sh:hasValue for exclude
+            const pathQuads = store.getQuads(blankNode, namedNode(PREFIXES.sh + 'path'), namedNode(PREFIXES.parser + 'exclude'));
+            if (pathQuads.length > 0) {
+                const excludeValueQuads = store.getQuads(blankNode, namedNode(PREFIXES.sh + 'hasValue'), null);
+                if (excludeValueQuads.length > 0) {
+                    patternData.exclude = getValue(excludeValueQuads[0].object);
+                }
+            }
+        }
+
+        if (Object.keys(patternData).length > 0) {
+            patterns[ruleName] = patternData;
+        }
+    }
+
+    console.log(`   Found ${Object.keys(patterns).length} utility patterns`);
+    return patterns;
+}
+
+/**
+ * Extract depth constraint from parser-shapes.ttl
+ */
+function extractDepthConstraint(store) {
+    console.log('\n📏 Extracting depth constraint...');
+
+    const depthNode = namedNode(PREFIXES.parser + 'ActionDepthShape');
+    const constraint = {};
+
+    const props = ['minDepth', 'maxDepth', 'depthSymbol', 'grammarRuleName'];
+    for (const prop of props) {
+        const quads = store.getQuads(depthNode, namedNode(PREFIXES.parser + prop), null);
+        if (quads.length > 0) {
+            const value = getValue(quads[0].object);
+            constraint[prop] = prop.includes('Depth') ? parseInt(value) : value;
+        }
+    }
+
+    if (constraint.maxDepth) {
+        console.log(`   Found depth constraint: ${constraint.minDepth}-${constraint.maxDepth}`);
+    }
+
+    return constraint;
+}
+
+/**
+ * Extract grammar metadata from parser-shapes.ttl
+ */
+function extractGrammarMetadata(store) {
+    console.log('\n⚙️  Extracting grammar metadata...');
+
+    const metadataNode = namedNode(PREFIXES.parser + 'GrammarMetadataShape');
+    const metadata = {};
+
+    const props = ['entryPoint', 'rootRule', 'repeatMode', 'whitespaceHandling', 'conflictRules'];
+    for (const prop of props) {
+        const quads = store.getQuads(metadataNode, namedNode(PREFIXES.parser + prop), null);
+        if (quads.length > 0) {
+            metadata[prop] = getValue(quads[0].object);
+        }
+    }
+
+    if (metadata.entryPoint) {
+        console.log(`   Found metadata: entry=${metadata.entryPoint}, conflicts=${metadata.conflictRules}`);
+    }
+
+    return metadata;
+}
+
+/**
+ * Generate the complete syntax mapping
+ */
+function generateMapping(propertyAnnotations, structures, stateMappings, utilityPatterns, depthConstraint, grammarMetadata) {
+    console.log('\n🔧 Building syntax mapping...');
 
     const mapping = {
         metadata: {
             generated_from: 'parser-ontology.ttl',
             imports: 'https://clearhead.us/vocab/actions/v3',
             version: '1.0.0',
-            generated_at: new Date().toISOString()
+            generated_at: new Date().toISOString(),
+            parser: 'N3.js (proper RDF parsing)'
         },
         rule_types: {
             choice: 'Fixed set of values from constraints',
@@ -247,32 +359,16 @@ function generateMapping(annotations) {
             computed: 'Calculated from other properties'
         },
         properties: {},
-        structures: {},
-        state_mappings: {},
+        structures: structures,
+        state_mappings: stateMappings,
+        utility_patterns: utilityPatterns,
+        depth_constraint: depthConstraint,
+        grammar_metadata: grammarMetadata,
         special_syntax: {}
     };
 
-    // Extract structures
-    if (annotations._structures) {
-        mapping.structures = annotations._structures;
-        delete annotations._structures;
-    }
-
-    // Extract state mappings
-    if (annotations._stateMappings) {
-        for (const [stateUri, symbol] of Object.entries(annotations._stateMappings)) {
-            const stateName = stateUri.split(':')[1]; // Extract local name
-            mapping.state_mappings[stateName] = symbol;
-        }
-        delete annotations._stateMappings;
-    }
-
-    // Process each property
-    for (const [propUri, data] of Object.entries(annotations)) {
-        if (propUri.startsWith('_')) continue; // Skip internal keys
-
-        const propName = propUri.split(':')[1] || propUri.split('/').pop();
-
+    // Process property annotations into mapping format
+    for (const [propName, data] of Object.entries(propertyAnnotations)) {
         const propEntry = {
             symbol: data.symbol || '',
             rule_type: data.ruleType || 'text',
@@ -282,55 +378,92 @@ function generateMapping(annotations) {
 
         if (data.formatHint) propEntry.format_hint = data.formatHint;
         if (data.example) propEntry.example = data.example;
-        if (data.canRepeat) propEntry.can_repeat = true;
-        if (data.computed) propEntry.computed = true;
-        if (data.special_syntax) propEntry.special_syntax = data.special_syntax;
+        if (data.canRepeat === 'true') propEntry.can_repeat = true;
+        if (data.isComputed === 'true') propEntry.computed = true;
+        if (data.usesSyntax) propEntry.special_syntax = getLocalName(data.usesSyntax);
+        if (data.pattern) propEntry.pattern = data.pattern;
 
         mapping.properties[propName] = propEntry;
     }
 
     console.log(`   Generated ${Object.keys(mapping.properties).length} property mappings`);
     console.log(`   Generated ${Object.keys(mapping.structures).length} structure mappings`);
-    console.log(`   State mappings: ${Object.keys(mapping.state_mappings).length}`);
 
     return mapping;
+}
+
+/**
+ * Load multiple ontology files into a single store
+ */
+async function loadMultipleOntologies(files) {
+    console.log(`📖 Loading ${files.length} ontology files...`);
+
+    const store = new N3.Store();
+
+    for (const file of files) {
+        console.log(`   Loading ${file}...`);
+        const content = fs.readFileSync(file, 'utf8');
+        const parser = new N3.Parser({ baseIRI: PREFIXES.parser });
+
+        await new Promise((resolve, reject) => {
+            parser.parse(content, (error, quad, prefixes) => {
+                if (error) {
+                    reject(error);
+                } else if (quad) {
+                    store.addQuad(quad);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    console.log(`   Loaded ${store.size} total triples`);
+    return store;
 }
 
 /**
  * Main execution
  */
 async function main() {
-    const args = process.argv.slice(2);
-    const outputPath = args.includes('--output')
-        ? args[args.indexOf('--output') + 1]
-        : 'syntax_mapping.json';
-
-    const ontologyPath = args.includes('--ontology')
-        ? args[args.indexOf('--ontology') + 1]
-        : 'parser-ontology.ttl';
-
-    console.log('🚀 Syntax Mapping Generator (JavaScript)');
+    console.log('🚀 Syntax Mapping Generator (N3.js-based)');
     console.log('=' + '='.repeat(59));
 
     try {
-        // Load parser ontology (local file)
-        const annotations = loadParserOntology(ontologyPath);
+        // Load both ontology and parser-specific shapes
+        const store = await loadMultipleOntologies([
+            'parser-ontology.ttl',
+            'parser-shapes.ttl'
+        ]);
 
-        // Note: For MVP, we're using the annotations directly from parser-ontology.ttl
-        // In the future, we could fetch V3 from web and merge with SHACL shapes
-        // to extract constraints (min/max values, patterns, etc.)
+        // Extract all components using semantic queries
+        const propertyAnnotations = extractPropertyAnnotations(store);
+        const structures = extractStructures(store);
+        const stateMappings = extractStateMappings(store);
+        const utilityPatterns = extractUtilityPatterns(store);
+        const depthConstraint = extractDepthConstraint(store);
+        const grammarMetadata = extractGrammarMetadata(store);
 
-        // For now, let's manually add SHACL-derived constraints that we know exist
-        // (This would come from fetching shapes.ttl in the full implementation)
-        if (annotations['actions:hasPriority']) {
-            annotations['actions:hasPriority'].values = ['1', '2', '3', '4'];
-            annotations['actions:hasPriority'].min_value = 1;
-            annotations['actions:hasPriority'].max_value = 4;
+        // Generate mapping
+        const mapping = generateMapping(
+            propertyAnnotations,
+            structures,
+            stateMappings,
+            utilityPatterns,
+            depthConstraint,
+            grammarMetadata
+        );
+
+        // Add hardcoded SHACL constraints (TODO: fetch from SHACL shapes)
+        if (mapping.properties.hasPriority) {
+            mapping.properties.hasPriority.values = ['1', '2', '3', '4'];
+            mapping.properties.hasPriority.min_value = 1;
+            mapping.properties.hasPriority.max_value = 4;
         }
 
-        if (annotations['actions:hasRecurrenceFrequency']) {
-            annotations['actions:hasRecurrenceFrequency'].values = ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
-            annotations['actions:hasRecurrenceFrequency'].value_mappings = [
+        if (mapping.properties.hasRecurrenceFrequency) {
+            mapping.properties.hasRecurrenceFrequency.values = ['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
+            mapping.properties.hasRecurrenceFrequency.value_mappings = [
                 { from: 'DAILY', to: 'D' },
                 { from: 'WEEKLY', to: 'W' },
                 { from: 'MONTHLY', to: 'M' },
@@ -338,57 +471,38 @@ async function main() {
             ];
         }
 
-        if (annotations['actions:hasDurationMinutes']) {
-            annotations['actions:hasDurationMinutes'].min_value = 1;
-            annotations['actions:hasDurationMinutes'].max_value = 10080;
+        if (mapping.properties.hasDurationMinutes) {
+            mapping.properties.hasDurationMinutes.min_value = 1;
+            mapping.properties.hasDurationMinutes.max_value = 10080;
         }
 
-        // Generate mapping
-        const mapping = generateMapping(annotations);
-
-        // Add SHACL constraints to mapping
-        for (const [propName, data] of Object.entries(annotations)) {
-            if (propName.startsWith('_')) continue;
-            const localName = propName.split(':')[1] || propName.split('/').pop();
-
-            if (data.values && mapping.properties[localName]) {
-                mapping.properties[localName].values = data.values;
-            }
-            if (data.min_value !== undefined && mapping.properties[localName]) {
-                mapping.properties[localName].min_value = data.min_value;
-            }
-            if (data.max_value !== undefined && mapping.properties[localName]) {
-                mapping.properties[localName].max_value = data.max_value;
-            }
-            if (data.value_mappings && mapping.properties[localName]) {
-                mapping.properties[localName].value_mappings = data.value_mappings;
-            }
-        }
-
-        // Special handling for state - generate values from state_mappings
+        // Generate state values from state_mappings
         if (mapping.properties.hasState) {
             mapping.properties.hasState.values = Object.values(mapping.state_mappings);
         }
 
-        // Special handling for context - add default pattern for list syntax
+        // Add default pattern for context
         if (mapping.properties.hasContext && !mapping.properties.hasContext.pattern) {
             mapping.properties.hasContext.pattern = '[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*';
         }
 
         // Write output
+        const outputPath = 'syntax_mapping.json';
         console.log(`\n💾 Writing to ${outputPath}...`);
         fs.writeFileSync(outputPath, JSON.stringify(mapping, null, 2));
 
         console.log(`✅ Generated ${outputPath}`);
-        console.log(`\n📊 Summary:
-`);
-        console.log(`   • ${Object.keys(mapping.properties).length} properties mapped
-`);
+        console.log(`\n📊 Summary:`);
+        console.log(`   • ${Object.keys(mapping.properties).length} properties mapped`);
+        console.log(`   • ${Object.keys(mapping.structures).length} structures defined`);
+        console.log(`   • ${Object.keys(mapping.utility_patterns).length} utility patterns`);
         console.log(`   • ${Object.keys(mapping.state_mappings).length} state symbols`);
 
-        console.log('\n✨ Done!');
+        console.log('\n✨ Done! (Using proper RDF parsing)');
+
     } catch (error) {
         console.error(`\n❌ Error: ${error.message}`);
+        console.error(error.stack);
         process.exit(1);
     }
 }
@@ -398,4 +512,4 @@ if (require.main === module) {
     main();
 }
 
-module.exports = { loadParserOntology, generateMapping };
+module.exports = { loadOntology, extractPropertyAnnotations, extractStructures };

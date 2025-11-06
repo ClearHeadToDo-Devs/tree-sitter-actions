@@ -28,6 +28,7 @@ function loadSyntaxMapping(mappingPath = 'syntax_mapping.json') {
         const mapping = JSON.parse(content);
         console.log(`📚 Loaded syntax mapping from ${mappingPath}`);
         console.log(`   Properties: ${Object.keys(mapping.properties || {}).length}`);
+        console.log(`   Structures: ${Object.keys(mapping.structures || {}).length}`);
         console.log(`   State mappings: ${Object.keys(mapping.state_mappings || {}).length}`);
         return mapping;
     } catch (error) {
@@ -41,6 +42,7 @@ const SYNTAX_MAPPING_DATA = loadSyntaxMapping();
 const SYNTAX_MAPPING = SYNTAX_MAPPING_DATA.properties || {};
 const STATE_MAPPINGS = SYNTAX_MAPPING_DATA.state_mappings || {};
 const RULE_TYPES = SYNTAX_MAPPING_DATA.rule_types || {};
+const STRUCTURES = SYNTAX_MAPPING_DATA.structures || {};
 
 // Backwards compatibility - convert to old format where needed
 const RuleType = {
@@ -155,6 +157,32 @@ function generatePropertyRule(propertyName, syntaxRule) {
 }
 
 /**
+ * Generate a structure rule (like root_action or child_action)
+ * @param {string} structureName - Name of the structure (root_action or child_action)
+ * @param {Array} properties - Array of {rule, required} objects
+ * @returns {string} Tree-sitter grammar rule as a string (function body)
+ */
+function generateStructureRule(structureName, properties) {
+    const parts = [];
+
+    for (const prop of properties) {
+        // Special handling for 'children' - it should use repeat1($.child_action)
+        if (prop.rule === 'children') {
+            parts.push(`optional(field("children", repeat1($.child_action)))`);
+        } else {
+            // Regular property
+            if (prop.required) {
+                parts.push(`$.${prop.rule}`);
+            } else {
+                parts.push(`optional($.${prop.rule})`);
+            }
+        }
+    }
+
+    return `($) => seq(${parts.join(', ')})`;
+}
+
+/**
  * Generate grammar rules from syntax mapping
  * @returns {Object} Generated grammar rules as an object of ruleName: ruleString
  */
@@ -198,7 +226,22 @@ function generateGrammarRules() {
         }
     }
 
-    console.log(`\n✅ Generated ${Object.keys(generatedRules).length} grammar rules`);
+    console.log(`\n✅ Generated ${Object.keys(generatedRules).length} property rules`);
+
+    // Generate structure rules (root_action, child_action)
+    console.log('\n🏗️  Processing structures:');
+
+    for (const [structureName, properties] of Object.entries(STRUCTURES)) {
+        if (properties && properties.length > 0) {
+            console.log(`   ✅ ${structureName}: ${properties.length} properties`);
+            const structureRule = generateStructureRule(structureName, properties);
+            generatedRules[structureName] = structureRule;
+        } else {
+            console.log(`   ⚠️  ${structureName}: No properties defined (skipped)`);
+        }
+    }
+
+    console.log(`\n✅ Total generated: ${Object.keys(generatedRules).length} grammar rules`);
 
     return generatedRules;
 }

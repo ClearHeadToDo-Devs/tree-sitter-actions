@@ -3,7 +3,8 @@
     "generated_from": "parser-ontology.ttl",
     "imports": "https://clearhead.us/vocab/actions/v3",
     "version": "1.0.0",
-    "generated_at": "2025-11-06T09:44:35.543Z"
+    "generated_at": "2025-11-06T10:50:53.426Z",
+    "parser": "N3.js (proper RDF parsing)"
   },
   "rule_types": {
     "choice": "Fixed set of values from constraints",
@@ -25,12 +26,60 @@
       "example": "#01951111-cfa6-718d-b303-d7107f4005b3"
     },
     "name": {
-      "symbol": "",
+      "symbol": {
+        "termType": "Literal",
+        "value": "",
+        "language": "",
+        "datatype": {
+          "termType": "NamedNode",
+          "value": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      },
       "rule_type": "text",
       "grammar_rule_name": "name",
       "context": "any_level",
       "format_hint": "Free text, escape special chars with backslash",
       "example": "Review quarterly reports"
+    },
+    "hasState": {
+      "symbol": {
+        "termType": "Literal",
+        "value": "",
+        "language": "",
+        "datatype": {
+          "termType": "NamedNode",
+          "value": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      },
+      "rule_type": "choice",
+      "grammar_rule_name": "state",
+      "context": "any_level",
+      "format_hint": "( )=not started, (x)=completed, (-)=in progress, (=)=blocked, (_)=cancelled",
+      "example": "(x)",
+      "special_syntax": "ParenthesisSyntax",
+      "values": [
+        " ",
+        "x",
+        "-",
+        "=",
+        "_"
+      ]
+    },
+    "hasDepth": {
+      "symbol": {
+        "termType": "Literal",
+        "value": "",
+        "language": "",
+        "datatype": {
+          "termType": "NamedNode",
+          "value": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      },
+      "rule_type": "integer",
+      "grammar_rule_name": "calculated_depth",
+      "context": "any_level",
+      "format_hint": "Auto-calculated from nesting level (0-5)",
+      "computed": true
     },
     "hasPriority": {
       "symbol": "!",
@@ -47,22 +96,6 @@
       ],
       "min_value": 1,
       "max_value": 4
-    },
-    "hasState": {
-      "symbol": "",
-      "rule_type": "choice",
-      "grammar_rule_name": "state",
-      "context": "any_level",
-      "format_hint": "( )=not started, (x)=completed, (-)=in progress, (=)=blocked, (_)=cancelled",
-      "example": "(x)",
-      "special_syntax": "ParenthesisSyntax",
-      "values": [
-        " ",
-        "x",
-        "-",
-        "=",
-        "_"
-      ]
     },
     "hasContext": {
       "symbol": "+",
@@ -100,14 +133,6 @@
       "example": "> Child action",
       "special_syntax": "DepthMarker"
     },
-    "hasDepth": {
-      "symbol": "",
-      "rule_type": "integer",
-      "grammar_rule_name": "calculated_depth",
-      "context": "any_level",
-      "format_hint": "Auto-calculated from nesting level (0-5)",
-      "computed": true
-    },
     "hasDoDateTime": {
       "symbol": "@",
       "rule_type": "date_time",
@@ -133,6 +158,12 @@
       "example": "D30",
       "min_value": 1,
       "max_value": 10080
+    },
+    "DurationPatternShape": {
+      "symbol": "D",
+      "rule_type": "integer",
+      "grammar_rule_name": "duration",
+      "context": "any_level"
     },
     "hasRecurrenceFrequency": {
       "symbol": "R",
@@ -189,9 +220,107 @@
       "context": "any_level",
       "format_hint": "Recurrence end date: U2025-12-31",
       "example": "U2025-12-31"
+    },
+    "ActionDepthShape": {
+      "symbol": "",
+      "rule_type": "text",
+      "grammar_rule_name": "depth",
+      "context": "any_level"
+    },
+    "ISODatePatternShape": {
+      "symbol": "",
+      "rule_type": "pattern",
+      "grammar_rule_name": "iso_date",
+      "context": "any_level"
+    },
+    "ISOTimePatternShape": {
+      "symbol": "",
+      "rule_type": "pattern",
+      "grammar_rule_name": "iso_time",
+      "context": "any_level"
+    },
+    "ISODateTimePatternShape": {
+      "symbol": "",
+      "rule_type": "pattern",
+      "grammar_rule_name": "iso_date_time",
+      "context": "any_level"
+    },
+    "SafeTextPatternShape": {
+      "symbol": "",
+      "rule_type": "computed",
+      "grammar_rule_name": "safe_text",
+      "context": "any_level"
+    },
+    "ContextListPatternShape": {
+      "symbol": "",
+      "rule_type": "pattern",
+      "grammar_rule_name": "context_list",
+      "context": "any_level"
     }
   },
   "structures": {
+    "root_action": [
+      {
+        "rule": "state",
+        "required": true
+      },
+      {
+        "rule": "name",
+        "required": true
+      },
+      {
+        "rule": "description",
+        "required": false
+      },
+      {
+        "rule": "priority",
+        "required": false
+      },
+      {
+        "rule": "project",
+        "required": false
+      },
+      {
+        "rule": "context",
+        "required": false
+      },
+      {
+        "rule": "do_date_or_time",
+        "required": false
+      },
+      {
+        "rule": "completed_date",
+        "required": false
+      },
+      {
+        "rule": "duration",
+        "required": false
+      },
+      {
+        "rule": "recurrence",
+        "required": false
+      },
+      {
+        "rule": "recurrence_interval",
+        "required": false
+      },
+      {
+        "rule": "recurrence_count",
+        "required": false
+      },
+      {
+        "rule": "recurrence_until",
+        "required": false
+      },
+      {
+        "rule": "id",
+        "required": false
+      },
+      {
+        "rule": "children",
+        "required": false
+      }
+    ],
     "child_action": [
       {
         "rule": "depth",
@@ -253,8 +382,7 @@
         "rule": "children",
         "required": false
       }
-    ],
-    "root_action": []
+    ]
   },
   "state_mappings": {
     "NotStarted": " ",
@@ -262,6 +390,56 @@
     "InProgress": "-",
     "Blocked": "=",
     "Cancelled": "_"
+  },
+  "utility_patterns": {
+    "duration": {
+      "grammarRuleName": "duration",
+      "ruleType": "integer"
+    },
+    "depth": {
+      "grammarRuleName": "depth"
+    },
+    "iso_date": {
+      "grammarRuleName": "iso_date",
+      "ruleType": "pattern",
+      "pattern": "\\d{4}-\\d{2}-\\d{2}"
+    },
+    "iso_time": {
+      "grammarRuleName": "iso_time",
+      "ruleType": "pattern",
+      "pattern": "\\d{2}:\\d{2}"
+    },
+    "iso_date_time": {
+      "grammarRuleName": "iso_date_time",
+      "ruleType": "pattern",
+      "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}"
+    },
+    "safe_text": {
+      "grammarRuleName": "safe_text",
+      "ruleType": "computed",
+      "repeatMode": "repeat1",
+      "computedFrom": "property_symbols",
+      "pattern": "\\$!*+@%>#\\(\\)\\n\\s",
+      "exclude": "\\$!*+@%>#\\(\\)\\n\\s"
+    },
+    "context_list": {
+      "grammarRuleName": "context_list",
+      "ruleType": "pattern",
+      "pattern": "[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*"
+    }
+  },
+  "depth_constraint": {
+    "minDepth": 1,
+    "maxDepth": 5,
+    "depthSymbol": ">",
+    "grammarRuleName": "depth"
+  },
+  "grammar_metadata": {
+    "entryPoint": "action_list",
+    "rootRule": "root_action",
+    "repeatMode": "repeat",
+    "whitespaceHandling": "extras",
+    "conflictRules": "child_action"
   },
   "special_syntax": {}
 }

@@ -372,6 +372,10 @@ actions:hasRecurrenceUntil
 
 #################################################################
 # Additional Metadata
+#
+# NOTE: Parser-specific patterns (iso_date, safe_text, depth, etc.)
+# have been moved to parser-shapes.ttl for better separation of concerns.
+# The ontology focuses on semantic mappings; SHACL shapes handle validation.
 #################################################################
 
 # Document which properties are required in syntax

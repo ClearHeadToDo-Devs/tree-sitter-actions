@@ -12,5 +12,7 @@ module.exports = {
   recurrence: ($) => seq(field('icon', 'R'), field('number', choice('D', 'W', 'M', 'Y'))),
   recurrence_interval: ($) => seq(field('icon', 'I'), field('minutes', /\d+/)),
   recurrence_count: ($) => seq(field('icon', 'C'), field('minutes', /\d+/)),
-  recurrence_until: ($) => seq(field('icon', 'U'), field('value', choice($.iso_date_time, $.iso_date, $.iso_time)))
+  recurrence_until: ($) => seq(field('icon', 'U'), field('value', choice($.iso_date_time, $.iso_date, $.iso_time))),
+  root_action: ($) => seq($.state, $.name, optional($.description), optional($.priority), optional($.project), optional($.context), optional($.do_date_or_time), optional($.completed_date), optional($.duration), optional($.recurrence), optional($.recurrence_interval), optional($.recurrence_count), optional($.recurrence_until), optional($.id), optional(field("children", repeat1($.child_action)))),
+  child_action: ($) => seq($.depth, $.state, $.name, optional($.description), optional($.priority), optional($.context), optional($.do_date_or_time), optional($.completed_date), optional($.duration), optional($.recurrence), optional($.recurrence_interval), optional($.recurrence_count), optional($.recurrence_until), optional($.id), optional(field("children", repeat1($.child_action))))
 };
