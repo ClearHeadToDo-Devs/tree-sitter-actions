@@ -23,7 +23,6 @@ const buildRules = () => {
       optional($.context),
       optional($.do_date_or_time),
       optional($.completed_date),
-      optional($.duration),
       optional($.recurrence),
       optional($.recurrence_interval),
       optional($.recurrence_count),
@@ -41,7 +40,6 @@ const buildRules = () => {
       optional($.context),
       optional($.do_date_or_time),
       optional($.completed_date),
-      optional($.duration),
       optional($.recurrence),
       optional($.recurrence_interval),
       optional($.recurrence_count),
@@ -50,8 +48,21 @@ const buildRules = () => {
       optional(field("children", repeat1($.child_action)))
     ),
 
+    // Override generated rules that need special handling
+    // do_date_or_time includes optional duration per spec (line 260-263)
+    do_date_or_time: $ => seq(
+      field('icon', '@'),
+      field('value', choice($.iso_date_time, $.iso_date, $.iso_time)),
+      optional($.duration)
+    ),
+
+    // Duration is parsed as part of do_date_or_time, but still a named rule
+    duration: $ => seq(field('icon', 'D'), field('minutes', /\d+/)),
+
     // Utility rules (hand-maintained)
-    safe_text: $ => /[^$!*+@%>#\(]+/,
+    // safe_text: must consume all characters until a special symbol
+    // Use repeat1 to ensure greedy matching across whitespace
+    safe_text: $ => repeat1(/[^$!*+@%>#\(\)\n\s]+/),
     iso_date: $ => /\d{4}-\d{2}-\d{2}/,
     iso_time: $ => /\d{2}:\d{2}/,
     iso_date_time: $ => /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/,
@@ -66,11 +77,13 @@ const buildRules = () => {
     ),
   };
 
-  // Integrate generated rules
+  // Integrate generated rules (but don't overwrite hand-maintained ones)
   // Note: generatedRulesStrings is actually an object of functions,
   // not strings (despite the variable name - historical artifact)
   for (const [key, ruleFn] of Object.entries(generatedRulesStrings)) {
-    handMaintainedRules[key] = ruleFn;
+    if (!handMaintainedRules[key]) {
+      handMaintainedRules[key] = ruleFn;
+    }
   }
 
   return handMaintainedRules;
@@ -78,6 +91,10 @@ const buildRules = () => {
 
 module.exports = grammar({
   name: "actions",
+
+  extras: $ => [
+    /\s/, // Whitespace is not significant
+  ],
 
   conflicts: $ => [
     [$.child_action]

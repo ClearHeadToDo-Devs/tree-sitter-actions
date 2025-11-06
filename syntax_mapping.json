@@ -3,7 +3,7 @@
     "generated_from": "parser-ontology.ttl",
     "imports": "https://clearhead.us/vocab/actions/v3",
     "version": "1.0.0",
-    "generated_at": "2025-11-05T06:36:24.328Z"
+    "generated_at": "2025-11-06T09:44:35.543Z"
   },
   "rule_types": {
     "choice": "Fixed set of values from constraints",
@@ -53,9 +53,9 @@
       "rule_type": "choice",
       "grammar_rule_name": "state",
       "context": "any_level",
-      "format_hint": "[ ]=not started, [x]=completed, [-]=in progress, [=]=blocked, [_]=cancelled",
-      "example": "[x]",
-      "special_syntax": "BracketSyntax",
+      "format_hint": "( )=not started, (x)=completed, (-)=in progress, (=)=blocked, (_)=cancelled",
+      "example": "(x)",
+      "special_syntax": "ParenthesisSyntax",
       "values": [
         " ",
         "x",
@@ -69,11 +69,11 @@
       "rule_type": "pattern",
       "grammar_rule_name": "context",
       "context": "any_level",
-      "format_hint": "GTD contexts: +@office,@computer,@phone",
-      "example": "+@office,@computer",
+      "format_hint": "GTD contexts: +office,computer,phone",
+      "example": "+Driving,Store,Market",
       "can_repeat": true,
       "special_syntax": "ListSyntax",
-      "pattern": "@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*"
+      "pattern": "[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*"
     },
     "description": {
       "symbol": "$",
@@ -190,6 +190,71 @@
       "format_hint": "Recurrence end date: U2025-12-31",
       "example": "U2025-12-31"
     }
+  },
+  "structures": {
+    "child_action": [
+      {
+        "rule": "depth",
+        "required": true
+      },
+      {
+        "rule": "state",
+        "required": true
+      },
+      {
+        "rule": "name",
+        "required": true
+      },
+      {
+        "rule": "description",
+        "required": false
+      },
+      {
+        "rule": "priority",
+        "required": false
+      },
+      {
+        "rule": "context",
+        "required": false
+      },
+      {
+        "rule": "do_date_or_time",
+        "required": false
+      },
+      {
+        "rule": "completed_date",
+        "required": false
+      },
+      {
+        "rule": "duration",
+        "required": false
+      },
+      {
+        "rule": "recurrence",
+        "required": false
+      },
+      {
+        "rule": "recurrence_interval",
+        "required": false
+      },
+      {
+        "rule": "recurrence_count",
+        "required": false
+      },
+      {
+        "rule": "recurrence_until",
+        "required": false
+      },
+      {
+        "rule": "id",
+        "required": false
+      },
+      {
+        "rule": "children",
+        "required": false
+      }
+    ],
+    "root_action": []
   },
   "state_mappings": {
     "NotStarted": " ",

@@ -77,9 +77,9 @@ function generatePropertyRule(propertyName, syntaxRule) {
 
     if (specialSyntax) {
         switch (specialSyntax) {
-            case 'BracketSyntax':
+            case 'ParenthesisSyntax':
                 const stateChoices = Object.entries(STATE_MAPPINGS).map(([stateName, symbol]) => {
-                    return `seq('[', '${symbol}', ']')`;
+                    return `seq('(', '${symbol}', ')')`;
                 });
                 return `($) => choice(${stateChoices.join(', ')})`;
             case 'DepthMarker':
@@ -87,10 +87,10 @@ function generatePropertyRule(propertyName, syntaxRule) {
                 // Don't generate this - it's hand-maintained in grammar.js
                 return null;
             case 'ListSyntax':
-                // Context uses list syntax like: +@office,@computer,@phone
+                // Context uses list syntax like: +Driving,Store,Market
                 // We need to match the symbol followed by comma-separated values
                 // The pattern in the mapping already handles the full list pattern
-                return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('value', /@[a-zA-Z0-9_-]+(,@[a-zA-Z0-9_-]+)*/))`;
+                return `($) => seq(field('icon', '${syntaxRule.symbol}'), field('value', /${syntaxRule.pattern || '[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*'}/))`;
 
             default:
                 console.warn(`🛡️  Unknown special syntax: ${specialSyntax} for ${propertyName}`);

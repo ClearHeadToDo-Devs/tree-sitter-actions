@@ -1,6 +1,4 @@
-[ ] root test
-	> [ ] child action
-		>> [ ] grandchild action
-			>>> [ ] great grandchild action
-				>>>> [ ] double-great grandchild action
-				>>>>> [ ] Leaf action
+(x) Parent task
+>( ) Child task one
+>>( ) Grandchild task
+>( ) Child task two

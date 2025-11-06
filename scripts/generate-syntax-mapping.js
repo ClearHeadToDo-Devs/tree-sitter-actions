@@ -138,7 +138,7 @@ function loadParserOntology(filePath) {
 
         // If in a structure block, parse the ordered properties
         if (inStructureBlock) {
-            const orderedPropMatch = line.match(/[\[\s*parser:grammarRuleName\s+\"([^\"]+)\"\s*;\s*parser:isRequired\s+\"([^|true|false)\"]/);
+            const orderedPropMatch = line.match(/\[\s*parser:grammarRuleName\s+"([^"]+)"\s*;\s*parser:isRequired\s+"(true|false)"/);
             if (orderedPropMatch) {
                 annotations._structures[currentStructureName].push({
                     rule: orderedPropMatch[1],
@@ -210,11 +210,11 @@ function loadParserOntology(filePath) {
         const ontologyValueMatch = line.match(/parser:ontologyValue\s+\"([^\"]+)\"/);
         const syntaxValueMatch = line.match(/parser:syntaxValue\s+\"([^\"]+)\"/);
 
-        // State/bracket mappings
-        const bracketMatch = line.match(/(actions:\w+)\s+parser:bracketSymbol\s+\"([^\"]+)\"/);
-        if (bracketMatch) {
+        // State/parenthesis mappings
+        const parenMatch = line.match(/(actions:\w+)\s+parser:parenSymbol\s+\"([^\"]+)\"/);
+        if (parenMatch) {
             if (!annotations._stateMappings) annotations._stateMappings = {};
-            annotations._stateMappings[bracketMatch[1]] = bracketMatch[2];
+            annotations._stateMappings[parenMatch[1]] = parenMatch[2];
         }
     }
 
@@ -372,7 +372,7 @@ async function main() {
 
         // Special handling for context - add default pattern for list syntax
         if (mapping.properties.hasContext && !mapping.properties.hasContext.pattern) {
-            mapping.properties.hasContext.pattern = '@[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*';
+            mapping.properties.hasContext.pattern = '[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*';
         }
 
         // Write output

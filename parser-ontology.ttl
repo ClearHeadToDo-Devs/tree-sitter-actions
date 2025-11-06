@@ -46,10 +46,10 @@ parser:SyntaxPattern a owl:Class ;
     rdfs:label "Syntax Pattern" ;
     rdfs:comment "A pattern for representing properties in file syntax" .
 
-parser:BracketSyntax a owl:Class ;
+parser:ParenthesisSyntax a owl:Class ;
     rdfs:subClassOf parser:SyntaxPattern ;
-    rdfs:label "Bracket Syntax" ;
-    rdfs:comment "Syntax pattern using brackets to enclose values, e.g., [x] for state" .
+    rdfs:label "Parenthesis Syntax" ;
+    rdfs:comment "Syntax pattern using parentheses to enclose values, e.g., (x) for state" .
 
 parser:DepthMarker a owl:Class ;
     rdfs:subClassOf parser:SyntaxPattern ;
@@ -118,9 +118,9 @@ parser:syntaxValue a owl:DatatypeProperty ;
     rdfs:comment "Value as represented in file syntax" ;
     rdfs:range xsd:string .
 
-    parser:bracketSymbol a owl:DatatypeProperty ;
-    rdfs:label "bracket symbol" ;
-    rdfs:comment "Character used inside brackets for state representation" ;
+    parser:parenSymbol a owl:DatatypeProperty ;
+    rdfs:label "parenthesis symbol" ;
+    rdfs:comment "Character used inside parentheses for state representation" ;
     rdfs:range xsd:string .
 
 # Structural properties for grammar definition
@@ -218,16 +218,16 @@ actions:hasState
     parser:grammarRuleName "state" ;
     parser:ruleType "choice" ;
     parser:contextLevel "any_level" ;
-    parser:usesSyntax parser:BracketSyntax ;
-    parser:formatHint "[ ]=not started, [x]=completed, [-]=in progress, [=]=blocked, [_]=cancelled" ;
-    parser:example "[x]" .
+    parser:usesSyntax parser:ParenthesisSyntax ;
+    parser:formatHint "( )=not started, (x)=completed, (-)=in progress, (=)=blocked, (_)=cancelled" ;
+    parser:example "(x)" .
 
-# State-to-bracket mappings
-actions:NotStarted parser:bracketSymbol " " .
-actions:Completed parser:bracketSymbol "x" .
-actions:InProgress parser:bracketSymbol "-" .
-actions:Blocked parser:bracketSymbol "=" .
-actions:Cancelled parser:bracketSymbol "_" .
+# State-to-parenthesis mappings
+actions:NotStarted parser:parenSymbol " " .
+actions:Completed parser:parenSymbol "x" .
+actions:InProgress parser:parenSymbol "-" .
+actions:Blocked parser:parenSymbol "=" .
+actions:Cancelled parser:parenSymbol "_" .
 
 # Context property - uses deprecated string property in V3
 # Note: In V3, there's actions:hasContext (deprecated string) and actions:requiresContext (new typed)
@@ -239,9 +239,9 @@ actions:hasContext
     parser:contextLevel "any_level" ;
     parser:usesSyntax parser:ListSyntax ;
     parser:canRepeat "true"^^xsd:boolean ;
-    parser:formatHint "GTD contexts: +@office,@computer,@phone" ;
-    parser:example "+@office,@computer" ;
-    rdfs:comment "Pattern matches: @office or @office,@computer (comma-separated list with @ prefix)" .
+    parser:formatHint "GTD contexts: +office,computer,phone" ;
+    parser:example "+Driving,Store,Market" ;
+    rdfs:comment "Pattern matches comma-separated list of context names" .
 
 schema:description
     parser:symbol "$" ;
