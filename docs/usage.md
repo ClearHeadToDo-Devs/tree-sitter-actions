@@ -138,6 +138,7 @@ fn walk_tree(cursor: &mut TreeCursor) {
 ```
 
 See the [actions specification](action_specification.md) for details on the grammar and node types.
+- as well as the `test/trees/` directory to see example parse trees
 
 ## In Text Editors
 
