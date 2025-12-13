@@ -14,7 +14,8 @@
     ".": "./lib/index.js",
     "./grammar": "./bindings/node/index.js",
     "./parser": "./parser.js",
-    "./schema": "./schema.json"
+    "./patterns": "./patterns.js",
+    "./schema": "./schema/actions.schema.json"
   },
   "keywords": [
     "incremental",
@@ -24,6 +25,7 @@
   ],
   "files": [
     "grammar.js",
+    "patterns.js",
     "tree-sitter.json",
     "binding.gyp",
     "prebuilds/**",
@@ -33,7 +35,8 @@
     "*.wasm",
     "parser.js",
     "lib/*",
-    "schema.json"
+    "schema.json",
+    "schema/**"
   ],
   "dependencies": {
     "node-addon-api": "^8.2.1",
@@ -60,14 +63,16 @@
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js && node --test test/parser_test.js",
     "test:grammar": "tree-sitter test",
-    "test:all": "npm run test:grammar && npm test",
+    "test:schema": "node test/schema_validation_test.js",
+    "test:all": "npm run test:grammar && npm run test:schema && npm test",
     "test-parser": "node --test test/parser_test.js",
     "parse": "node parser.js",
     "parse-simple": "node parser.js test/files/simple.actions",
     "generate:mapping": "node scripts/generate-syntax-mapping.js --output syntax_mapping.json",
     "generate:grammar": "node src/grammar_generator.js --generate-rules",
-    "generate": "npm run generate:mapping && npm run generate:grammar",
-    "build:parser": "tree-sitter generate && tree-sitter build",
+    "generate:schema": "node scripts/generate-schema.js",
+    "generate": "npm run generate:mapping && npm run generate:grammar && npm run generate:schema",
+    "build:parser": "tree-sitter generate && tree-sitter build && npm run generate:schema",
     "regen:trees": "node scripts/generate_trees.js",
     "regen:corpus": "node scripts/generate_tests.js",
     "regen:test": "node scripts/regenerate_all.js",

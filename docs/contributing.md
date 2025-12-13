@@ -36,6 +36,18 @@ npm run test:grammar
 tree-sitter test
 ```
 
+Test the JSON Schema:
+
+```bash
+npm run test:schema
+```
+
+Run all tests (grammar + schema + bindings):
+
+```bash
+npm run test:all
+```
+
 ### Regenerating Test Files
 
 When you modify the grammar or add new examples, regenerate the test files:
@@ -79,6 +91,64 @@ To add a new example:
    - Published Rust crate as `examples::category_name::MY_NEW_EXAMPLE`
 
 No manual changes needed to binding code - the build system handles it automatically.
+
+## JSON Schema Generation
+
+### Overview
+
+The repository maintains a single source of truth for regex patterns that are used in both parsing and validation:
+
+```
+Source of Truth        Grammar             Schema
+─────────────────────────────────────────────────────
+patterns.js       →    grammar.js     →    Parser
+   │
+   │
+   └──────────────→    generate-schema.js → schema/actions.schema.json
+```
+
+### How It Works
+
+1. **`patterns.js`** - Defines all regex patterns for fields (name, UUID, datetime, etc.)
+2. **`grammar.js`** - Imports patterns to generate the tree-sitter parser
+3. **`scripts/generate-schema.js`** - Imports patterns to generate JSON Schema
+4. **`schema/actions.schema.json`** - Validates JSON serialization of parsed data
+
+### Why This Approach?
+
+Downstream consumers need to:
+- Parse `.actions` files (using tree-sitter parser)
+- Convert parsed AST to JSON/structured data
+- Validate serialized data matches the specification
+
+By generating the JSON Schema from the same patterns used in the grammar, we guarantee that:
+- ✅ Parsing rules match validation rules
+- ✅ No drift between grammar and schema
+- ✅ Single source of truth for all patterns
+- ✅ Downstream consumers get both parser and validator
+
+### Schema Generation Commands
+
+```bash
+# Generate schema from patterns
+npm run generate:schema
+
+# Regenerate during parser build
+npm run build:parser
+
+# Generate all artifacts
+npm run generate
+```
+
+The schema is automatically included in published npm packages and can be imported:
+
+```javascript
+import schema from 'tree-sitter-actions/schema';
+```
+
+### JSON Serialization Format
+
+The canonical JSON serialization format is documented in [docs/action_specification.md](action_specification.md#json-serialization-format). The generated schema validates this format.
 
 ## Rust Bindings Build System
 
@@ -204,13 +274,18 @@ Before publishing a new version:
 
 1. Ensure all examples are in `test/test_descriptions.json`
 2. Run `npm run regen:verify` - verify test corpus is up to date
-3. Run `cargo test` - verify all tests pass
-4. Run `cargo doc` - verify documentation builds
-5. Update version in `Cargo.toml`
-6. Tag release in git: `git tag v0.x.x`
-7. Run `cargo publish`
+3. Run `npm run generate:schema` - regenerate JSON schema from patterns
+4. Run `npm run test:all` - verify all tests pass (grammar, schema, bindings)
+5. Run `cargo test` - verify Rust tests pass
+6. Run `cargo doc` - verify documentation builds
+7. Update version in `Cargo.toml` and `package.json`
+8. Tag release in git: `git tag v0.x.x`
+9. Run `cargo publish` (Rust crate)
+10. Run `npm publish` (npm package with schema)
 
 The build script runs on users' machines, so ensure `test/test_descriptions.json` and all example files are in the `include` list in `Cargo.toml`.
+
+For npm publishing, ensure `patterns.js` and `schema/` are included in the `files` array in `package.json`.
 
 ## Project Structure
 
@@ -225,8 +300,14 @@ tree-sitter-actions/
 │   ├── corpus/           # Generated test corpus (don't edit)
 │   └── test_descriptions.json  # Test metadata
 ├── scripts/               # Regeneration scripts
+│   └── generate-schema.js # Schema generation from patterns
+├── schema/                # JSON Schema (generated)
+│   └── actions.schema.json # Validates JSON serialization
+├── patterns.js            # Single source of truth for regex patterns
+├── grammar.js             # Tree-sitter grammar (imports patterns)
 ├── src/                   # Generated C parser code
 └── docs/
+    ├── action_specification.md  # Format spec + JSON serialization
     ├── usage.md          # For downstream users
     └── contributing.md   # This file
 ```

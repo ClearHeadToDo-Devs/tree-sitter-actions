@@ -14,8 +14,12 @@ A simple Tree Sitter parser for the custom `.actions` file format.
 3. Use the parser in your project as needed, directly with the CLI is fine
   - we can also build the parser into other apps by using this as a library in a client applications
   - or maybe you have an editor that supports tree-sitter grammars, you can use this grammar to get syntax highlighting and other features for `.actions` files!
+4. For tools that export to JSON, use the included JSON Schema to validate:
+    ```bash
+    npm run generate:schema  # Regenerate schema from patterns
+    ```
 
-For detailed usage examples (Rust library, editors, other languages), see [docs/usage.md](docs/usage.md).
+For detailed usage examples (Rust library, editors, JSON validation), see [docs/usage.md](docs/usage.md).
 # Tree Sitter Action File Format Parser
 This is a simple parser for the custom `.actions` [File Format](docs/action_specification.md) to be used in whatever form may be needed.
 
@@ -44,6 +48,10 @@ This is to serve as a simple file format that can be used in several contexts:
 - As a core parsing library for downstream projects like the rust CLI im working on
   - Allows the bulk of the parsing to be done by this grammar, with things like the CLI and guis just using the tree to generate data and do their own functionality
     - In particular, being able to parse this data, put it into a proper data structure or even database, and then re-encode the data back into the `.actions` format is a key usecase
+- **JSON Schema for validation** - The repository provides a canonical [JSON Schema](schema/actions.schema.json) for validating serialized `.actions` data
+  - Generated from the same regex patterns used by the parser to ensure consistency
+  - Available in both npm package (`tree-sitter-actions/schema`) and Rust crate (`ACTIONS_SCHEMA` constant)
+  - Enables downstream tools to validate their JSON exports match the [canonical format](docs/action_specification.md#json-serialization-format)
 - As a reading tool for things like LLM agents who actually prefer viewing data as AST trees rather than plaintext when it comes to reading data
 
 # Inspirations

@@ -1,3 +1,6 @@
+// Import patterns from shared source
+const PATTERNS = require('./patterns.js');
+
 module.exports = grammar({
   name: 'actions',
 
@@ -76,7 +79,7 @@ module.exports = grammar({
     state_cancelled: $ => '_',
 
     // Action name - everything up to a newline or reserved character
-    name: $ => /[^\n$!*+@%#>]+/,
+    name: $ => new RegExp(PATTERNS.name),
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -92,19 +95,19 @@ module.exports = grammar({
     // Description: $ followed by text
     description: $ => seq(
       '$',
-      field('text', /[^\n]+/)
+      field('text', new RegExp(PATTERNS.description_text))
     ),
 
     // Priority: ! followed by number
     priority: $ => seq(
       '!',
-      field('level', /[0-9]+/)
+      field('level', new RegExp(PATTERNS.priority_level))
     ),
 
     // Story/Project: * followed by name (root actions only)
     story: $ => seq(
       '*',
-      field('name', /[^\n!$+@%#>]+/)
+      field('name', new RegExp(PATTERNS.story_name))
     ),
 
     // Context: + followed by comma-separated tags
@@ -115,24 +118,24 @@ module.exports = grammar({
     ),
 
     // Individual context tag
-    tag: $ => /[^,\n!$*@%#>]+/,
+    tag: $ => new RegExp(PATTERNS.tag),
 
     // Do-date/time: @ followed by ISO 8601 date/time
     do_date: $ => seq(
       '@',
-      field('datetime', /[^\n!$*+%#>]+/)
+      field('datetime', new RegExp(PATTERNS.datetime_do))
     ),
 
     // Completed date: % followed by ISO 8601 date/time
     completed_date: $ => seq(
       '%',
-      field('datetime', /[^\n!$*+@#>]+/)
+      field('datetime', new RegExp(PATTERNS.datetime_completed))
     ),
 
     // ID: # followed by UUID
     id: $ => seq(
       '#',
-      field('uuid', /[0-9a-fA-F-]+/)
+      field('uuid', new RegExp(PATTERNS.uuid))
     ),
   }
 });

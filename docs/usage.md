@@ -217,6 +217,53 @@ fn parse_action(node: Node, source: &str) -> Action {
 }
 ```
 
+### Exporting to JSON with Validation
+
+The library includes a JSON Schema for validating exported data:
+
+```rust
+use tree_sitter_actions::{LANGUAGE, ACTIONS_SCHEMA};
+use serde_json::json;
+use jsonschema::JSONSchema;
+
+fn export_to_json(source: &str) -> Result<serde_json::Value, Box<dyn std::error::Error>> {
+    // 1. Parse the .actions file
+    let mut parser = tree_sitter::Parser::new();
+    parser.set_language(&LANGUAGE.into())?;
+    let tree = parser.parse(source, None).ok_or("Parse failed")?;
+
+    // 2. Convert AST to your data structures
+    let actions = convert_tree_to_actions(&tree, source)?;
+
+    // 3. Serialize to JSON
+    let json_output = serde_json::to_value(&actions)?;
+
+    // 4. Validate against the canonical schema
+    let schema: serde_json::Value = serde_json::from_str(ACTIONS_SCHEMA)?;
+    let compiled = JSONSchema::compile(&schema)?;
+
+    compiled.validate(&json_output)
+        .map_err(|e| format!("Validation failed: {}", e))?;
+
+    Ok(json_output)
+}
+```
+
+**Why validate?**
+- Ensures your JSON export matches the [canonical format](action_specification.md#json-serialization-format)
+- Catches bugs in your AST-to-JSON conversion logic
+- Guarantees interoperability with other tools
+- The schema uses the same regex patterns as the parser
+
+**Dependencies needed:**
+```toml
+[dependencies]
+tree-sitter-actions = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+jsonschema = "0.18"
+```
+
 ## Further Reading
 
 - [README](../README.md) - Project overview and development workflow

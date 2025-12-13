@@ -27,6 +27,21 @@
 //!
 //! All examples are embedded at compile time, so there's no runtime I/O.
 //!
+//! # JSON Schema Validation
+//!
+//! The [ACTIONS_SCHEMA] constant provides a JSON Schema for validating serialized data.
+//! Use this when exporting parsed `.actions` data to JSON format:
+//!
+//! ```rust,ignore
+//! // Parse .actions file, convert to JSON, then validate
+//! let schema: serde_json::Value =
+//!     serde_json::from_str(tree_sitter_actions::ACTIONS_SCHEMA)?;
+//! let validator = jsonschema::JSONSchema::compile(&schema)?;
+//! validator.validate(&your_json_data)?;
+//! ```
+//!
+//! The schema is generated from the same patterns used by the parser, ensuring consistency.
+//!
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
@@ -45,6 +60,46 @@ pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_actio
 ///
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
+
+/// JSON Schema for validating serialized `.actions` data.
+///
+/// This schema validates the canonical JSON serialization format as documented in
+/// the [action specification](https://github.com/clearheadtodo-devs/tree-sitter-actions/blob/master/docs/action_specification.md#json-serialization-format).
+///
+/// The schema is generated from the same regex patterns used by the tree-sitter grammar,
+/// ensuring parsing rules and validation rules stay in sync.
+///
+/// # Example: Validating Serialized Data
+///
+/// ```rust,ignore
+/// use serde_json::json;
+/// use jsonschema::JSONSchema;
+///
+/// // Get the schema
+/// let schema_value: serde_json::Value =
+///     serde_json::from_str(tree_sitter_actions::ACTIONS_SCHEMA)
+///         .expect("Schema should be valid JSON");
+///
+/// // Compile the schema
+/// let compiled = JSONSchema::compile(&schema_value)
+///     .expect("Schema should compile");
+///
+/// // Validate your serialized actions data
+/// let data = json!({
+///     "actions": [{
+///         "state": "completed",
+///         "name": "Example task"
+///     }]
+/// });
+///
+/// compiled.validate(&data).expect("Data should validate");
+/// ```
+///
+/// # Use Case
+///
+/// When building tools that export `.actions` data to JSON (like CLIs or APIs),
+/// use this schema to validate your output matches the canonical format.
+pub const ACTIONS_SCHEMA: &str = include_str!("../../schema/actions.schema.json");
 
 include!(concat!(env!("OUT_DIR"), "/generated_tests.rs"));
 
@@ -105,5 +160,37 @@ mod tests {
         let everything_example = super::examples::actions::WITH_EVERYTHING;
         assert!(!everything_example.is_empty(), "Everything example should not be empty");
         assert!(everything_example.contains("Mega Action"), "Everything example should contain action text");
+    }
+
+    #[test]
+    fn test_schema_is_accessible() {
+        // Test that the JSON Schema is embedded and valid
+        let schema = super::ACTIONS_SCHEMA;
+        assert!(!schema.is_empty(), "Schema should not be empty");
+
+        // Verify it's valid JSON
+        let parsed: serde_json::Value = serde_json::from_str(schema)
+            .expect("Schema should be valid JSON");
+
+        // Verify it has the expected structure
+        assert_eq!(
+            parsed.get("$schema").and_then(|v| v.as_str()),
+            Some("http://json-schema.org/draft-07/schema#"),
+            "Schema should have correct $schema field"
+        );
+
+        assert_eq!(
+            parsed.get("title").and_then(|v| v.as_str()),
+            Some("Actions File Serialization Format"),
+            "Schema should have correct title"
+        );
+
+        // Verify it has the action definition
+        assert!(
+            parsed.get("definitions")
+                .and_then(|d| d.get("action"))
+                .is_some(),
+            "Schema should define action type"
+        );
     }
 }

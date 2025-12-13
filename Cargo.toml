@@ -16,7 +16,9 @@ include = [
   "bindings/rust/*",
   "examples/*",
   "grammar.js",
+  "patterns.js",
   "queries/*",
+  "schema/*",
   "src/*",
   "test/test_descriptions.json",
   "tree-sitter.json"
@@ -30,6 +32,7 @@ tree-sitter-language = "0.1"
 
 [dev-dependencies]
 tree-sitter = "0.25.1"
+serde_json = "1.0"
 
 [build-dependencies]
 cc = "1.2"
