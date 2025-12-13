@@ -277,94 +277,62 @@
       ]
     },
     "state": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "["
+              "type": "SYMBOL",
+              "name": "state_not_started"
             },
             {
-              "type": "STRING",
-              "value": " "
+              "type": "SYMBOL",
+              "name": "state_completed"
             },
             {
-              "type": "STRING",
-              "value": "]"
+              "type": "SYMBOL",
+              "name": "state_in_progress"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "state_blocked"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "state_cancelled"
             }
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "["
-            },
-            {
-              "type": "STRING",
-              "value": "x"
-            },
-            {
-              "type": "STRING",
-              "value": "]"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "["
-            },
-            {
-              "type": "STRING",
-              "value": "-"
-            },
-            {
-              "type": "STRING",
-              "value": "]"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "["
-            },
-            {
-              "type": "STRING",
-              "value": "="
-            },
-            {
-              "type": "STRING",
-              "value": "]"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "["
-            },
-            {
-              "type": "STRING",
-              "value": "_"
-            },
-            {
-              "type": "STRING",
-              "value": "]"
-            }
-          ]
+          "type": "STRING",
+          "value": "]"
         }
       ]
+    },
+    "state_not_started": {
+      "type": "STRING",
+      "value": " "
+    },
+    "state_completed": {
+      "type": "STRING",
+      "value": "x"
+    },
+    "state_in_progress": {
+      "type": "STRING",
+      "value": "-"
+    },
+    "state_blocked": {
+      "type": "STRING",
+      "value": "="
+    },
+    "state_cancelled": {
+      "type": "STRING",
+      "value": "_"
     },
     "name": {
       "type": "PATTERN",
@@ -463,13 +431,37 @@
         },
         {
           "type": "FIELD",
-          "name": "tags",
+          "name": "tag",
           "content": {
-            "type": "PATTERN",
-            "value": "[^\\n!$*@%#>]+"
+            "type": "SYMBOL",
+            "name": "tag"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "FIELD",
+                "name": "tag",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "tag"
+                }
+              }
+            ]
           }
         }
       ]
+    },
+    "tag": {
+      "type": "PATTERN",
+      "value": "[^,\\n!$*@%#>]+"
     },
     "do_date": {
       "type": "SEQ",

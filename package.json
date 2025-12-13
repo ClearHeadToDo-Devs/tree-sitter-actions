@@ -59,12 +59,18 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js && node --test test/parser_test.js",
+    "test:grammar": "tree-sitter test",
+    "test:all": "npm run test:grammar && npm test",
     "test-parser": "node --test test/parser_test.js",
     "parse": "node parser.js",
     "parse-simple": "node parser.js test/files/simple.actions",
     "generate:mapping": "node scripts/generate-syntax-mapping.js --output syntax_mapping.json",
     "generate:grammar": "node src/grammar_generator.js --generate-rules",
     "generate": "npm run generate:mapping && npm run generate:grammar",
-    "build:parser": "tree-sitter generate && tree-sitter build"
+    "build:parser": "tree-sitter generate && tree-sitter build",
+    "regen:trees": "node scripts/generate_trees.js",
+    "regen:corpus": "node scripts/generate_tests.js",
+    "regen:test": "node scripts/regenerate_all.js",
+    "regen:verify": "npm run regen:test && npm run test:grammar"
   }
 }

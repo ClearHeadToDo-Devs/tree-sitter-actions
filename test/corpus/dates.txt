@@ -7,7 +7,8 @@ With do-date
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (do_date)))
 
@@ -20,7 +21,8 @@ with completed date
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (completed_date)))
 
@@ -33,7 +35,8 @@ with recurring daily do-date
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (do_date)))
 
@@ -46,6 +49,7 @@ with recurring weekly do-date
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (do_date)))

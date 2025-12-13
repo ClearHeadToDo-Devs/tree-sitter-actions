@@ -60,14 +60,20 @@ module.exports = grammar({
       repeat(field('metadata', $._metadata))
     ),
 
-    // State markers
-    state: $ => choice(
-      seq('[', ' ', ']'),   // not started
-      seq('[', 'x', ']'),   // completed
-      seq('[', '-', ']'),   // in progress
-      seq('[', '=', ']'),   // blocked/awaiting
-      seq('[', '_', ']')    // cancelled
-    ),
+    // State markers - explicit state names per specification
+    state: $ => seq('[', choice(
+      $.state_not_started,
+      $.state_completed,
+      $.state_in_progress,
+      $.state_blocked,
+      $.state_cancelled
+    ), ']'),
+
+    state_not_started: $ => ' ',
+    state_completed: $ => 'x',
+    state_in_progress: $ => '-',
+    state_blocked: $ => '=',
+    state_cancelled: $ => '_',
 
     // Action name - everything up to a newline or reserved character
     name: $ => /[^\n$!*+@%#>]+/,
@@ -104,8 +110,12 @@ module.exports = grammar({
     // Context: + followed by comma-separated tags
     context: $ => seq(
       '+',
-      field('tags', /[^\n!$*@%#>]+/)
+      field('tag', $.tag),
+      repeat(seq(',', field('tag', $.tag)))
     ),
+
+    // Individual context tag
+    tag: $ => /[^,\n!$*@%#>]+/,
 
     // Do-date/time: @ followed by ISO 8601 date/time
     do_date: $ => seq(

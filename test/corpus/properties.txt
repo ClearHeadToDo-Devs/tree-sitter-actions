@@ -7,7 +7,8 @@ With Description
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (description)))
 
@@ -20,7 +21,8 @@ With Priority
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (priority)))
 
@@ -33,7 +35,8 @@ With Story
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (story)))
 
@@ -46,9 +49,12 @@ With Context
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_not_started))
     name: (name)
-    metadata: (context)))
+    metadata: (context
+      tag: (tag)
+      tag: (tag))))
 
 ===============
 With Id no dash
@@ -59,7 +65,8 @@ With Id no dash
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (id)))
 
@@ -72,6 +79,7 @@ With Id with dash
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     metadata: (id)))

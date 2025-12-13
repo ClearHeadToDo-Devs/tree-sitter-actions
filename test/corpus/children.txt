@@ -7,7 +7,8 @@ Basic Root Action
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_not_started))
     name: (name)))
 
 =============
@@ -22,16 +23,20 @@ With Children
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_completed))
     name: (name)
     child: (depth1_action
-      state: (state)
+      state: (state
+        (state_not_started))
       name: (name)
       child: (depth2_action
-        state: (state)
+        state: (state
+          (state_not_started))
         name: (name)))
     child: (depth1_action
-      state: (state)
+      state: (state
+        (state_not_started))
       name: (name))))
 
 ================================
@@ -45,11 +50,14 @@ Children Followed by Root Action
 
 (source_file
   (root_action
-    state: (state)
+    state: (state
+      (state_not_started))
     name: (name)
     child: (depth1_action
-      state: (state)
+      state: (state
+        (state_not_started))
       name: (name)))
   (root_action
-    state: (state)
+    state: (state
+      (state_not_started))
     name: (name)))

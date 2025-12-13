@@ -7,7 +7,18 @@
   {
     "type": "context",
     "named": true,
-    "fields": {}
+    "fields": {
+      "tag": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "tag",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "depth1_action",
@@ -458,16 +469,38 @@
   {
     "type": "state",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "state_blocked",
+          "named": true
+        },
+        {
+          "type": "state_cancelled",
+          "named": true
+        },
+        {
+          "type": "state_completed",
+          "named": true
+        },
+        {
+          "type": "state_in_progress",
+          "named": true
+        },
+        {
+          "type": "state_not_started",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "story",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": " ",
-    "named": false
   },
   {
     "type": "!",
@@ -494,11 +527,7 @@
     "named": false
   },
   {
-    "type": "-",
-    "named": false
-  },
-  {
-    "type": "=",
+    "type": ",",
     "named": false
   },
   {
@@ -534,15 +563,31 @@
     "named": false
   },
   {
-    "type": "_",
-    "named": false
-  },
-  {
     "type": "name",
     "named": true
   },
   {
-    "type": "x",
-    "named": false
+    "type": "state_blocked",
+    "named": true
+  },
+  {
+    "type": "state_cancelled",
+    "named": true
+  },
+  {
+    "type": "state_completed",
+    "named": true
+  },
+  {
+    "type": "state_in_progress",
+    "named": true
+  },
+  {
+    "type": "state_not_started",
+    "named": true
+  },
+  {
+    "type": "tag",
+    "named": true
   }
 ]

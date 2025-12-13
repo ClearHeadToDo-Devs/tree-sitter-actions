@@ -64,6 +64,8 @@ This is to serve as a simple file format that can be used in several contexts:
 # Development and Testing
 If you want to review something about the grammer itself, you can run tests like so:
 ```bash
+npm run test:grammar
+# or directly:
 tree-sitter test
 ```
 
@@ -76,15 +78,32 @@ now, these tests are not your usual unit tests, they were split into three separ
     - followed by the list of test names
     - and their descriptions
       - each name in this file should correspond to a file in the `examples/` folder, which should, in-turn, have a proper tree file in `trees/`
-  - `corpus/` the actual test files that are generated using the script described below
-- finally, the `scripts/` folder contains the helper script to pull all of that content together into the proper `corpus/` test files called `generate_tests.js`
+  - `corpus/` the actual test files that are generated using the scripts described below
+- finally, the `scripts/` folder contains helper scripts to regenerate test files
 
-run this script like so:
+## Regenerating Test Files
+
+When you modify the grammar or add new examples, you need to regenerate the test files:
+
 ```bash
-node ./scripts/generate_tests.js
+# Regenerate everything and verify tests pass:
+npm run regen:verify
+
+# Or run steps individually:
+npm run regen:trees    # Generate .sexp files from examples
+npm run regen:corpus   # Generate corpus files from trees
+npm run test:grammar   # Run tree-sitter tests
 ```
 
-This should only be done whenever any part of the test structure is changed but should automatically generate the proper test files for you.
+The workflow is:
+1. **`regen:trees`** - Parses all `.actions` files in `examples/` and generates corresponding `.sexp` tree files
+2. **`regen:corpus`** - Combines examples, trees, and descriptions into test corpus files
+3. **`test:grammar`** - Runs tree-sitter test suite against the corpus
+
+This should be done whenever:
+- You modify `grammar.js`
+- You add/modify files in `examples/`
+- You update test descriptions
 
 ## But... why so much complexity?
 Breaking up the normal test files does some wonderful things:
