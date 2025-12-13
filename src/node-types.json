@@ -1,6 +1,446 @@
 [
   {
-    "type": "action_list",
+    "type": "completed_date",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "context",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "depth1_action",
+    "named": true,
+    "fields": {
+      "child": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "depth2_action",
+            "named": true
+          }
+        ]
+      },
+      "metadata": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "completed_date",
+            "named": true
+          },
+          {
+            "type": "context",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "priority",
+            "named": true
+          },
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "state": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "depth2_action",
+    "named": true,
+    "fields": {
+      "child": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "depth3_action",
+            "named": true
+          }
+        ]
+      },
+      "metadata": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "completed_date",
+            "named": true
+          },
+          {
+            "type": "context",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "priority",
+            "named": true
+          },
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "state": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "depth3_action",
+    "named": true,
+    "fields": {
+      "child": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "depth4_action",
+            "named": true
+          }
+        ]
+      },
+      "metadata": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "completed_date",
+            "named": true
+          },
+          {
+            "type": "context",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "priority",
+            "named": true
+          },
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "state": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "depth4_action",
+    "named": true,
+    "fields": {
+      "child": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "depth5_action",
+            "named": true
+          }
+        ]
+      },
+      "metadata": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "completed_date",
+            "named": true
+          },
+          {
+            "type": "context",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "priority",
+            "named": true
+          },
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "state": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "depth5_action",
+    "named": true,
+    "fields": {
+      "metadata": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "completed_date",
+            "named": true
+          },
+          {
+            "type": "context",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "priority",
+            "named": true
+          },
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "state": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "description",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "do_date",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "id",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "priority",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "root_action",
+    "named": true,
+    "fields": {
+      "child": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "depth1_action",
+            "named": true
+          }
+        ]
+      },
+      "metadata": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "completed_date",
+            "named": true
+          },
+          {
+            "type": "context",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "priority",
+            "named": true
+          },
+          {
+            "type": "story",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "state": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "source_file",
     "named": true,
     "root": true,
     "fields": {},
@@ -16,501 +456,12 @@
     }
   },
   {
-    "type": "child_action",
-    "named": true,
-    "fields": {
-      "children": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "child_action",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "completed_date",
-          "named": true
-        },
-        {
-          "type": "context",
-          "named": true
-        },
-        {
-          "type": "depth",
-          "named": true
-        },
-        {
-          "type": "description",
-          "named": true
-        },
-        {
-          "type": "do_date_or_time",
-          "named": true
-        },
-        {
-          "type": "id",
-          "named": true
-        },
-        {
-          "type": "name",
-          "named": true
-        },
-        {
-          "type": "priority",
-          "named": true
-        },
-        {
-          "type": "recurrence",
-          "named": true
-        },
-        {
-          "type": "recurrence_count",
-          "named": true
-        },
-        {
-          "type": "recurrence_interval",
-          "named": true
-        },
-        {
-          "type": "recurrence_until",
-          "named": true
-        },
-        {
-          "type": "state",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "completed_date",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "%",
-            "named": false
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "iso_date",
-            "named": true
-          },
-          {
-            "type": "iso_date_time",
-            "named": true
-          },
-          {
-            "type": "iso_time",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "context",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "+",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "depth",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "description",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "$",
-            "named": false
-          }
-        ]
-      },
-      "text": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "safe_text",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "do_date_or_time",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "@",
-            "named": false
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "iso_date",
-            "named": true
-          },
-          {
-            "type": "iso_date_time",
-            "named": true
-          },
-          {
-            "type": "iso_time",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "duration",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "duration",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "D",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "id",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "#",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "name",
-    "named": true,
-    "fields": {
-      "text": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "safe_text",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "priority",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "!",
-            "named": false
-          }
-        ]
-      },
-      "number": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "1",
-            "named": false
-          },
-          {
-            "type": "2",
-            "named": false
-          },
-          {
-            "type": "3",
-            "named": false
-          },
-          {
-            "type": "4",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "project",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "*",
-            "named": false
-          }
-        ]
-      },
-      "text": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "safe_text",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "recurrence",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "R",
-            "named": false
-          }
-        ]
-      },
-      "number": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "D",
-            "named": false
-          },
-          {
-            "type": "M",
-            "named": false
-          },
-          {
-            "type": "W",
-            "named": false
-          },
-          {
-            "type": "Y",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "recurrence_count",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "C",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "recurrence_interval",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "I",
-            "named": false
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "recurrence_until",
-    "named": true,
-    "fields": {
-      "icon": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "U",
-            "named": false
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "iso_date",
-            "named": true
-          },
-          {
-            "type": "iso_date_time",
-            "named": true
-          },
-          {
-            "type": "iso_time",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "root_action",
-    "named": true,
-    "fields": {
-      "children": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "child_action",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "completed_date",
-          "named": true
-        },
-        {
-          "type": "context",
-          "named": true
-        },
-        {
-          "type": "description",
-          "named": true
-        },
-        {
-          "type": "do_date_or_time",
-          "named": true
-        },
-        {
-          "type": "id",
-          "named": true
-        },
-        {
-          "type": "name",
-          "named": true
-        },
-        {
-          "type": "priority",
-          "named": true
-        },
-        {
-          "type": "project",
-          "named": true
-        },
-        {
-          "type": "recurrence",
-          "named": true
-        },
-        {
-          "type": "recurrence_count",
-          "named": true
-        },
-        {
-          "type": "recurrence_interval",
-          "named": true
-        },
-        {
-          "type": "recurrence_until",
-          "named": true
-        },
-        {
-          "type": "state",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "safe_text",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "state",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "story",
     "named": true,
     "fields": {}
   },
@@ -535,14 +486,6 @@
     "named": false
   },
   {
-    "type": "(",
-    "named": false
-  },
-  {
-    "type": ")",
-    "named": false
-  },
-  {
     "type": "*",
     "named": false
   },
@@ -552,22 +495,6 @@
   },
   {
     "type": "-",
-    "named": false
-  },
-  {
-    "type": "1",
-    "named": false
-  },
-  {
-    "type": "2",
-    "named": false
-  },
-  {
-    "type": "3",
-    "named": false
-  },
-  {
-    "type": "4",
     "named": false
   },
   {
@@ -599,35 +526,11 @@
     "named": false
   },
   {
-    "type": "C",
+    "type": "[",
     "named": false
   },
   {
-    "type": "D",
-    "named": false
-  },
-  {
-    "type": "I",
-    "named": false
-  },
-  {
-    "type": "M",
-    "named": false
-  },
-  {
-    "type": "R",
-    "named": false
-  },
-  {
-    "type": "U",
-    "named": false
-  },
-  {
-    "type": "W",
-    "named": false
-  },
-  {
-    "type": "Y",
+    "type": "]",
     "named": false
   },
   {
@@ -635,15 +538,7 @@
     "named": false
   },
   {
-    "type": "iso_date",
-    "named": true
-  },
-  {
-    "type": "iso_date_time",
-    "named": true
-  },
-  {
-    "type": "iso_time",
+    "type": "name",
     "named": true
   },
   {

@@ -1,53 +1,28 @@
 ============
 With do-date
 ============
-[x] context test @2019-01-01 12:01 AM D120
+[x] meeting with team @2025-01-20T14:30 D90
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (do_date_or_time
-    (do_date_icon)
-    (extended_date_and_time
-     (date_and_time
-      (date
-       (year)
-       (month)
-       (day))
-      (time
-       (hour)
-       (minute)))
-     (duration
-      (duration_designator)
-      (duration_value)))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (do_date)))
 
 ===================
 with completed date
 ===================
-[x] context test %2019-01-01 12:01 AM
+[x] finish report %2025-01-19T16:45
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (completed_date
-    (date_and_time
-     (date
-      (year)
-      (month)
-      (day))
-     (time
-      (hour)
-      (minute)))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (completed_date)))
 
 ============================
 with recurring daily do-date
@@ -56,33 +31,11 @@ with recurring daily do-date
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (do_date_or_time
-    (do_date_icon)
-    (extended_date_and_time
-     (date_and_time
-      (date
-       (year)
-       (month)
-       (day))
-      (time
-       (hour)
-       (minute)))
-     (duration
-      (duration_designator)
-      (duration_value)))
-    (recurrance
-     (recurrance_icon)
-     (recurrance_structure
-      (daily_recurrance
-       (time
-	(hour)
-	(minute)))))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (do_date)))
 
 =============================
 with recurring weekly do-date
@@ -91,31 +44,8 @@ with recurring weekly do-date
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (do_date_or_time
-    (do_date_icon)
-    (extended_date_and_time
-     (date_and_time
-      (date
-       (year)
-       (month)
-       (day))
-      (time
-       (hour)
-       (minute)))
-     (duration
-      (duration_designator)
-      (duration_value)))
-    (recurrance
-     (recurrance_icon)
-     (recurrance_structure
-      (weekly_recurrance
-       (weekly_recurrance_days)
-       (time
-	(hour)
-	(minute)))))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (do_date)))

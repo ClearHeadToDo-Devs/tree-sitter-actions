@@ -1,41 +1,13 @@
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))
-  (child_action_list
-   (child_action
-    (child_icon)
-    (core_action
-     (state 
-      (not_started))
-     (name))
-    (grandchild_action_list
-     (grandchild_action
-      (grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-      (great_grandchild_action_list
-       (great_grandchild_action
-	(great_grandchild_icon)
-	(core_action
-	 (state 
-	  (not_started))
-	 (name))
-	(double_great_grandchild_action_list
-	 (double_great_grandchild_action
-	  (double_great_grandchild_icon)
-	  (core_action
-	   (state 
-	    (not_started))
-	   (name))
-	  (leaf_action_list
-	   (leaf_action
-	    (leaf_icon)
-	    (core_action
-	     (state 
-	      (not_started))
-	     (name))))))))))))))
+(source_file [0, 0] - [4, 0]
+  (root_action [0, 0] - [3, 19]
+    state: (state [0, 0] - [0, 3])
+    name: (name [0, 3] - [0, 15])
+    child: (depth1_action [1, 0] - [2, 21]
+      state: (state [1, 1] - [1, 4])
+      name: (name [1, 4] - [1, 19])
+      child: (depth2_action [2, 0] - [2, 21]
+        state: (state [2, 2] - [2, 5])
+        name: (name [2, 5] - [2, 21])))
+    child: (depth1_action [3, 0] - [3, 19]
+      state: (state [3, 1] - [3, 4])
+      name: (name [3, 4] - [3, 19]))))

@@ -1,6 +1,6 @@
 (root_action) @fold
-(child_action) @fold
-(grandchild_action) @fold
-(great_grandchild_action) @fold
-(root_action) @fold
-
+(depth1_action) @fold
+(depth2_action) @fold
+(depth3_action) @fold
+(depth4_action) @fold
+(depth5_action) @fold

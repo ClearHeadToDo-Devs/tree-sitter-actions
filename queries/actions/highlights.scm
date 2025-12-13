@@ -1,16 +1,14 @@
-(child_icon) @markup.heading.2
-(grandchild_icon) @markup.heading.3
-(great_grandchild_icon) @markup.heading.4
-(leaf_icon) @markup.heading.5
+; State markers
+(state) @keyword
 
-(desc_icon) @comment
-(priority_icon) @character.special
-
+; Action content
 (name) @spell
 (description) @spell
-(id (#set! conceal "|")) @conceal
 
-(completed) @comment.note
-(in_progress) @comment.todo
-(blocked) @comment.warning
-(cancelled) @comment.error
+; Metadata
+(priority) @number
+(story) @type
+(context) @tag
+(do_date) @string.special
+(completed_date) @string.special
+(id) @constant

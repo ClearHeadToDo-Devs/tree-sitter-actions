@@ -1,28 +1,5 @@
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (do_date_or_time
-    (do_date_icon)
-    (extended_date_and_time
-     (date_and_time
-      (date
-       (year)
-       (month)
-       (day))
-      (time
-       (hour)
-       (minute)))
-     (duration
-      (duration_designator)
-      (duration_value)))
-    (recurrance
-     (recurrance_icon)
-     (recurrance_structure
-      (weekly_recurrance
-       (weekly_recurrance_days)
-       (time
-	(hour)
-	(minute)))))))))
+(source_file [0, 0] - [1, 0]
+  (root_action [0, 0] - [0, 60]
+    state: (state [0, 0] - [0, 3])
+    name: (name [0, 3] - [0, 17])
+    metadata: (do_date [0, 17] - [0, 60])))

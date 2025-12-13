@@ -1,14 +1,5 @@
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (id
-    (id_icon)
-    (uuid
-     (uuid_time_high)
-     (uuid_time_mid)
-     (uuid_version_random)
-     (uuid_variant_random)
-     (uuid_random))))))
+(source_file [0, 0] - [1, 0]
+  (root_action [0, 0] - [0, 50]
+    state: (state [0, 0] - [0, 3])
+    name: (name [0, 3] - [0, 17])
+    metadata: (id [0, 17] - [0, 50])))

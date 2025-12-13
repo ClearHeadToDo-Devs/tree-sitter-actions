@@ -5,91 +5,51 @@ Basic Root Action
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)))
 
 =============
 With Children
 =============
-[ ] root test
-	> [ ] child action
-		>> [ ] grandchild action
-			>>> [ ] great grandchild action
-				>>>> [ ] double-great grandchild action
-				>>>>> [ ] Leaf action
+[x] Parent task
+>[ ] Child task one
+>>[ ] Grandchild task
+>[ ] Child task two
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))
-  (child_action_list
-   (child_action
-    (child_icon)
-    (core_action
-     (state 
-      (not_started))
-     (name))
-    (grandchild_action_list
-     (grandchild_action
-      (grandchild_icon)
-      (core_action
-       (state 
-	(not_started))
-       (name))
-      (great_grandchild_action_list
-       (great_grandchild_action
-	(great_grandchild_icon)
-	(core_action
-	 (state 
-	  (not_started))
-	 (name))
-	(double_great_grandchild_action_list
-	 (double_great_grandchild_action
-	  (double_great_grandchild_icon)
-	  (core_action
-	   (state 
-	    (not_started))
-	   (name))
-	  (leaf_action_list
-	   (leaf_action
-	    (leaf_icon)
-	    (core_action
-	     (state 
-	      (not_started))
-	     (name))))))))))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    child: (depth1_action
+      state: (state)
+      name: (name)
+      child: (depth2_action
+        state: (state)
+        name: (name)))
+    child: (depth1_action
+      state: (state)
+      name: (name))))
 
 ================================
 Children Followed by Root Action
 ================================
-[ ] test
-  > [ ] Child Action
-[ ] Another Root
+[ ] First root task
+>[ ] Child of first
+[ ] Second root task
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (not_started))
-   (name))
-  (child_action_list
-   (child_action
-    (child_icon)
-    (core_action
-     (state
-      (not_started))
-     (name)))))
- (root_action
-  (core_action
-   (state
-    (not_started))
-    (name))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    child: (depth1_action
+      state: (state)
+      name: (name)))
+  (root_action
+    state: (state)
+    name: (name)))

@@ -1,36 +1,28 @@
 ================
 With Description
 ================
-[x] long $ with description
+[x] buy milk $ from the organic section
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (description
-    (desc_icon)
-    (description_text)))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (description)))
 
 =============
 With Priority
 =============
-[x] priority !1
+[x] buy groceries !1
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (priority
-    (priority_icon)
-    (priority_number)))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (priority)))
 
 ==========
 With Story
@@ -39,119 +31,47 @@ With Story
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name))
-   (story
-    (story_icon)
-    (story_name))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (story)))
 
 ============
 With Context
 ============
-[x] context test +test_context,another_context
+[ ] send email +office,computer
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (context_list
-    (context_icon)
-    (context_text)
-    (context_separator)
-    (context_text)))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (context)))
 
 ===============
 With Id no dash
 ===============
-(x) id test #01951111cfa6718db303d7107f4005b3
+[x] task with id #01951111cfa6718db303d7107f4005b3
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (id
-    (id_icon)
-    (uuid
-     (uuid_time_high)
-     (uuid_time_mid)
-     (uuid_version_random)
-     (uuid_variant_random)
-     (uuid_random))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (id)))
 
 =================
 With Id with dash
 =================
-(x) id test #01951111-cfa6-718d-b303-d7107f4005b3
+[x] task with id #01951111-cfa6-718d-b303-d7107f4005b3
 
 ---
 
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (id
-    (id_icon)
-    (uuid
-     (uuid_time_high)
-     (uuid_time_mid)
-     (uuid_version_random)
-     (uuid_variant_random)
-     (uuid_random))))))
-
-===============
-With Id no dash
-===============
-[x] id test #01951111cfa6718db303d7107f4005b3
-
----
-
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (id
-    (id_icon)
-    (uuid
-     (uuid_time_high)
-     (uuid_time_mid)
-     (uuid_version_random)
-     (uuid_variant_random)
-     (uuid_random))))))
-
-=================
-With Id with dash
-=================
-[x] id test #01951111-cfa6-718d-b303-d7107f4005b3
-
----
-
-(action_list
- (root_action
-  (core_action
-   (state 
-    (completed))
-   (name)
-   (id
-    (id_icon)
-    (uuid
-     (uuid_time_high)
-     (uuid_time_mid)
-     (uuid_version_random)
-     (uuid_variant_random)
-     (uuid_random))))))
+(source_file
+  (root_action
+    state: (state)
+    name: (name)
+    metadata: (id)))
