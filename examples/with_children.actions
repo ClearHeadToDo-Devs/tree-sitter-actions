@@ -1,4 +1,4 @@
-(x) Parent task
->( ) Child task one
->>( ) Grandchild task
->( ) Child task two
+[x] Parent task
+>[ ] Child task one
+>>[ ] Grandchild task
+>[ ] Child task two

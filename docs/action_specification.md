@@ -308,7 +308,7 @@ here, we are trying to leave the door open for applications to go in later and u
 As we have laid out above, we have quite an array of options when it comes to how much or how little information to give.
 
 To give the most minimal example possible, we can see below:
-`( ) Test Action`
+`[ ] Test Action`
 
 This hopefully serves to show that these should be able to be short, with the ability to read for a human without structured editing able to go through
 
@@ -316,7 +316,7 @@ This hopefully serves to show that these should be able to be short, with the ab
 As we saw, many optional pieces of context can be added so here is an example of an action that has much more of these optional parameters:
 
 ```actions
-(x) Go to the store for chicken
+[x] Go to the store for chicken
     $ Make sure you get the stuff from the butcher directly
     !1 
     *Run Errands
@@ -334,5 +334,5 @@ Finally, it was part of the Driving, Store, and Market contexts and contains ext
 ## Adding Children
 Finally, we will do a showcase of the format for those actions with child actions:
 ```actions
-( ) Parent Action >( ) Child Action
+[ ] Parent Action >[ ] Child Action
 ```
