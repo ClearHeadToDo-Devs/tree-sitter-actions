@@ -1,19 +1,31 @@
-//! This crate provides Actions language support for the [tree-sitter][] parsing library.
+//! Tree-sitter parser for the `.actions` file format.
 //!
-//! Typically, you will use the [LANGUAGE][] constant to add this language to a
-//! tree-sitter [Parser][], and then use the parser to parse some code:
+//! # Parsing
+//!
+//! Use the [LANGUAGE] constant to parse `.actions` files:
 //!
 //! ```
-//! let code = r#"
-//! "#;
+//! let code = "[ ] Buy milk\n!1\n";
 //! let mut parser = tree_sitter::Parser::new();
-//! let language = tree_sitter_actions::LANGUAGE;
 //! parser
-//!     .set_language(&language.into())
-//!     .expect("Error loading ClearHead Actions parser");
+//!     .set_language(&tree_sitter_actions::LANGUAGE.into())
+//!     .expect("Error loading Actions parser");
 //! let tree = parser.parse(code, None).unwrap();
 //! assert!(!tree.root_node().has_error());
 //! ```
+//!
+//! # Testing with Examples
+//!
+//! The [examples] module provides example `.actions` files organized by category:
+//!
+//! ```
+//! use tree_sitter_actions::examples;
+//!
+//! let priority_example = examples::properties::WITH_PRIORITY;
+//! let children_example = examples::children::WITH_CHILDREN;
+//! ```
+//!
+//! All examples are embedded at compile time, so there's no runtime I/O.
 //!
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
@@ -77,5 +89,21 @@ mod tests {
             with_everything_test.contains_key("content"),
             "Content for with_everything should exist"
         );
+    }
+
+    #[test]
+    fn test_examples_module_accessible() {
+        // Test that the examples module constants are accessible and contain content
+        let priority_example = super::examples::properties::WITH_PRIORITY;
+        assert!(!priority_example.is_empty(), "Priority example should not be empty");
+        assert!(priority_example.contains("!1"), "Priority example should contain priority marker");
+
+        let children_example = super::examples::children::WITH_CHILDREN;
+        assert!(!children_example.is_empty(), "Children example should not be empty");
+        assert!(children_example.contains(">"), "Children example should contain child marker");
+
+        let everything_example = super::examples::actions::WITH_EVERYTHING;
+        assert!(!everything_example.is_empty(), "Everything example should not be empty");
+        assert!(everything_example.contains("Mega Action"), "Everything example should contain action text");
     }
 }

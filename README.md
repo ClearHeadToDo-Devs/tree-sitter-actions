@@ -14,6 +14,8 @@ A simple Tree Sitter parser for the custom `.actions` file format.
 3. Use the parser in your project as needed, directly with the CLI is fine
   - we can also build the parser into other apps by using this as a library in a client applications
   - or maybe you have an editor that supports tree-sitter grammars, you can use this grammar to get syntax highlighting and other features for `.actions` files!
+
+For detailed usage examples (Rust library, editors, other languages), see [docs/usage.md](docs/usage.md).
 # Tree Sitter Action File Format Parser
 This is a simple parser for the custom `.actions` [File Format](docs/action_specification.md) to be used in whatever form may be needed.
 
@@ -62,51 +64,17 @@ This is to serve as a simple file format that can be used in several contexts:
   - Still, for this purpose, we needed more things than what we got
 
 # Development and Testing
-If you want to review something about the grammer itself, you can run tests like so:
+
+Tests are organized into `examples/`, `test/trees/`, and `test/corpus/` directories that work together to enable reuse by downstream projects.
+
+Run tests:
 ```bash
 npm run test:grammar
-# or directly:
-tree-sitter test
 ```
 
-now, these tests are not your usual unit tests, they were split into three separate categories:
-- `examples/` - should be full of valid (unless otherwise noted) `.actions` files that can be parsed fully for testing directly and in the test suite
-- within the `test/` folder, we have:
-  - `trees/` - which contains _the expected parse trees for the equivalently named example file in `examples/`_
-  - `test_descriptions/` - which is a simple JSON file that contains
-    - the name of each test file
-    - followed by the list of test names
-    - and their descriptions
-      - each name in this file should correspond to a file in the `examples/` folder, which should, in-turn, have a proper tree file in `trees/`
-  - `corpus/` the actual test files that are generated using the scripts described below
-- finally, the `scripts/` folder contains helper scripts to regenerate test files
-
-## Regenerating Test Files
-
-When you modify the grammar or add new examples, you need to regenerate the test files:
-
+Regenerate tests after modifying the grammar or examples:
 ```bash
-# Regenerate everything and verify tests pass:
 npm run regen:verify
-
-# Or run steps individually:
-npm run regen:trees    # Generate .sexp files from examples
-npm run regen:corpus   # Generate corpus files from trees
-npm run test:grammar   # Run tree-sitter tests
 ```
 
-The workflow is:
-1. **`regen:trees`** - Parses all `.actions` files in `examples/` and generates corresponding `.sexp` tree files
-2. **`regen:corpus`** - Combines examples, trees, and descriptions into test corpus files
-3. **`test:grammar`** - Runs tree-sitter test suite against the corpus
-
-This should be done whenever:
-- You modify `grammar.js`
-- You add/modify files in `examples/`
-- You update test descriptions
-
-## But... why so much complexity?
-Breaking up the normal test files does some wonderful things:
-- With files having separate formats, we can read `actions` in the examples folder and easily test, `sexp` trees in the trees folder, and descriptions in the test_descriptions folder
-  - This makes it easy to read and edit each part of the test suite without having to parse through a giant file
-  - in addition, it allows downstream users to use parts or all of these data pieces to build their own test suites against the same examples we outline here
+For details on the test architecture, build system, and contributing workflow, see [docs/contributing.md](docs/contributing.md).

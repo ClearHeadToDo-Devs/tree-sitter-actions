@@ -1,0 +1,223 @@
+# Usage Guide
+
+This guide shows how to use the tree-sitter-actions parser in different contexts.
+
+## As a Command-Line Tool
+
+Parse and inspect `.actions` files using the tree-sitter CLI:
+
+```bash
+# Parse a file and show the syntax tree
+tree-sitter parse examples/with_priority.actions
+
+# Test the grammar
+tree-sitter test
+```
+
+See the [README](../README.md#development-and-testing) for development workflow details.
+
+## As a Rust Library
+
+### Basic Parsing
+
+Add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+tree-sitter = "0.25"
+tree-sitter-actions = "0.4"
+```
+
+Parse `.actions` files:
+
+```rust
+use tree_sitter::{Parser, TreeCursor};
+use tree_sitter_actions::LANGUAGE;
+
+fn main() {
+    let source_code = "[ ] Buy milk\n!1\n";
+
+    let mut parser = Parser::new();
+    parser
+        .set_language(&LANGUAGE.into())
+        .expect("Error loading Actions parser");
+
+    let tree = parser.parse(source_code, None).unwrap();
+    let root_node = tree.root_node();
+
+    println!("{}", root_node.to_sexp());
+}
+```
+
+### Testing with Examples
+
+The library includes all example files for testing your parser implementation:
+
+```rust
+use tree_sitter_actions::examples;
+
+#[test]
+fn test_parse_priority() {
+    let input = examples::properties::WITH_PRIORITY;
+    // input contains: "[x] context test !1\n"
+
+    let parsed = my_parse_to_struct(input);
+    assert_eq!(parsed.priority, Some(1));
+    assert!(parsed.completed);
+}
+
+#[test]
+fn test_parse_children() {
+    let input = examples::children::WITH_CHILDREN;
+    // input contains a parent task with child tasks
+
+    let parsed = my_parse_to_struct(input);
+    assert_eq!(parsed.children.len(), 2);
+    assert_eq!(parsed.children[0].children.len(), 1); // grandchild
+}
+
+#[test]
+fn test_parse_dates() {
+    let input = examples::dates::WITH_DO_DATE;
+
+    let parsed = my_parse_to_struct(input);
+    assert!(parsed.do_date.is_some());
+}
+```
+
+### Available Example Categories
+
+Examples are organized by category:
+
+- `examples::properties::*` - Priority, description, story, context, ID
+  - `WITH_PRIORITY`
+  - `WITH_DESCRIPTION`
+  - `WITH_STORY`
+  - `WITH_CONTEXT`
+  - `WITH_ID_NO_DASH`
+  - `WITH_ID_WITH_DASH`
+
+- `examples::children::*` - Hierarchical task structures
+  - `MINIMAL`
+  - `WITH_CHILDREN`
+  - `WITH_CHILDREN_AND_SECOND_ROOT`
+
+- `examples::dates::*` - Date-related properties
+  - `WITH_DO_DATE`
+  - `WITH_COMPLETED_DATE`
+  - `WITH_RECURRING_DAILY_DO_DATE`
+  - `WITH_RECURRING_WEEKLY_DO_DATE`
+
+- `examples::actions::*` - Complex examples
+  - `WITH_EVERYTHING` - An action with all possible properties
+
+All examples are `&'static str` constants embedded at compile time, so there's no runtime I/O overhead.
+
+### Walking the Syntax Tree
+
+Use tree-sitter's cursor API to traverse parsed actions:
+
+```rust
+use tree_sitter::TreeCursor;
+
+fn walk_tree(cursor: &mut TreeCursor) {
+    loop {
+        let node = cursor.node();
+        println!("{}: {}", node.kind(), node.utf8_text(source).unwrap());
+
+        if cursor.goto_first_child() {
+            walk_tree(cursor);
+            cursor.goto_parent();
+        }
+
+        if !cursor.goto_next_sibling() {
+            break;
+        }
+    }
+}
+```
+
+See the [actions specification](action_specification.md) for details on the grammar and node types.
+
+## In Text Editors
+
+Tree-sitter grammars can be used in editors for syntax highlighting, folding, and indentation.
+
+### Neovim
+
+Add to your tree-sitter config:
+
+```lua
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.actions = {
+  install_info = {
+    url = "https://github.com/clearheadtodo-devs/tree-sitter-actions",
+    files = {"src/parser.c", "src/scanner.c"},
+    branch = "master",
+  },
+  filetype = "actions",
+}
+```
+
+Then run `:TSInstall actions` in Neovim.
+
+### Other Editors
+
+Consult your editor's tree-sitter plugin documentation:
+- **Helix**: Add to `languages.toml`
+- **Emacs**: Use `tree-sitter-langs`
+- **VS Code**: Use a tree-sitter extension
+
+## In Other Languages
+
+Tree-sitter has bindings for many languages. The grammar in this repository can be used with:
+
+- **JavaScript/TypeScript**: `npm install tree-sitter-actions`
+- **Python**: Use `py-tree-sitter` with this grammar
+- **Go**: Use `go-tree-sitter`
+- **Rust**: As shown above
+
+The examples in `examples/` directory are available in the published packages and can be used for testing in any language.
+
+## Common Patterns
+
+### Validating Actions Files
+
+```rust
+fn validate_actions_file(source: &str) -> Result<(), String> {
+    let mut parser = Parser::new();
+    parser.set_language(&LANGUAGE.into()).unwrap();
+
+    let tree = parser.parse(source, None)
+        .ok_or("Failed to parse")?;
+
+    if tree.root_node().has_error() {
+        return Err("Parse errors found".to_string());
+    }
+
+    Ok(())
+}
+```
+
+### Converting to Data Structures
+
+```rust
+struct Action {
+    completed: bool,
+    title: String,
+    priority: Option<u8>,
+    children: Vec<Action>,
+}
+
+fn parse_action(node: Node, source: &str) -> Action {
+    // Walk the tree and extract fields
+    // See the specification for node types
+    todo!()
+}
+```
+
+## Further Reading
+
+- [README](../README.md) - Project overview and development workflow
+- [Action Specification](action_specification.md) - Grammar and file format details
+- [Rust Bindings](rust-bindings.md) - How the Rust package is built (maintainers)

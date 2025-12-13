@@ -32,7 +32,50 @@ fn generate_test_data_file() {
     let dest_path = std::path::Path::new(&out_dir).join("generated_tests.rs");
 
     let mut file_content = String::new();
+
+    // Generate the examples module with organized constants
+    file_content.push_str("/// Example `.actions` files organized by category.\n");
+    file_content.push_str("///\n");
+    file_content.push_str("/// These examples are useful for testing parsers and downstream tools\n");
+    file_content.push_str("/// that work with the `.actions` file format.\n");
+    file_content.push_str("///\n");
+    file_content.push_str("/// # Example\n");
+    file_content.push_str("/// ```\n");
+    file_content.push_str("/// use tree_sitter_actions::examples;\n");
+    file_content.push_str("///\n");
+    file_content.push_str("/// let content = examples::properties::WITH_PRIORITY;\n");
+    file_content.push_str("/// // Use content in your tests...\n");
+    file_content.push_str("/// ```\n");
+    file_content.push_str("pub mod examples {\n");
+
+    for (category, tests) in &test_data {
+        // Convert category name to valid Rust module name (e.g., "actions" -> "actions")
+        file_content.push_str(&format!("    /// Examples for {}\n", category));
+        file_content.push_str(&format!("    pub mod {} {{\n", category));
+
+        for (test_name, _) in tests {
+            // Convert test name to SCREAMING_SNAKE_CASE for constant
+            let const_name = test_name.to_uppercase();
+
+            file_content.push_str(&format!(
+                "        /// Example: {}\n",
+                test_name.replace('_', " ")
+            ));
+            file_content.push_str(&format!(
+                "        pub const {}: &str = include_str!(concat!(env!(\"CARGO_MANIFEST_DIR\"), \"/examples/{}.actions\"));\n",
+                const_name, test_name
+            ));
+        }
+
+        file_content.push_str("    }\n\n");
+    }
+
+    file_content.push_str("}\n\n");
+
+    // Keep the old get_test_data() function for backwards compatibility
     file_content.push_str("/// Get test files data generated at compile time\n");
+    file_content.push_str("///\n");
+    file_content.push_str("/// **Note:** Consider using the `examples` module for easier access to example files.\n");
     file_content.push_str(
         "pub fn get_test_data() -> std::collections::HashMap<String, std::collections::HashMap<String, std::collections::HashMap<String, String>>> {\n",
     );
