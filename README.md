@@ -54,6 +54,118 @@ This is to serve as a simple file format that can be used in several contexts:
   - Enables downstream tools to validate their JSON exports match the [canonical format](docs/action_specification.md#json-serialization-format)
 - As a reading tool for things like LLM agents who actually prefer viewing data as AST trees rather than plaintext when it comes to reading data
 
+# Querying Actions
+
+Once you've parsed `.actions` files, you'll need to query and filter the data. This project provides three complementary approaches depending on your needs:
+
+## Tree-Sitter Queries (Structural Pattern Matching)
+
+**Best for:** Editor features, simple filtering, syntax-level tasks
+
+Tree-sitter queries work directly on the AST without conversion. Great for:
+- Syntax highlighting and code folding in editors
+- Finding actions by simple patterns (all P1 actions, completed items, etc.)
+- Quick filtering without data conversion overhead
+
+```bash
+# Find all priority 1 actions
+tree-sitter query queries/actions/p1-actions.scm examples/with_priority.actions
+
+# Find all completed actions
+tree-sitter query queries/actions/completed-actions.scm examples/*.actions
+```
+
+**Example queries provided:**
+- State filters: `completed-actions.scm`, `not-started.scm`, `in-progress.scm`, `blocked-actions.scm`
+- Priority filters: `p1-actions.scm`
+- Structure filters: `with-children.scm`, `with_specific_story.scm`
+
+See [`queries/actions/`](queries/actions/) for all available queries and usage examples.
+
+## JSON + jq (Data Pipeline Processing)
+
+**Best for:** Ad-hoc queries, Unix pipelines, one-off scripts
+
+After converting `.actions` to JSON (using the canonical [JSON Schema](schema/actions.schema.json)), use `jq` for powerful filtering and transformations:
+
+```bash
+# Find P1 actions (assuming you have actions-to-json converter)
+actions-to-json tasks.actions | jq -f examples/queries/jq/p1-actions.jq
+
+# Get completion statistics by project
+jq -f examples/queries/jq/completion-stats.jq tasks.json
+
+# Filter by context
+jq -f examples/queries/jq/by-context.jq --arg ctx "work" tasks.json
+```
+
+**Example queries provided:**
+- Filters: `p1-actions.jq`, `completed-actions.jq`, `by-context.jq`, `by-story.jq`
+- Aggregations: `completion-stats.jq`, `priority-summary.jq`
+- Transformations: `flatten-all.jq`, `with-children.jq`
+
+See [`examples/queries/jq/`](examples/queries/jq/) for all examples and usage patterns.
+
+## SQL (Application Storage)
+
+**Best for:** Applications, persistent storage, complex queries at scale
+
+The canonical [SQL schema](schema/actions.sql) provides normalized relational storage for applications that need:
+- Complex multi-criteria queries with indexes
+- Persistent storage and concurrent access
+- Relational aggregations and reporting
+- Integration with existing database systems
+
+```sql
+-- Find P1 actions in 'work' context due this week
+SELECT a.* FROM actions a
+JOIN action_contexts c ON a.id = c.action_id
+WHERE a.priority = 1
+  AND c.context = 'work'
+  AND a.do_datetime >= date('now', 'weekday 0', '-7 days');
+
+-- Completion rate by project
+SELECT story,
+       COUNT(*) as total,
+       SUM(CASE WHEN state = 'completed' THEN 1 ELSE 0 END) as completed
+FROM actions
+WHERE story IS NOT NULL
+GROUP BY story;
+```
+
+**Schema includes:**
+- Normalized tables: `actions`, `action_contexts`, `action_recurrence`
+- Indexes for common query patterns
+- Views for convenient access
+- Adapts to SQLite, PostgreSQL, MySQL
+
+See [`schema/actions.sql`](schema/actions.sql) for the complete schema and [`examples/queries/sql/`](examples/queries/sql/) for 40+ example queries.
+
+## Which Approach to Use?
+
+| Use Case | Recommended Approach | Why |
+|----------|---------------------|-----|
+| Editor syntax highlighting | Tree-sitter queries | Native, fast, no conversion |
+| Quick filter in terminal | Tree-sitter or jq | Minimal overhead |
+| One-off data analysis | jq | Powerful, composable, no setup |
+| Task management app | SQL | Persistent, indexed, concurrent |
+| Complex reports | SQL | Aggregations, joins, performance |
+| Pipeline processing | jq | Unix philosophy, composable |
+
+**You can use multiple approaches together:**
+```bash
+# Parse → JSON → jq filter → SQL import → complex queries
+actions-to-json tasks.actions | \
+  jq '.actions[] | select(.priority == 1)' | \
+  sqlite3 myapp.db < import-filtered.sql
+```
+
+For complete documentation on querying, see:
+- [Action Specification](docs/action_specification.md) - Includes JSON and SQL serialization formats
+- [`queries/actions/README.md`](queries/actions/README.md) - Tree-sitter query patterns
+- [`examples/queries/jq/README.md`](examples/queries/jq/README.md) - jq query examples
+- [`examples/queries/sql/README.md`](examples/queries/sql/README.md) - SQL query examples
+
 # Inspirations
 - [Neovim](https://neovim.io/) was one of the first editors to use tree-sitter for syntax highlighting and code understanding and gave me a glimpse into the power and speed of tree-sitter
 - [Todoist](https://www.todoist.com/) has been my main GTD tool, and while i want to create a FOSS alternative here, much of my design language has come from using todoist for years
