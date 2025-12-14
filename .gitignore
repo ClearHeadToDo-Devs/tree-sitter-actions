@@ -50,3 +50,5 @@ test/corpus/*.txt
 Cargo.lock
 
 bindings/rust/generated_tests.rs
+
+node_modules/*
