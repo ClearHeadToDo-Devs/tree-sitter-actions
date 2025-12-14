@@ -180,6 +180,45 @@ Tree-sitter has bindings for many languages. The grammar in this repository can 
 
 The examples in `examples/` directory are available in the published packages and can be used for testing in any language.
 
+### JavaScript/TypeScript Schema Access
+
+Both schemas are available in the npm package:
+
+```javascript
+// Import JSON Schema for validation
+import jsonSchema from 'tree-sitter-actions/schema';
+
+// Validate serialized data
+import Ajv from 'ajv';
+const ajv = new Ajv();
+const validate = ajv.compile(jsonSchema);
+const valid = validate(yourActionsData);
+if (!valid) console.error(validate.errors);
+```
+
+```javascript
+// Import SQL Schema for database initialization
+import { readFileSync } from 'fs';
+import sqlSchema from 'tree-sitter-actions/schema/sql';
+
+// For ESM, you'll need to read it as text
+// The schema is exported as a file path, read it:
+const sql = readFileSync(new URL('tree-sitter-actions/schema/sql', import.meta.url), 'utf-8');
+
+// Or in CommonJS:
+const sql = require('fs').readFileSync(
+  require.resolve('tree-sitter-actions/schema/sql'),
+  'utf-8'
+);
+
+// Apply to SQLite (using better-sqlite3)
+import Database from 'better-sqlite3';
+const db = new Database('tasks.db');
+db.exec(sql);
+```
+
+**Note:** The SQL schema is a reference implementation - customize it for your needs (add user_id, timestamps, custom indexes, etc.).
+
 ## Common Patterns
 
 ### Validating Actions Files
@@ -263,6 +302,60 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 jsonschema = "0.18"
 ```
+
+### Using the SQL Schema for Persistent Storage
+
+The library includes a reference SQL schema for applications that need database storage:
+
+```rust
+use tree_sitter_actions::ACTIONS_SQL_SCHEMA;
+use rusqlite::Connection;
+
+fn initialize_database(db_path: &str) -> Result<Connection, Box<dyn std::error::Error>> {
+    // Create or open the database
+    let conn = Connection::open(db_path)?;
+
+    // Apply the reference schema
+    conn.execute_batch(ACTIONS_SQL_SCHEMA)?;
+
+    Ok(conn)
+}
+```
+
+**The SQL schema is a reference implementation** - use it as a starting point and customize as needed:
+
+```rust
+// Option 1: Use it directly
+let conn = initialize_database("tasks.db")?;
+
+// Option 2: Extract and customize it
+use std::fs::File;
+use std::io::Write;
+
+let mut file = File::create("custom_schema.sql")?;
+file.write_all(ACTIONS_SQL_SCHEMA.as_bytes())?;
+// Edit custom_schema.sql to add:
+// - user_id fields for multi-user systems
+// - created_at/updated_at timestamps
+// - deleted_at for soft deletes
+// - Custom indexes for your query patterns
+```
+
+**Why use the reference schema?**
+- Proven normalized structure for actions data
+- Includes indexes for common query patterns
+- Enables interoperability between tools using the same schema
+- Well-documented in the [specification](action_specification.md#sql-storage-schema)
+
+**Dependencies needed:**
+```toml
+[dependencies]
+tree-sitter-actions = "0.4"
+rusqlite = "0.32"  # For SQLite
+# Or use postgres, mysql, etc.
+```
+
+**Note:** The schema is designed for SQLite but can be adapted for PostgreSQL, MySQL, or other databases. See the [SQL Storage Schema documentation](action_specification.md#sql-storage-schema) for adaptation guidelines.
 
 ## Further Reading
 

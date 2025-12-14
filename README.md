@@ -48,10 +48,16 @@ This is to serve as a simple file format that can be used in several contexts:
 - As a core parsing library for downstream projects like the rust CLI im working on
   - Allows the bulk of the parsing to be done by this grammar, with things like the CLI and guis just using the tree to generate data and do their own functionality
     - In particular, being able to parse this data, put it into a proper data structure or even database, and then re-encode the data back into the `.actions` format is a key usecase
-- **JSON Schema for validation** - The repository provides a canonical [JSON Schema](schema/actions.schema.json) for validating serialized `.actions` data
-  - Generated from the same regex patterns used by the parser to ensure consistency
-  - Available in both npm package (`tree-sitter-actions/schema`) and Rust crate (`ACTIONS_SCHEMA` constant)
-  - Enables downstream tools to validate their JSON exports match the [canonical format](docs/action_specification.md#json-serialization-format)
+- **Schemas for validation and storage** - The repository provides bundled schemas for downstream tools:
+  - **JSON Schema** - Canonical [JSON Schema](schema/actions.schema.json) for validating serialized `.actions` data
+    - Generated from the same regex patterns used by the parser to ensure consistency
+    - Available in npm package (`tree-sitter-actions/schema`) and Rust crate (`ACTIONS_SCHEMA` constant)
+    - Validates JSON exports match the [canonical format](docs/action_specification.md#json-serialization-format)
+  - **SQL Schema** - Reference [SQL schema](schema/actions.sql) for persistent database storage
+    - Normalized relational schema designed for SQLite (adaptable to PostgreSQL, MySQL, etc.)
+    - Available in npm package (`tree-sitter-actions/schema/sql`) and Rust crate (`ACTIONS_SQL_SCHEMA` constant)
+    - Use as-is or customize for your application (add user_id, timestamps, etc.)
+    - See [SQL storage documentation](docs/action_specification.md#sql-storage-schema) for details
 - As a reading tool for things like LLM agents who actually prefer viewing data as AST trees rather than plaintext when it comes to reading data
 
 # Querying Actions

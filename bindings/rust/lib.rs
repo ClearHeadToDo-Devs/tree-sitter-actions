@@ -27,7 +27,9 @@
 //!
 //! All examples are embedded at compile time, so there's no runtime I/O.
 //!
-//! # JSON Schema Validation
+//! # Schemas for Validation and Storage
+//!
+//! ## JSON Schema (Validation)
 //!
 //! The [ACTIONS_SCHEMA] constant provides a JSON Schema for validating serialized data.
 //! Use this when exporting parsed `.actions` data to JSON format:
@@ -40,7 +42,18 @@
 //! validator.validate(&your_json_data)?;
 //! ```
 //!
-//! The schema is generated from the same patterns used by the parser, ensuring consistency.
+//! The JSON schema is generated from the same patterns used by the parser, ensuring consistency.
+//!
+//! ## SQL Schema (Reference Implementation)
+//!
+//! The [ACTIONS_SQL_SCHEMA] constant provides a reference SQL schema for applications that
+//! need persistent storage. Use it as a starting point and customize as needed:
+//!
+//! ```rust,ignore
+//! // Initialize a database with the reference schema
+//! let conn = rusqlite::Connection::open("tasks.db")?;
+//! conn.execute_batch(tree_sitter_actions::ACTIONS_SQL_SCHEMA)?;
+//! ```
 //!
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
@@ -100,6 +113,39 @@ pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 /// When building tools that export `.actions` data to JSON (like CLIs or APIs),
 /// use this schema to validate your output matches the canonical format.
 pub const ACTIONS_SCHEMA: &str = include_str!("../../schema/actions.schema.json");
+
+/// Reference SQL schema for storing `.actions` data in relational databases.
+///
+/// This schema provides a canonical relational mapping as documented in
+/// the [action specification](https://github.com/clearheadtodo-devs/tree-sitter-actions/blob/master/docs/action_specification.md#sql-storage-schema).
+///
+/// The schema is designed for SQLite but can be adapted for PostgreSQL, MySQL, or other
+/// relational databases. It represents a proven, normalized approach to storing actions data.
+///
+/// # Example: Initializing a Database
+///
+/// ```rust,ignore
+/// use rusqlite::Connection;
+///
+/// // Create a new SQLite database
+/// let conn = Connection::open("tasks.db")?;
+///
+/// // Apply the reference schema
+/// conn.execute_batch(tree_sitter_actions::ACTIONS_SQL_SCHEMA)?;
+/// ```
+///
+/// # Use Case
+///
+/// When building applications that need persistent storage (like task management apps or CLIs),
+/// use this schema as a starting point. You can customize it by adding fields like:
+/// - `user_id` for multi-user systems
+/// - `created_at`/`updated_at` timestamps
+/// - `deleted_at` for soft deletes
+/// - Custom indexes for your query patterns
+///
+/// This is a **reference implementation** - feel free to adapt it to your needs while maintaining
+/// the core structure for interoperability.
+pub const ACTIONS_SQL_SCHEMA: &str = include_str!("../../schema/actions.sql");
 
 include!(concat!(env!("OUT_DIR"), "/generated_tests.rs"));
 
@@ -192,5 +238,22 @@ mod tests {
                 .is_some(),
             "Schema should define action type"
         );
+    }
+
+    #[test]
+    fn test_sql_schema_is_accessible() {
+        // Test that the SQL schema is embedded and contains expected content
+        let schema = super::ACTIONS_SQL_SCHEMA;
+        assert!(!schema.is_empty(), "SQL schema should not be empty");
+
+        // Verify it contains the expected table definitions
+        assert!(schema.contains("CREATE TABLE actions"), "Schema should define actions table");
+        assert!(schema.contains("CREATE TABLE action_contexts"), "Schema should define action_contexts table");
+        assert!(schema.contains("CREATE TABLE action_recurrence"), "Schema should define action_recurrence table");
+
+        // Verify it has key constraints and indexes
+        assert!(schema.contains("state TEXT NOT NULL"), "Schema should define state field");
+        assert!(schema.contains("'not_started'"), "Schema should have not_started state");
+        assert!(schema.contains("CREATE INDEX"), "Schema should have indexes");
     }
 }

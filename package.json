@@ -15,7 +15,8 @@
     "./grammar": "./bindings/node/index.js",
     "./parser": "./parser.js",
     "./patterns": "./patterns.js",
-    "./schema": "./schema/actions.schema.json"
+    "./schema": "./schema/actions.schema.json",
+    "./schema/sql": "./schema/actions.sql"
   },
   "keywords": [
     "incremental",
