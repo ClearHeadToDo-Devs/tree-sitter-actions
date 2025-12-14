@@ -20,7 +20,7 @@ A simple Tree Sitter parser for the custom `.actions` file format.
     ```
 
 For detailed usage examples (Rust library, editors, JSON validation), see [docs/usage.md](docs/usage.md).
-# Tree Sitter Action File Format Parser
+# Overview
 This is a simple parser for the custom `.actions` [File Format](docs/action_specification.md) to be used in whatever form may be needed.
 
 Actions can be thought of as planned, intended actions to be taken on by an agent.

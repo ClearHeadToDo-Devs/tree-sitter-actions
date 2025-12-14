@@ -122,10 +122,10 @@ Downstream consumers need to:
 - Validate serialized data matches the specification
 
 By generating the JSON Schema from the same patterns used in the grammar, we guarantee that:
-- ✅ Parsing rules match validation rules
-- ✅ No drift between grammar and schema
-- ✅ Single source of truth for all patterns
-- ✅ Downstream consumers get both parser and validator
+- Parsing rules match validation rules
+- No drift between grammar and schema
+- Single source of truth for all patterns
+- Downstream consumers get both parser and validator
 
 ### Schema Generation Commands
 
@@ -223,12 +223,12 @@ pub mod examples {
 | **Current: Generated code** | **Auto-sync, clean API, compile-time** | **Requires understanding three stages** |
 
 **Benefits:**
-- ✅ Auto-sync: Can't get out of sync with actual files
-- ✅ Zero runtime cost: Embedded at compile time
-- ✅ Clean API: Organized modules, not HashMaps
-- ✅ No deployment complexity: In the binary
-- ✅ IDE support: Autocomplete works
-- ✅ Single source of truth: JSON drives tests and API
+- Auto-sync: Can't get out of sync with actual files
+- Zero runtime cost: Embedded at compile time
+- Clean API: Organized modules, not HashMaps
+- No deployment complexity: In the binary
+- IDE support: Autocomplete works
+- Single source of truth: JSON drives tests and API
 
 ### Package Contents (Cargo.toml)
 
