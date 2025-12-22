@@ -355,12 +355,12 @@ The canonical JSON Schema is maintained in this repository at `schema/actions.sc
 ## Structure
 
 ### Root Document
-The root JSON document is an object containing an array of root-level actions:
+The root JSON document is an object containing a flat array of all actions:
 
 ```json
 {
   "actions": [
-    // array of action objects
+    // flat array of all action objects (hierarchy via parent_id)
   ]
 }
 ```
@@ -387,11 +387,16 @@ Each action object has the following structure:
   },
   "completedDate": "2025-01-19T10:30",
   "id": "214342414342413424",
-  "children": [
-    // array of nested action objects
-  ]
+  "parent_id": null,
+  "depth": 0
 }
 ```
+
+**Hierarchical Structure**: Actions are stored in a flat array. Hierarchy is represented via `parent_id` references and `depth` levels. This design:
+- Simplifies queries (no recursive traversal needed for filtering)
+- Maps directly to SQL storage (relational foreign keys)
+- Enables efficient mutations (moving actions = changing parent_id)
+- Maintains all information needed to reconstruct the tree for display
 
 ## Field Specifications
 
@@ -498,12 +503,23 @@ UUIDv7 identifier for the action. Corresponds to `#` metadata in plaintext.
 **Pattern**: `^[0-9a-fA-F-]+$` (UUID format)
 **Omit if**: Not present in source
 
-#### `children` (array, optional)
-Array of nested action objects. Each child follows the same action object structure recursively.
-Children can be nested up to 5 levels deep (matching the plaintext `>>>>>` limit).
+#### `parent_id` (string or null, optional)
+UUID of the parent action. Null (or omitted) for root-level actions. Corresponds to the hierarchy level indicated by `>` prefixes in plaintext.
 
-**Type**: Array of action objects
-**Omit if**: No children present (or use empty array `[]` - implementation choice)
+**Type**: String (UUID format) or null
+**Pattern**: `^[0-9a-fA-F-]+$` (when not null)
+**Default**: null (root action)
+**Omit if**: Root action (depth = 0)
+
+#### `depth` (integer, optional)
+Nesting level of the action. Root actions have depth 0, their children have depth 1, etc. Matches the number of `>` prefixes in plaintext format.
+
+**Type**: Integer
+**Range**: 0-5 (matching plaintext depth limit)
+**Default**: 0
+**Omit if**: Root action (depth = 0)
+
+**Note**: The `depth` field can be computed from `parent_id` by walking up the parent chain, but including it explicitly enables efficient queries without joins.
 
 ## Type Mappings
 
@@ -516,6 +532,8 @@ Children can be nested up to 5 levels deep (matching the plaintext `>>>>>` limit
 | Duration `D30` | Integer | Minutes, within `doDate.duration` |
 | Completed `%2025-01-19` | String (ISO 8601) | Direct mapping |
 | UUID `#abc-123` | String | Direct mapping |
+| Children `>` | String (UUID) | Parent's UUID in `parent_id` field |
+| Depth level `>>`| Integer | Count of `>` markers in `depth` field |
 
 ## Optional Field Handling
 
@@ -572,22 +590,31 @@ The canonical JSON serialization is:
       },
       "completedDate": "2025-01-19T10:30",
       "id": "214342414342413424",
-      "children": [
-        {
-          "state": "not_started",
-          "name": "Get chicken from butcher",
-          "children": [
-            {
-              "state": "in_progress",
-              "name": "Ask for organic options"
-            }
-          ]
-        }
-      ]
+      "parent_id": null,
+      "depth": 0
+    },
+    {
+      "state": "not_started",
+      "name": "Get chicken from butcher",
+      "id": "018e3c2a-1234-7890-abcd-ef1234567890",
+      "parent_id": "214342414342413424",
+      "depth": 1
+    },
+    {
+      "state": "in_progress",
+      "name": "Ask for organic options",
+      "id": "018e3c2b-5678-7890-abcd-ef1234567890",
+      "parent_id": "018e3c2a-1234-7890-abcd-ef1234567890",
+      "depth": 2
     }
   ]
 }
 ```
+
+**Note**: Actions are stored in a flat array. The parent-child relationships are expressed through `parent_id` references. To reconstruct the tree for display:
+1. Filter actions where `parent_id` is null to get root actions
+2. For each action, find children where `parent_id` matches the action's `id`
+3. Use `depth` field for efficient indentation without recursive counting
 
 ## Validation
 
