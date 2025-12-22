@@ -1,6 +1,6 @@
 (source_file
   (root_action
     state: (state
-      (state_completed))
+      value: (state_completed))
     name: (name)
     metadata: (completed_date)))

@@ -469,32 +469,33 @@
   {
     "type": "state",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "state_blocked",
-          "named": true
-        },
-        {
-          "type": "state_cancelled",
-          "named": true
-        },
-        {
-          "type": "state_completed",
-          "named": true
-        },
-        {
-          "type": "state_in_progress",
-          "named": true
-        },
-        {
-          "type": "state_not_started",
-          "named": true
-        }
-      ]
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "state_blocked",
+            "named": true
+          },
+          {
+            "type": "state_cancelled",
+            "named": true
+          },
+          {
+            "type": "state_completed",
+            "named": true
+          },
+          {
+            "type": "state_in_progress",
+            "named": true
+          },
+          {
+            "type": "state_not_started",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

@@ -11,66 +11,61 @@ module.exports = grammar({
   rules: {
     source_file: $ => repeat($.root_action),
 
-    // Root level actions (depth 0)
-    root_action: $ => seq(
+    // Common action body (state + name + metadata)
+    _action_body: $ => seq(
       field('state', $.state),
       field('name', $.name),
-      repeat(field('metadata', $._metadata)),
+      repeat(field('metadata', $._metadata))
+    ),
+
+    // Root level actions (depth 0)
+    root_action: $ => seq(
+      $._action_body,
       repeat(field('child', $.depth1_action))
     ),
 
     // Depth 1 actions (one > prefix)
     depth1_action: $ => seq(
       '>',
-      field('state', $.state),
-      field('name', $.name),
-      repeat(field('metadata', $._metadata)),
+      $._action_body,
       repeat(field('child', $.depth2_action))
     ),
 
     // Depth 2 actions (two > prefixes)
     depth2_action: $ => seq(
       '>>',
-      field('state', $.state),
-      field('name', $.name),
-      repeat(field('metadata', $._metadata)),
+      $._action_body,
       repeat(field('child', $.depth3_action))
     ),
 
     // Depth 3 actions (three > prefixes)
     depth3_action: $ => seq(
       '>>>',
-      field('state', $.state),
-      field('name', $.name),
-      repeat(field('metadata', $._metadata)),
+      $._action_body,
       repeat(field('child', $.depth4_action))
     ),
 
     // Depth 4 actions (four > prefixes)
     depth4_action: $ => seq(
       '>>>>',
-      field('state', $.state),
-      field('name', $.name),
-      repeat(field('metadata', $._metadata)),
+      $._action_body,
       repeat(field('child', $.depth5_action))
     ),
 
     // Depth 5 actions (five > prefixes) - leaf level
     depth5_action: $ => seq(
       '>>>>>',
-      field('state', $.state),
-      field('name', $.name),
-      repeat(field('metadata', $._metadata))
+      $._action_body
     ),
 
     // State markers - explicit state names per specification
-    state: $ => seq('[', choice(
+    state: $ => seq('[', field('value', choice(
       $.state_not_started,
       $.state_completed,
       $.state_in_progress,
       $.state_blocked,
       $.state_cancelled
-    ), ']'),
+    )), ']'),
 
     state_not_started: $ => ' ',
     state_completed: $ => 'x',

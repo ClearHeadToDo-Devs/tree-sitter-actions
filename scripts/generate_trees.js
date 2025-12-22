@@ -24,10 +24,9 @@ for (const exampleFile of exampleFiles) {
       cwd: path.join(__dirname, '..')
     });
 
-    // Remove first 5 lines (warnings/metadata) and strip coordinates
-    const lines = output.split('\n').slice(5);
-    const cleanedOutput = lines
-      .join('\n')
+    // Strip coordinates from output (no need to skip lines anymore)
+    const cleanedOutput = output
+      .trim()
       .replace(/ \[[0-9]+, [0-9]+\] - \[[0-9]+, [0-9]+\]/g, '');
 
     fs.writeFileSync(treePath, cleanedOutput);
