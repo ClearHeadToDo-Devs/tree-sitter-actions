@@ -4,6 +4,15 @@
       value: (state_completed))
     name: (name)
     metadata: (description)
+    metadata: (priority)
+    metadata: (story)
+    metadata: (context
+      tag: (tag)
+      tag: (tag)
+      tag: (tag))
+    metadata: (do_date)
+    metadata: (completed_date)
+    metadata: (id)
     child: (depth1_action
       state: (state
         value: (state_not_started))

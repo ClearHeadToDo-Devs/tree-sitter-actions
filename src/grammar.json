@@ -281,7 +281,7 @@
           "name": "text",
           "content": {
             "type": "PATTERN",
-            "value": "[^\\n]+"
+            "value": "[^\\n!*+@%#>]+"
           }
         }
       ]

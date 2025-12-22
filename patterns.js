@@ -14,7 +14,7 @@ module.exports = {
 
   // Core field patterns
   name: '[^\\n$!*+@%#>]+',
-  description_text: '[^\\n]+',
+  description_text: '[^\\n!*+@%#>]+',  // Exclude all metadata markers except $
   priority_level: '[0-9]+',
   story_name: '[^\\n!$+@%#>]+',
   tag: '[^,\\n!$*@%#>]+',
