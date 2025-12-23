@@ -1,14 +1,25 @@
 ; State markers
-(state) @keyword
+; Hide brackets and replace the internal character with an icon
+(state "[" @conceal)
+(state "]" @conceal)
+(state_not_started) @conceal (#set! conceal "󰄱")
+(state_completed) @conceal (#set! conceal "󰄵")
+(state_in_progress) @conceal (#set! conceal "󰄳")
+(state_blocked) @conceal (#set! conceal "󰅙")
+(state_cancelled) @conceal (#set! conceal "󰪑")
 
 ; Action content
-(name) @spell
-(description) @spell
+(name) @text.title
+(description) @text.note
 
 ; Metadata
-(priority) @number
-(story) @type
-(context) @tag
-(do_date) @string.special
-(completed_date) @string.special
-(id) @constant
+(priority "!" @conceal (#set! conceal "󰀦")) @number
+(story "*" @conceal (#set! conceal "󰙨")) @type
+(context "+" @conceal (#set! conceal "󰓹")) @tag
+
+(do_date "@" @conceal (#set! conceal "󰃭")) @string.special
+(completed_date "%" @conceal (#set! conceal "󰄬")) @string.special
+
+; Hide only the UUID part, keep the '#' visible
+(id "#" @punctuation.special)
+(id (uuid) @conceal)

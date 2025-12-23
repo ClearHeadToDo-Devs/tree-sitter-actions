@@ -151,10 +151,22 @@ include!(concat!(env!("OUT_DIR"), "/generated_tests.rs"));
 
 // NOTE: uncomment these to include any queries that this grammar contains:
 
-// pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
-// pub const INJECTIONS_QUERY: &str = include_str!("../../queries/injections.scm");
-// pub const LOCALS_QUERY: &str = include_str!("../../queries/locals.scm");
-// pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
+pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/actions/highlights.scm");
+pub const FOLDS_QUERY: &str = include_str!("../../queries/actions/folds.scm");
+pub const INDENTS_QUERY: &str = include_str!("../../queries/actions/indents.scm");
+
+/// Standard queries for filtering actions.
+///
+/// These are the "Business Logic" queries that define concepts like "P1 Actions", "Completed Actions", etc.
+/// Shared across CLI, Editors, and other tools to ensure consistent behavior.
+pub mod queries {
+    pub const P1_ACTIONS: &str = include_str!("../../queries/actions/p1-actions.scm");
+    pub const COMPLETED_ACTIONS: &str = include_str!("../../queries/actions/completed-actions.scm");
+    pub const IN_PROGRESS_ACTIONS: &str = include_str!("../../queries/actions/in-progress.scm");
+    pub const BLOCKED_ACTIONS: &str = include_str!("../../queries/actions/blocked-actions.scm");
+    pub const NOT_STARTED_ACTIONS: &str = include_str!("../../queries/actions/not-started.scm");
+    pub const WITH_CHILDREN: &str = include_str!("../../queries/actions/with-children.scm");
+}
 
 #[cfg(test)]
 mod tests {
