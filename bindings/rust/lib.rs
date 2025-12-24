@@ -55,6 +55,19 @@
 //! conn.execute_batch(tree_sitter_actions::ACTIONS_SQL_SCHEMA)?;
 //! ```
 //!
+//! # Editor Integration
+//!
+//! Tree-sitter queries for syntax highlighting, folding, and indentation are available
+//! in the `queries/actions/` directory of this repository:
+//!
+//! - `highlights.scm` - Syntax highlighting rules
+//! - `folds.scm` - Code folding patterns
+//! - `indents.scm` - Auto-indentation rules
+//!
+//! Editors like Neovim, Helix, and others automatically load these queries when the
+//! grammar is installed. For data filtering and querying in applications, use SQL
+//! queries instead (see [ACTIONS_SQL_SCHEMA]).
+//!
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
@@ -148,25 +161,6 @@ pub const ACTIONS_SCHEMA: &str = include_str!("../../schema/actions.schema.json"
 pub const ACTIONS_SQL_SCHEMA: &str = include_str!("../../schema/actions.sql");
 
 include!(concat!(env!("OUT_DIR"), "/generated_tests.rs"));
-
-// NOTE: uncomment these to include any queries that this grammar contains:
-
-pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/actions/highlights.scm");
-pub const FOLDS_QUERY: &str = include_str!("../../queries/actions/folds.scm");
-pub const INDENTS_QUERY: &str = include_str!("../../queries/actions/indents.scm");
-
-/// Standard queries for filtering actions.
-///
-/// These are the "Business Logic" queries that define concepts like "P1 Actions", "Completed Actions", etc.
-/// Shared across CLI, Editors, and other tools to ensure consistent behavior.
-pub mod queries {
-    pub const P1_ACTIONS: &str = include_str!("../../queries/actions/p1-actions.scm");
-    pub const COMPLETED_ACTIONS: &str = include_str!("../../queries/actions/completed-actions.scm");
-    pub const IN_PROGRESS_ACTIONS: &str = include_str!("../../queries/actions/in-progress.scm");
-    pub const BLOCKED_ACTIONS: &str = include_str!("../../queries/actions/blocked-actions.scm");
-    pub const NOT_STARTED_ACTIONS: &str = include_str!("../../queries/actions/not-started.scm");
-    pub const WITH_CHILDREN: &str = include_str!("../../queries/actions/with-children.scm");
-}
 
 #[cfg(test)]
 mod tests {
