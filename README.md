@@ -41,6 +41,23 @@ In particular, the values are (you can also read this in the file specification 
   - For example, we do NOT use whitespace to indicate structure, instead, we use specific characters like `>` with a recurrence for how many levels deep you are
   - Great lengths have been taken to make reading the tree easy for implementors, using only normal rules and ensuring we are careful about the use of `labels` vs syntax tree formats
 
+## Quick Example
+
+```actions
+[ ] Take out trash @2025-01-21T19:00 R:FREQ=WEEKLY;BYDAY=TU #01950000-0000-7000-8000-000000000001
+[x] Team meeting $ Discuss Q1 roadmap !1 *Projects +Work @2025-01-20T14:00 D60 %2025-01-20T15:05
+[ ] Parent task >[ ] Child task >>[ ] Grandchild task
+```
+
+**Key features:**
+- **States**: `[ ]` not started, `[x]` completed, `[-]` in-progress, `[=]` blocked, `[_]` cancelled
+- **Metadata**: `$` description, `!` priority, `*` story/project, `+` contexts (tags)
+- **Scheduling**: `@` do-date/time, `D` duration (minutes), `R:` recurrence ([RFC 5545 RRULE](https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10))
+- **Tracking**: `%` completed date, `#` UUID
+- **Hierarchy**: `>` child actions (up to 5 levels deep)
+
+See [docs/action_specification.md](docs/action_specification.md) for complete syntax reference.
+
 ## Usecases
 This is to serve as a simple file format that can be used in several contexts:
 - As a parsing library within any editor that supports tree-sitter grammars.

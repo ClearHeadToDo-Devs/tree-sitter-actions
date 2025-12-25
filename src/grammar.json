@@ -372,8 +372,78 @@
           "type": "FIELD",
           "name": "datetime",
           "content": {
+            "type": "SYMBOL",
+            "name": "datetime"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "duration",
+              "content": {
+                "type": "SYMBOL",
+                "name": "duration"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "recurrence",
+              "content": {
+                "type": "SYMBOL",
+                "name": "recurrence"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "datetime": {
+      "type": "PATTERN",
+      "value": "[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\\.[0-9]+)?)?(Z|[+-][0-9]{2}:?[0-9]{2})?)?"
+    },
+    "duration": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "D"
+        },
+        {
+          "type": "FIELD",
+          "name": "minutes",
+          "content": {
             "type": "PATTERN",
-            "value": "[^\\n!$*+%#>]+"
+            "value": "[0-9]+"
+          }
+        }
+      ]
+    },
+    "recurrence": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "R:"
+        },
+        {
+          "type": "FIELD",
+          "name": "rrule",
+          "content": {
+            "type": "PATTERN",
+            "value": "FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*"
           }
         }
       ]
@@ -389,8 +459,8 @@
           "type": "FIELD",
           "name": "datetime",
           "content": {
-            "type": "PATTERN",
-            "value": "[^\\n!$*+@#>]+"
+            "type": "SYMBOL",
+            "name": "datetime"
           }
         }
       ]

@@ -2,7 +2,18 @@
   {
     "type": "completed_date",
     "named": true,
-    "fields": {}
+    "fields": {
+      "datetime": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "datetime",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "context",
@@ -368,6 +379,42 @@
   {
     "type": "do_date",
     "named": true,
+    "fields": {
+      "datetime": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "datetime",
+            "named": true
+          }
+        ]
+      },
+      "duration": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "duration",
+            "named": true
+          }
+        ]
+      },
+      "recurrence": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "recurrence",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "duration",
+    "named": true,
     "fields": {}
   },
   {
@@ -377,6 +424,11 @@
   },
   {
     "type": "priority",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "recurrence",
     "named": true,
     "fields": {}
   },
@@ -556,12 +608,24 @@
     "named": false
   },
   {
+    "type": "D",
+    "named": false
+  },
+  {
+    "type": "R:",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "datetime",
+    "named": true
   },
   {
     "type": "name",

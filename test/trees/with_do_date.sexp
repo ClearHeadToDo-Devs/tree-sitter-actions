@@ -3,4 +3,6 @@
     state: (state
       value: (state_completed))
     name: (name)
-    metadata: (do_date)))
+    metadata: (do_date
+      datetime: (datetime)
+      duration: (duration))))

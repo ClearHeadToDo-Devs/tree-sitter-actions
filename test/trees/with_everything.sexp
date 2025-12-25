@@ -9,8 +9,11 @@
     metadata: (context
       tag: (tag)
       tag: (tag))
-    metadata: (do_date)
-    metadata: (completed_date)
+    metadata: (do_date
+      datetime: (datetime)
+      duration: (duration))
+    metadata: (completed_date
+      datetime: (datetime))
     metadata: (id)
     child: (depth1_action
       state: (state

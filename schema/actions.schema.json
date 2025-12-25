@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/clearheadtodo-devs/tree-sitter-actions/schema/actions.schema.json",
   "title": "Actions File Serialization Format",
-  "description": "JSON Schema for the canonical serialization of .actions files",
+  "description": "JSON Schema for the canonical serialization of .actions files. Note: This schema uses normalized representations - recurrence frequency values are lowercase ('daily', 'weekly') while the .actions file format uses uppercase RRULE syntax ('FREQ=DAILY'). Applications translate between formats.",
   "type": "object",
   "required": [
     "actions"
@@ -10,7 +10,7 @@
   "properties": {
     "actions": {
       "type": "array",
-      "description": "Flat array of all actions (hierarchy via parent_id references)",
+      "description": "Array of root-level actions",
       "items": {
         "$ref": "#/definitions/action"
       }
@@ -44,7 +44,7 @@
         "description": {
           "type": "string",
           "description": "Long-form description of the action",
-          "pattern": "[^\\n]+"
+          "pattern": "[^\\n!*+@%#>]+"
         },
         "priority": {
           "type": "integer",
@@ -65,10 +65,27 @@
           },
           "minItems": 1
         },
-        "doDateTime": {
-          "type": "string",
-          "description": "Scheduled date/time for the action (ISO 8601 format). Note: Duration and recurrence support planned for future schema versions.",
-          "pattern": "[^\\n!$*+%#>]+"
+        "doDate": {
+          "type": "object",
+          "description": "Scheduled date/time for the action",
+          "required": [
+            "datetime"
+          ],
+          "properties": {
+            "datetime": {
+              "type": "string",
+              "description": "ISO 8601 formatted date/time",
+              "pattern": "[^\\n!$*+%#>]+"
+            },
+            "duration": {
+              "type": "integer",
+              "description": "Duration in minutes",
+              "minimum": 1
+            },
+            "recurrence": {
+              "$ref": "#/definitions/recurrence"
+            }
+          }
         },
         "completedDate": {
           "type": "string",
@@ -80,16 +97,104 @@
           "description": "UUIDv7 identifier",
           "pattern": "[0-9a-fA-F-]+"
         },
-        "parent_id": {
-          "type": ["string", "null"],
-          "description": "UUID of parent action (null for root actions)",
-          "pattern": "[0-9a-fA-F-]+"
+        "children": {
+          "type": "array",
+          "description": "Nested child actions",
+          "items": {
+            "$ref": "#/definitions/action"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "recurrence": {
+      "type": "object",
+      "description": "Recurrence rule per RFC 5545. Note: Values are normalized to lowercase in JSON/SQL ('daily'), but the .actions file format uses uppercase RRULE syntax ('FREQ=DAILY').",
+      "required": [
+        "frequency"
+      ],
+      "properties": {
+        "frequency": {
+          "type": "string",
+          "description": "Recurrence frequency (normalized to lowercase in JSON/SQL, uppercase in .actions file RRULE)",
+          "enum": [
+            "minutely",
+            "hourly",
+            "daily",
+            "weekly",
+            "monthly",
+            "yearly"
+          ]
         },
-        "depth": {
+        "interval": {
           "type": "integer",
-          "description": "Nesting level (0=root, 1-5=child depths)",
-          "minimum": 0,
-          "maximum": 5
+          "description": "Interval between recurrences",
+          "minimum": 1,
+          "default": 1
+        },
+        "count": {
+          "type": "integer",
+          "description": "Maximum number of occurrences",
+          "minimum": 1
+        },
+        "until": {
+          "type": "string",
+          "description": "End date in ISO 8601 format"
+        },
+        "byMinute": {
+          "type": "array",
+          "description": "Minutes within the hour",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 60
+          }
+        },
+        "byHour": {
+          "type": "array",
+          "description": "Hours within the day",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 23
+          }
+        },
+        "byDay": {
+          "type": "array",
+          "description": "Days of the week",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri",
+              "Sat",
+              "Sun"
+            ]
+          }
+        },
+        "byMonthDay": {
+          "type": "array",
+          "description": "Days of the month",
+          "items": {
+            "type": "integer",
+            "minimum": -31,
+            "maximum": 31,
+            "not": {
+              "const": 0
+            }
+          }
+        },
+        "byMonth": {
+          "type": "array",
+          "description": "Months of the year",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
         }
       },
       "additionalProperties": false

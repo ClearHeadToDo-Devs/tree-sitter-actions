@@ -118,58 +118,87 @@ By contrast, if we put the duration after a proper date, then there is no ambigu
 
 same goes for time and seconds due to leap seconds
 
-### Repitition
-Finally, we can denote that all the mechanics above can be used to REPEAT this period.
+### Recurrence
+Actions can repeat on a schedule using the RRULE (Recurrence Rule) syntax from [RFC 5545 section 3.3.10](https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10).
 
-we primarily use the field [RFC 5545 section 3.8.5.3](https://datatracker.ietf.org/doc/html/rfc5545#section-3.8.5.3)  
+Recurrence is denoted with the `R:` prefix followed by standard RRULE syntax. The do-date/time serves as the DTSTART (start date) for the recurrence rule.
 
-using [RFC 5546 section 3.3.10](https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10) to define the format, only we use the fields more thoughtfully
+When exported to calendar applications, this generates a recurrence set - the complete set of occurrences based on the rule.
 
-We can add a repitition AFTER the date itself which serves as the "DSTART" value in the reccurance rule
+#### RRULE Syntax
 
-We denote a repition with the `R` character
+The RRULE format uses key-value pairs separated by semicolons:
+```
+R:FREQ=frequency[;RULE_PART=value]...
+```
 
-it should be noted what this DOES is try to calculate the event set if these events are to be exported into a calendar format which is a common usecase for this type of data
+**Required Component:**
+- `FREQ` - The recurrence frequency. Must be one of:
+  - `SECONDLY` - Every second (rarely used)
+  - `MINUTELY` - Every minute
+  - `HOURLY` - Every hour
+  - `DAILY` - Every day
+  - `WEEKLY` - Every week
+  - `MONTHLY` - Every month
+  - `YEARLY` - Every year
 
-in the end this will be used to define the recurrance set which is the set of events that we plan to use with this work
+**Optional Components:**
+- `INTERVAL=n` - Repeat every n intervals (default: 1)
+  - Example: `FREQ=DAILY;INTERVAL=2` means every other day
+- `COUNT=n` - Maximum number of occurrences
+  - Example: `FREQ=WEEKLY;COUNT=10` means 10 weekly occurrences
+- `UNTIL=datetime` - End date/time for recurrence (ISO 8601 format)
+  - Example: `FREQ=DAILY;UNTIL=20251231T235959`
+  - Note: `COUNT` and `UNTIL` are mutually exclusive
+- `BYDAY=days` - Days of week (MO,TU,WE,TH,FR,SA,SU)
+  - Example: `FREQ=WEEKLY;BYDAY=MO,WE,FR` means every Monday, Wednesday, Friday
+  - Can include numeric prefix: `+1MO` (first Monday), `-1FR` (last Friday)
+- `BYMONTHDAY=days` - Days of month (1-31, or -1 to -31 for counting from end)
+  - Example: `FREQ=MONTHLY;BYMONTHDAY=1,15` means 1st and 15th of each month
+- `BYMONTH=months` - Months of year (1-12)
+  - Example: `FREQ=YEARLY;BYMONTH=1,7` means January and July each year
+- `BYHOUR=hours` - Hours of day (0-23)
+- `BYMINUTE=minutes` - Minutes of hour (0-59)
+- `BYSECOND=seconds` - Seconds of minute (0-59)
+- `BYSETPOS=n` - Limits to nth occurrence in period
+  - Example: `FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1` means first Monday of each month
 
-#### Frequency
-We can have the following frequencies:
-- MI = Minutely
-- H = Hourly
-- D = Daily
-- W = Weekly
-- MO = Monthly
-- Y = Yearly
+#### Common Recurrence Patterns
 
-This is the first field and the only MANDATORY one besides the start date itself. All other fields can go in whatever order is needed
-##### Bounding the Repition
-we immediately have values to bound these options:
-- `U` = Until Date
-    - End date of the repition
-- `C` = Count
-    - The MAXIMUM count of repitions allowd
-- `I` = Interval
-    - the interval of repition, defaulting to 1
-        - so `D` with `I2` is a repition of every other day
+**Daily Examples:**
+- `R:FREQ=DAILY` - Every day
+- `R:FREQ=DAILY;INTERVAL=2` - Every other day
+- `R:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR` - Every weekday
+- `R:FREQ=DAILY;COUNT=30` - Daily for 30 days
 
-###### Semantic Bounding
-We also can bound them based on more calendar-specific formats:
+**Weekly Examples:**
+- `R:FREQ=WEEKLY` - Every week on the same day as DTSTART
+- `R:FREQ=WEEKLY;BYDAY=MO,WE,FR` - Every Monday, Wednesday, Friday
+- `R:FREQ=WEEKLY;INTERVAL=2;BYDAY=TU` - Every other Tuesday
+- `R:FREQ=WEEKLY;BYDAY=SA,SU` - Every weekend
 
-The best way to think of this is that each frequency can use all bounds of LESS GRANULARITY.
+**Monthly Examples:**
+- `R:FREQ=MONTHLY` - Same day each month
+- `R:FREQ=MONTHLY;BYMONTHDAY=1` - First of every month
+- `R:FREQ=MONTHLY;BYDAY=2FR` - Second Friday of each month
+- `R:FREQ=MONTHLY;BYMONTHDAY=-1` - Last day of each month
 
-So the by minute frequency can only use the "By Minute" property alonge with the ones above, by contrast, the "yearly" frequency can use every value possible to represent what it needs for a frequency
-- `BMI` = By Minute
-    - A list of integers between 0 and 60 representing which minute(s) in the hour to repeat
-- `BH` = By Hour
-    -   list of numbers between 0 and 23 representing what hour to repeat this within
-- `BD` = By Day
-    - an integer representing the numbered day in the week 
-- `BMOD` = By Month Day
-    - A list of days of the month
-    - can accept negative and positive values
-- `BMO` = By Month
-    - List of ints representing months
+**Yearly Examples:**
+- `R:FREQ=YEARLY` - Same date every year
+- `R:FREQ=YEARLY;BYMONTH=1;BYMONTHDAY=1` - January 1st every year
+- `R:FREQ=YEARLY;BYMONTH=11;BYDAY=4TH` - Fourth Thursday in November (US Thanksgiving)
+
+#### Design Rationale
+
+This specification uses RFC 5545 RRULE syntax directly rather than inventing custom shorthand for several reasons:
+
+1. **Battle-tested standard** - RRULE handles edge cases (leap years, DST, invalid dates) that would be easy to miss in custom syntax
+2. **Calendar compatibility** - Direct 1:1 mapping to iCalendar export format without translation layer
+3. **Completeness** - Supports complex patterns (e.g., "last Friday of each quarter") without syntax extensions
+4. **Tooling ecosystem** - Libraries like [rrule.js](https://github.com/jkbrzt/rrule) already parse and expand RRULE
+5. **Unambiguous** - No corner cases where custom syntax behavior is undefined
+
+While RRULE syntax is verbose, editor tooling can provide natural language interfaces that generate RRULE strings, keeping the file format precise while maintaining usability.
 ## Depth (Required)
 Every child action starts with atleast one `>` character. Children of a parent action can be denoted by `>>` and so-on down to the official limit of 5 levels of depth.
 6 levels was chosen to conform with standard markdown conventions
@@ -264,29 +293,28 @@ this can look like a simple `D30` to mean a duration of 30 minutes
 
 for application designers, durations are assumed to default to 15 minutes
 
-##### Recurrance
-We can use that do-date as simply a start date for a recurring task by adding the `R` Character followed by one of the following options for recurrance:
-- `D` Daily
-  - We can also put a list of time(s) to allow for the use-case of something that needs to be done multiple times a day (think medications)
-- `W` Weekly
-  - Can give a list of the day(s) of the week where you want this to recur {Mon, Tue, Wed, Thurs, Fri, Sat, Sun}
-- `M` Monthly
-  - Can list the week(s) to be recurred {1, 2, 3, 4, 5}
-- `Y` Yearly
-  - Can list the Month(s) this should be done {Jan, Feb, March, April, June, July, August, September, October, November, December}
-- `C` Custom Data Recurrance
-  - Can list which week(s) this should be done {1, 2, 3, 4, 5}
-  - Can also list the day to be recurred {Mon, Tue, Wed, Thurs, Fri, Sat, Sun}
-  - and time it needs to be done
+##### Recurrence (Optional)
+Actions can repeat on a schedule by adding recurrence rules after the date/time. Recurrence is specified using the `R:` prefix followed by RRULE syntax (see [Recurrence](#recurrence) section above for full syntax reference).
 
-  for any of these, its assumed that the recurrance adopts the date/time originally used for the do-date
+The do-date/time serves as the DTSTART (start date) for the recurrence, and the RRULE defines the pattern of repetition.
 
-  for example, if you do a weekly recurring action on tuesday and dont designate date, then the action assumed to be done every tuesday at the time you put
+**Examples:**
+- `@2025-01-21T19:00 R:FREQ=WEEKLY;BYDAY=TU` - Every Tuesday at 7pm
+- `@2025-01-20T09:00 R:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR` - Weekdays at 9am
+- `@2025-02-01 R:FREQ=MONTHLY;BYMONTHDAY=1` - First of each month
+- `@2025-01-01 R:FREQ=YEARLY;BYMONTH=1;BYMONTHDAY=1;COUNT=10` - Next 10 New Year's Days
 
-###### End Date
-Recurrance is assumed to go on forever unless an end date is otherwise designated (i mean, you do need to take the trash out for the rest of your life?)
+**Combining with Duration:**
+```actions
+[ ] Daily standup @2025-01-20T09:00 D15 R:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR
+```
+This creates a recurring 15-minute event every weekday at 9am.
 
-however, you can put an end date in the date with the `E` Character, followed by a standardized date/time format that we have covered in the other dates that we listed here
+**Recurrence Semantics:**
+- The action with recurrence is a **template** that defines the pattern
+- Applications expand the template to generate individual **occurrence instances**
+- The template itself typically remains in the main `.actions` file unchanged
+- Completed occurrences can be logged separately (see [Recurrence Logging](#recurrence-logging-optional) below)
 
 ## Completed Date (Optional)
 
@@ -303,6 +331,72 @@ the icon for this is `#` but is optional as we want to support the ability to cr
 
 ### Implications
 here, we are trying to leave the door open for applications to go in later and update this whole thing with automated tools such as the cli that will be able to review and update these ids after the user has created the initial version of the structure
+
+## Recurrence Logging (Optional)
+
+For actions with recurrence rules, there are two complementary approaches to tracking completion:
+
+### Template-Only Approach (Simplest)
+
+The recurring action remains as a template in the main `.actions` file. The template defines the pattern but does not track individual occurrences.
+
+**Example:**
+```actions
+[ ] Take out trash @2025-01-21T19:00 R:FREQ=WEEKLY;BYDAY=TU #trash-001
+```
+
+**Use case:** Simple reminders where historical tracking is not needed. The action serves as a reference that this needs to happen weekly.
+
+### Template + Log Approach (For Analytics)
+
+The template remains in the main `.actions` file unchanged, while completed occurrences are logged in separate files. This enables historical tracking, metrics, and analytics while keeping templates stable.
+
+**Template file (inbox.actions):**
+```actions
+[ ] Take out trash @2025-01-21T19:00 R:FREQ=WEEKLY;BYDAY=TU #trash-001
+[ ] Daily standup @2025-01-20T09:00 R:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR #standup-001
+```
+
+**Log file (logs/2025-01.actions):**
+```actions
+[x] Take out trash @2025-01-07T19:00 %2025-01-07T19:15 #trash-001-20250107
+[x] Take out trash @2025-01-14T19:00 %2025-01-14T19:32 #trash-001-20250114
+[x] Take out trash @2025-01-21T19:00 %2025-01-21T18:45 #trash-001-20250121
+[x] Daily standup @2025-01-20T09:00 %2025-01-20T09:05 #standup-001-20250120
+```
+
+**Log Entry Format:**
+- State is typically `[x]` (completed) or `[_]` (cancelled)
+- `@datetime` is the **scheduled** occurrence time (from the template expansion)
+- `%datetime` is the **actual** completion time
+- UUID links to template: `{template-uuid}-{occurrence-date-YYYYMMDD}`
+- **No recurrence rule** in log entries (they are concrete instances, not templates)
+
+**File Organization Convention:**
+```
+tasks/
+├── inbox.actions              # Active recurring templates
+├── projects.actions           # Project-specific templates
+└── logs/
+    ├── 2025-01.actions       # January completions
+    ├── 2025-02.actions       # February completions
+    └── ...
+```
+
+**Benefits:**
+- **Immutable templates** - Source of truth never changes due to completion
+- **Full history** - Complete record of what was done and when
+- **Metrics** - Track completion rates, timing variance, streaks, etc.
+- **Editor-friendly** - Manual users can append to log files by hand
+- **Application-friendly** - CLI/GUI tools can query logs for analytics
+- **No lock-in** - All data remains in plain text `.actions` format
+
+**Implementation Notes:**
+- Applications should expand templates to show upcoming occurrences
+- On completion, applications append to log file for that month
+- Log files use standard `.actions` format and can be queried with same tools
+- Manual users can maintain logs by copying template and adding completion date
+- Templates without UUIDs can generate them: `uuidgen` or application auto-assignment
 
 # Examples
 As we have laid out above, we have quite an array of options when it comes to how much or how little information to give.
@@ -330,6 +424,28 @@ The succinct way to read this is that one had an action to go to the store on Ja
 The action was expected to take 30 minutes but was completed in about two hours as we can see by the completion time.
 Finally, it was part of the Driving, Store, and Market contexts and contains extra instructions on where to get the chicken
 
+
+## Recurring Example
+Here's an example of a recurring action with full metadata:
+
+```actions
+[ ] Weekly team meeting
+    $ Discuss progress, blockers, and next steps
+    !2
+    *Team Coordination
+    +Work,Meeting
+    @2025-01-20T14:00 D60 R:FREQ=WEEKLY;BYDAY=MO
+    #team-meeting-uuid
+```
+
+This defines a recurring weekly team meeting every Monday at 2pm for 60 minutes, with priority 2, associated with the "Team Coordination" project and tagged with Work and Meeting contexts.
+
+When this template is expanded by an application, it generates occurrence instances. When occurrences are completed, they can be logged:
+
+```actions
+[x] Weekly team meeting @2025-01-20T14:00 %2025-01-20T14:05 #team-meeting-uuid-20250120
+[x] Weekly team meeting @2025-01-27T14:00 %2025-01-27T14:10 #team-meeting-uuid-20250127
+```
 
 ## Adding Children
 Finally, we will do a showcase of the format for those actions with child actions:

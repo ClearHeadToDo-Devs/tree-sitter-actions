@@ -115,16 +115,33 @@ module.exports = grammar({
     // Individual context tag
     tag: $ => new RegExp(PATTERNS.tag),
 
-    // Do-date/time: @ followed by ISO 8601 date/time
+    // Do-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
     do_date: $ => seq(
       '@',
-      field('datetime', new RegExp(PATTERNS.datetime_do))
+      field('datetime', $.datetime),
+      optional(field('duration', $.duration)),
+      optional(field('recurrence', $.recurrence))
+    ),
+
+    // ISO 8601 datetime: YYYY-MM-DD or YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS with optional timezone
+    datetime: $ => /[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\.[0-9]+)?)?(Z|[+-][0-9]{2}:?[0-9]{2})?)?/,
+
+    // Duration: D followed by number of minutes
+    duration: $ => seq(
+      'D',
+      field('minutes', /[0-9]+/)
+    ),
+
+    // Recurrence: R: followed by RRULE syntax
+    recurrence: $ => seq(
+      'R:',
+      field('rrule', /FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*/)
     ),
 
     // Completed date: % followed by ISO 8601 date/time
     completed_date: $ => seq(
       '%',
-      field('datetime', new RegExp(PATTERNS.datetime_completed))
+      field('datetime', $.datetime)
     ),
 
     // ID: # followed by UUID

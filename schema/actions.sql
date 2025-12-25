@@ -56,31 +56,43 @@ CREATE TABLE action_contexts (
 );
 
 -- Recurrence rules table
--- Stores recurrence information for recurring actions
+-- Stores recurrence information for recurring actions per RFC 5545 RRULE syntax
+-- Maps from RRULE format (R:FREQ=WEEKLY;BYDAY=MO,WE,FR) to normalized DB fields
 CREATE TABLE action_recurrence (
     action_id TEXT PRIMARY KEY REFERENCES actions(id) ON DELETE CASCADE,
 
-    -- Required
+    -- Required (FREQ in RRULE)
     frequency TEXT NOT NULL CHECK(frequency IN (
-        'minutely',
-        'hourly',
-        'daily',
-        'weekly',
-        'monthly',
-        'yearly'
+        'secondly',  -- SECONDLY (rarely used)
+        'minutely',  -- MINUTELY
+        'hourly',    -- HOURLY
+        'daily',     -- DAILY
+        'weekly',    -- WEEKLY
+        'monthly',   -- MONTHLY
+        'yearly'     -- YEARLY
     )),
 
     -- Optional bounds
-    interval INTEGER DEFAULT 1 CHECK(interval >= 1),
-    count INTEGER CHECK(count >= 1),
-    until_date TEXT,                     -- ISO 8601 format
+    interval INTEGER DEFAULT 1 CHECK(interval >= 1),  -- INTERVAL (default 1)
+    count INTEGER CHECK(count >= 1),                  -- COUNT (max occurrences)
+    until_date TEXT,                                  -- UNTIL (ISO 8601 format)
 
-    -- Semantic bounds (stored as JSON arrays)
-    by_minute TEXT,                      -- JSON: [0, 15, 30, 45]
-    by_hour TEXT,                        -- JSON: [9, 17]
-    by_day TEXT,                         -- JSON: ["Mon", "Wed", "Fri"]
-    by_month_day TEXT,                   -- JSON: [1, 15, -1]
-    by_month TEXT                        -- JSON: [1, 6, 12]
+    -- Note: count and until_date are mutually exclusive per RFC 5545
+
+    -- Semantic bounds (stored as JSON arrays for multi-value fields)
+    -- Maps from RRULE comma-separated values to JSON arrays
+    by_second TEXT,      -- BYSECOND: JSON [0, 15, 30, 45]
+    by_minute TEXT,      -- BYMINUTE: JSON [0, 15, 30, 45]
+    by_hour TEXT,        -- BYHOUR: JSON [9, 12, 17]
+    by_day TEXT,         -- BYDAY: JSON ["MO", "WE", "FR"] or ["1MO", "-1FR"] with modifiers
+    by_month_day TEXT,   -- BYMONTHDAY: JSON [1, 15, -1] (negative = from end)
+    by_year_day TEXT,    -- BYYEARDAY: JSON [1, 100, -1] (day of year)
+    by_week_no TEXT,     -- BYWEEKNO: JSON [1, 20, -1] (week of year)
+    by_month TEXT,       -- BYMONTH: JSON [1, 6, 12] (1=Jan, 12=Dec)
+    by_set_pos TEXT,     -- BYSETPOS: JSON [1, -1] (limits to nth occurrence)
+    week_start TEXT DEFAULT 'MO' CHECK(week_start IN (
+        'MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'
+    ))                   -- WKST: Week start day (default Monday per RFC 5545)
 );
 
 -- =============================================================================

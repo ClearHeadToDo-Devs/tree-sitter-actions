@@ -20,6 +20,5 @@
 (do_date "@" @conceal (#set! conceal "󰃭")) @string.special
 (completed_date "%" @conceal (#set! conceal "󰄬")) @string.special
 
-; Hide only the UUID part, keep the '#' visible
+; ID with '#' marker
 (id "#" @punctuation.special)
-(id (uuid) @conceal)
