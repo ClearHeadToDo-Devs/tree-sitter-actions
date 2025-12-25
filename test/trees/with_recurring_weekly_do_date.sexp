@@ -5,5 +5,7 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      duration: (duration)
-      recurrence: (recurrence))))
+      duration: (duration
+        minutes: (minutes))
+      recurrence: (recurrence
+        rrule: (rrule_content)))))

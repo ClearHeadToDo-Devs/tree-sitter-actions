@@ -5,4 +5,5 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      duration: (duration))))
+      duration: (duration
+        minutes: (minutes)))))

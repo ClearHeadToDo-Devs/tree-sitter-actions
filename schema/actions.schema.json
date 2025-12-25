@@ -97,9 +97,20 @@
           "description": "UUIDv7 identifier",
           "pattern": "[0-9a-fA-F-]+"
         },
+        "parent_id": {
+          "type": ["string", "null"],
+          "description": "UUID of parent action (null for root actions). Used in flat representation.",
+          "pattern": "[0-9a-fA-F-]+"
+        },
+        "depth": {
+          "type": "integer",
+          "description": "Nesting level (0=root, 1-5=child depths). Used in flat representation.",
+          "minimum": 0,
+          "maximum": 5
+        },
         "children": {
           "type": "array",
-          "description": "Nested child actions",
+          "description": "Nested child actions. Used in nested representation.",
           "items": {
             "$ref": "#/definitions/action"
           }

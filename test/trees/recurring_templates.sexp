@@ -5,7 +5,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -13,8 +14,10 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      duration: (duration)
-      recurrence: (recurrence))
+      duration: (duration
+        minutes: (minutes))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -22,7 +25,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -30,7 +34,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -38,7 +43,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -46,7 +52,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -54,8 +61,10 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      duration: (duration)
-      recurrence: (recurrence))
+      duration: (duration
+        minutes: (minutes))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -63,7 +72,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -71,7 +81,8 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id))
   (root_action
     state: (state
@@ -79,5 +90,6 @@
     name: (name)
     metadata: (do_date
       datetime: (datetime)
-      recurrence: (recurrence))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
     metadata: (id)))

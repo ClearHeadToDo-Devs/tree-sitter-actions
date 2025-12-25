@@ -415,10 +415,26 @@
   {
     "type": "duration",
     "named": true,
-    "fields": {}
+    "fields": {
+      "minutes": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "minutes",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "id",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "minutes",
     "named": true,
     "fields": {}
   },
@@ -430,7 +446,18 @@
   {
     "type": "recurrence",
     "named": true,
-    "fields": {}
+    "fields": {
+      "rrule": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "rrule_content",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "root_action",
@@ -629,6 +656,10 @@
   },
   {
     "type": "name",
+    "named": true
+  },
+  {
+    "type": "rrule_content",
     "named": true
   },
   {

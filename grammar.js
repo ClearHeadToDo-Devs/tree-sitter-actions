@@ -129,14 +129,18 @@ module.exports = grammar({
     // Duration: D followed by number of minutes
     duration: $ => seq(
       'D',
-      field('minutes', /[0-9]+/)
+      field('minutes', $.minutes)
     ),
+
+    minutes: $ => /[0-9]+/,
 
     // Recurrence: R: followed by RRULE syntax
     recurrence: $ => seq(
       'R:',
-      field('rrule', /FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*/)
+      field('rrule', $.rrule_content)
     ),
+
+    rrule_content: $ => /FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*/,
 
     // Completed date: % followed by ISO 8601 date/time
     completed_date: $ => seq(

@@ -425,11 +425,15 @@
           "type": "FIELD",
           "name": "minutes",
           "content": {
-            "type": "PATTERN",
-            "value": "[0-9]+"
+            "type": "SYMBOL",
+            "name": "minutes"
           }
         }
       ]
+    },
+    "minutes": {
+      "type": "PATTERN",
+      "value": "[0-9]+"
     },
     "recurrence": {
       "type": "SEQ",
@@ -442,11 +446,15 @@
           "type": "FIELD",
           "name": "rrule",
           "content": {
-            "type": "PATTERN",
-            "value": "FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*"
+            "type": "SYMBOL",
+            "name": "rrule_content"
           }
         }
       ]
+    },
+    "rrule_content": {
+      "type": "PATTERN",
+      "value": "FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*"
     },
     "completed_date": {
       "type": "SEQ",

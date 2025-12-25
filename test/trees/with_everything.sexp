@@ -11,7 +11,8 @@
       tag: (tag))
     metadata: (do_date
       datetime: (datetime)
-      duration: (duration))
+      duration: (duration
+        minutes: (minutes)))
     metadata: (completed_date
       datetime: (datetime))
     metadata: (id)
