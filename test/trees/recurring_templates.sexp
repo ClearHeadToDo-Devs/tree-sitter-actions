@@ -2,7 +2,8 @@
   (root_action
     state: (state
       value: (state_not_started))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime)
       recurrence: (recurrence
@@ -11,54 +12,8 @@
   (root_action
     state: (state
       value: (state_not_started))
-    name: (name)
-    metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
-    metadata: (id))
-  (root_action
-    state: (state
-      value: (state_not_started))
-    name: (name)
-    metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
-    metadata: (id))
-  (root_action
-    state: (state
-      value: (state_not_started))
-    name: (name)
-    metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
-    metadata: (id))
-  (root_action
-    state: (state
-      value: (state_not_started))
-    name: (name)
-    metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
-    metadata: (id))
-  (root_action
-    state: (state
-      value: (state_not_started))
-    name: (name)
-    metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
-    metadata: (id))
-  (root_action
-    state: (state
-      value: (state_not_started))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
@@ -69,7 +24,8 @@
   (root_action
     state: (state
       value: (state_not_started))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime)
       recurrence: (recurrence
@@ -78,7 +34,8 @@
   (root_action
     state: (state
       value: (state_not_started))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime)
       recurrence: (recurrence
@@ -87,7 +44,60 @@
   (root_action
     state: (state
       value: (state_not_started))
-    name: (name)
+    name: (name
+      (name_text_chunk))
+    metadata: (do_date
+      datetime: (datetime)
+      recurrence: (recurrence
+        rrule: (rrule_content)))
+    metadata: (id))
+  (root_action
+    state: (state
+      value: (state_not_started))
+    name: (name
+      (name_text_chunk))
+    metadata: (do_date
+      datetime: (datetime)
+      recurrence: (recurrence
+        rrule: (rrule_content)))
+    metadata: (id))
+  (root_action
+    state: (state
+      value: (state_not_started))
+    name: (name
+      (name_text_chunk))
+    metadata: (do_date
+      datetime: (datetime)
+      duration: (duration
+        minutes: (minutes))
+      recurrence: (recurrence
+        rrule: (rrule_content)))
+    metadata: (id))
+  (root_action
+    state: (state
+      value: (state_not_started))
+    name: (name
+      (name_text_chunk))
+    metadata: (do_date
+      datetime: (datetime)
+      recurrence: (recurrence
+        rrule: (rrule_content)))
+    metadata: (id))
+  (root_action
+    state: (state
+      value: (state_not_started))
+    name: (name
+      (name_text_chunk))
+    metadata: (do_date
+      datetime: (datetime)
+      recurrence: (recurrence
+        rrule: (rrule_content)))
+    metadata: (id))
+  (root_action
+    state: (state
+      value: (state_not_started))
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime)
       recurrence: (recurrence

@@ -213,7 +213,7 @@ As such, child actions are encapsulated within the parent to make for easy parsi
 styling around indentation is left up to the implementors, it should NOT be important to parsing the document
 
 ## State (Required)
-We want to accomodate a few more states than done and not done, so we put the state between the `(` and the `)` characters
+We want to accomodate a few more states than done and not done, so we put the state between the `[` and `]` characters
 The options for states are as follows:
 - ` ` Not Started (default)
 - `x` Completed
@@ -227,7 +227,7 @@ This and the depth constitute the primary "marker" for the start of an action, m
 ## Name (Required)
 The final required field is the name of the action itself. 
 
-Due to the nature of the format, special characters will need to be escaped with the  character
+Due to the nature of the format, special characters will need to be escaped with the `\` character
 The list of special characters that need to be escaped are below:
 - `$` - Reserved for Descriptions
 - `!` - Reserved for Priority
@@ -236,6 +236,8 @@ The list of special characters that need to be escaped are below:
 - `@` - Reserved for Do-Date-Time
 - `%` - Reserved for Completed Date
 - `>` - Reserved for Children
+- `[` `]` - Reserved for State markers and Links (when used as `[[link]]`)
+- `|` - Reserved for Link separator (when within `[[...]]`)
 
 Otherwise, this is one of the more encompassing fields where users are allowed to write as much as they like, even newlines
 
@@ -247,6 +249,26 @@ The name fields status as a secondary key means that it is sometimes necessary t
 this is where the description comes in and we can start one at any point within our name field within the `$` character
 
 However, the rules around escaping still apply to ensure easy parsing
+
+### Links (optional inline syntax)
+Links to external resources can be embedded within the name or description using wiki-style double-bracket syntax:
+
+`[[link text|url]]`
+
+- The link text is what will be displayed (human-readable)
+- The url can be any valid URI (http, https, file, mailto, etc.)
+- If only a URL is needed without custom text, use `[[url]]` as shorthand
+
+**Examples:**
+- `[[Documentation|https://example.com/docs]]`
+- `[[https://example.com]]`
+- `[[Bug Report|https://github.com/user/repo/issues/123]]`
+- `[[Email support|mailto:help@example.com]]`
+
+**Rationale:**
+Because `[` and `]` are used for state markers at the start of actions, links use double-bracket `[[` syntax to avoid parsing ambiguity. The pipe `|` separator follows wiki conventions, though we reverse the order to `[[text|url]]` (rather than `[[url|text]]`) for better plaintext readability when URLs are long.
+
+To use literal `[[`, `]]`, or `|` characters in text outside of links, escape them with backslash: `\[\[`, `\]\]`, `\|`
 
 
 ## Priority (Optional)
@@ -412,7 +434,7 @@ As we saw, many optional pieces of context can be added so here is an example of
 ```actions
 [x] Go to the store for chicken
     $ Make sure you get the stuff from the butcher directly
-    !1 
+    !1
     *Run Errands
 +Driving,Store,Market
 @2025-01-19T08:30D30
@@ -420,9 +442,24 @@ As we saw, many optional pieces of context can be added so here is an example of
 #214342414342413424
 ```
 
-The succinct way to read this is that one had an action to go to the store on January 19th, 2025 as a part of their running errands project. 
+The succinct way to read this is that one had an action to go to the store on January 19th, 2025 as a part of their running errands project.
 The action was expected to take 30 minutes but was completed in about two hours as we can see by the completion time.
 Finally, it was part of the Driving, Store, and Market contexts and contains extra instructions on where to get the chicken
+
+## Example with Links
+Actions can include links to related resources:
+
+```actions
+[ ] Review pull request [[PR #456|https://github.com/org/repo/pull/456]]
+    $ Check the implementation against [[API docs|https://api.example.com/v2/docs]]
+    !2
+    *Code Review
+    +Work,Development
+    @2025-01-26T14:00D45
+    #a1b2c3d4-e5f6-7890-abcd-ef1234567890
+```
+
+This action links to both a GitHub PR and API documentation within the description, making it easy to access relevant resources while keeping the file readable in plaintext
 
 
 ## Recurring Example

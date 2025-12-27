@@ -2,7 +2,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -11,7 +12,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -20,7 +22,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -29,7 +32,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -38,7 +42,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -47,7 +52,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -56,7 +62,8 @@
   (root_action
     state: (state
       value: (state_cancelled))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
@@ -65,7 +72,8 @@
   (root_action
     state: (state
       value: (state_completed))
-    name: (name)
+    name: (name
+      (name_text_chunk))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date

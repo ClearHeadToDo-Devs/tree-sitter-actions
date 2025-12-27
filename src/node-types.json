@@ -374,7 +374,22 @@
   {
     "type": "description",
     "named": true,
-    "fields": {}
+    "fields": {
+      "text": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "description_text_chunk",
+            "named": true
+          },
+          {
+            "type": "link",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "do_date",
@@ -434,9 +449,64 @@
     "fields": {}
   },
   {
+    "type": "link",
+    "named": true,
+    "fields": {
+      "text": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "link_text",
+            "named": true
+          }
+        ]
+      },
+      "url": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "link_url",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "link_text",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "link_url",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "minutes",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "link",
+          "named": true
+        },
+        {
+          "type": "name_text_chunk",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "priority",
@@ -647,7 +717,15 @@
     "named": false
   },
   {
+    "type": "[[",
+    "named": false
+  },
+  {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "]]",
     "named": false
   },
   {
@@ -655,7 +733,11 @@
     "named": true
   },
   {
-    "type": "name",
+    "type": "description_text_chunk",
+    "named": true
+  },
+  {
+    "type": "name_text_chunk",
     "named": true
   },
   {
@@ -685,5 +767,9 @@
   {
     "type": "tag",
     "named": true
+  },
+  {
+    "type": "|",
+    "named": false
   }
 ]

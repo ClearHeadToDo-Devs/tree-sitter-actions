@@ -73,8 +73,14 @@ module.exports = grammar({
     state_blocked: $ => '=',
     state_cancelled: $ => '_',
 
-    // Action name - everything up to a newline or reserved character
-    name: $ => new RegExp(PATTERNS.name),
+    // Action name - can contain text and links
+    name: $ => repeat1(choice(
+      $.link,
+      $.name_text_chunk
+    )),
+
+    // Text chunk within name (excludes metadata markers and [)
+    name_text_chunk: $ => /[^\n$!*+@%#>\[]+/,
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -87,11 +93,39 @@ module.exports = grammar({
       $.id
     ),
 
-    // Description: $ followed by text
+    // Description: $ followed by text and/or links
     description: $ => seq(
       '$',
-      field('text', new RegExp(PATTERNS.description_text))
+      field('text', repeat1(choice(
+        $.link,
+        $.description_text_chunk
+      )))
     ),
+
+    // Text chunk within description (excludes metadata markers except $ and excludes [)
+    description_text_chunk: $ => /[^\n!*+@%#>\[]+/,
+
+    // Link: [[text|url]] or [[url]]
+    link: $ => seq(
+      '[[',
+      choice(
+        // Full form: [[text|url]]
+        seq(
+          field('text', $.link_text),
+          '|',
+          field('url', $.link_url)
+        ),
+        // Shorthand: [[url]]
+        field('url', $.link_url)
+      ),
+      ']]'
+    ),
+
+    // Link text (everything except | and ])
+    link_text: $ => /[^\|\]]+/,
+
+    // Link URL (everything except | and ])
+    link_url: $ => /[^\|\]]+/,
 
     // Priority: ! followed by number
     priority: $ => seq(
