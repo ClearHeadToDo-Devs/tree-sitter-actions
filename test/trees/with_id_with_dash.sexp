@@ -4,4 +4,5 @@
       value: (state_completed))
     name: (name
       (name_text_chunk))
-    metadata: (id)))
+    metadata: (id
+      uuid: (uuid_value))))

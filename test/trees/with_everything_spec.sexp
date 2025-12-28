@@ -18,7 +18,8 @@
         minutes: (minutes)))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id)
+    metadata: (id
+      uuid: (uuid_value))
     child: (depth1_action
       state: (state
         value: (state_not_started))

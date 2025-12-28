@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/clearheadtodo-devs/tree-sitter-actions/schema/actions.schema.json",
   "title": "Actions File Serialization Format",
-  "description": "JSON Schema for the canonical serialization of .actions files. Note: This schema uses normalized representations - recurrence frequency values are lowercase ('daily', 'weekly') while the .actions file format uses uppercase RRULE syntax ('FREQ=DAILY'). Applications translate between formats.",
+  "description": "JSON Schema for the canonical serialization of .actions files",
   "type": "object",
   "required": [
     "actions"
@@ -97,20 +97,9 @@
           "description": "UUIDv7 identifier",
           "pattern": "[0-9a-fA-F-]+"
         },
-        "parent_id": {
-          "type": ["string", "null"],
-          "description": "UUID of parent action (null for root actions). Used in flat representation.",
-          "pattern": "[0-9a-fA-F-]+"
-        },
-        "depth": {
-          "type": "integer",
-          "description": "Nesting level (0=root, 1-5=child depths). Used in flat representation.",
-          "minimum": 0,
-          "maximum": 5
-        },
         "children": {
           "type": "array",
-          "description": "Nested child actions. Used in nested representation.",
+          "description": "Nested child actions",
           "items": {
             "$ref": "#/definitions/action"
           }
@@ -120,14 +109,13 @@
     },
     "recurrence": {
       "type": "object",
-      "description": "Recurrence rule per RFC 5545. Note: Values are normalized to lowercase in JSON/SQL ('daily'), but the .actions file format uses uppercase RRULE syntax ('FREQ=DAILY').",
       "required": [
         "frequency"
       ],
       "properties": {
         "frequency": {
           "type": "string",
-          "description": "Recurrence frequency (normalized to lowercase in JSON/SQL, uppercase in .actions file RRULE)",
+          "description": "Recurrence frequency",
           "enum": [
             "minutely",
             "hourly",

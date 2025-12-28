@@ -8,7 +8,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_completed))
@@ -18,7 +19,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_completed))
@@ -28,7 +30,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_completed))
@@ -38,7 +41,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_completed))
@@ -48,7 +52,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_completed))
@@ -58,7 +63,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_cancelled))
@@ -68,7 +74,8 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_completed))
@@ -78,4 +85,5 @@
       datetime: (datetime))
     metadata: (completed_date
       datetime: (datetime))
-    metadata: (id)))
+    metadata: (id
+      uuid: (uuid_value))))

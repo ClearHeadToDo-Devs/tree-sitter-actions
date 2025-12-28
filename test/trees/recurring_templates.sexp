@@ -8,7 +8,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -20,7 +21,8 @@
         minutes: (minutes))
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -30,7 +32,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -40,7 +43,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -50,7 +54,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -60,7 +65,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -72,7 +78,8 @@
         minutes: (minutes))
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -82,7 +89,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -92,7 +100,8 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id))
+    metadata: (id
+      uuid: (uuid_value)))
   (root_action
     state: (state
       value: (state_not_started))
@@ -102,4 +111,5 @@
       datetime: (datetime)
       recurrence: (recurrence
         rrule: (rrule_content)))
-    metadata: (id)))
+    metadata: (id
+      uuid: (uuid_value))))

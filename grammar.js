@@ -5,7 +5,7 @@ module.exports = grammar({
   name: 'actions',
 
   extras: $ => [
-    /\s/,  // Allow whitespace anywhere
+    /\s/, // Allow whitespace anywhere
   ],
 
   rules: {
@@ -26,46 +26,50 @@ module.exports = grammar({
 
     // Depth 1 actions (one > prefix)
     depth1_action: $ => seq(
-      '>',
+      field('marker', '>'),
       $._action_body,
       repeat(field('child', $.depth2_action))
     ),
 
     // Depth 2 actions (two > prefixes)
     depth2_action: $ => seq(
-      '>>',
+      field('marker', '>>'),
       $._action_body,
       repeat(field('child', $.depth3_action))
     ),
 
     // Depth 3 actions (three > prefixes)
     depth3_action: $ => seq(
-      '>>>',
+      field('marker', '>>>'),
       $._action_body,
       repeat(field('child', $.depth4_action))
     ),
 
     // Depth 4 actions (four > prefixes)
     depth4_action: $ => seq(
-      '>>>>',
+      field('marker', '>>>>'),
       $._action_body,
       repeat(field('child', $.depth5_action))
     ),
 
     // Depth 5 actions (five > prefixes) - leaf level
     depth5_action: $ => seq(
-      '>>>>>',
+      field('marker', '>>>>>'),
       $._action_body
     ),
 
     // State markers - explicit state names per specification
-    state: $ => seq('[', field('value', choice(
-      $.state_not_started,
-      $.state_completed,
-      $.state_in_progress,
-      $.state_blocked,
-      $.state_cancelled
-    )), ']'),
+    state: $ => seq(
+      field('open', '['),
+      field('value', choice(
+        $.state_not_started,
+        $.state_completed,
+        $.state_in_progress,
+        $.state_blocked,
+        $.state_cancelled
+      )),
+      field('close', ']')
+    ),
 
     state_not_started: $ => ' ',
     state_completed: $ => 'x',
@@ -95,7 +99,7 @@ module.exports = grammar({
 
     // Description: $ followed by text and/or links
     description: $ => seq(
-      '$',
+      field('icon', '$'),
       field('text', repeat1(choice(
         $.link,
         $.description_text_chunk
@@ -129,19 +133,19 @@ module.exports = grammar({
 
     // Priority: ! followed by number
     priority: $ => seq(
-      '!',
+      field('icon', '!'),
       field('level', new RegExp(PATTERNS.priority_level))
     ),
 
     // Story/Project: * followed by name (root actions only)
     story: $ => seq(
-      '*',
+      field('icon', '*'),
       field('name', new RegExp(PATTERNS.story_name))
     ),
 
     // Context: + followed by comma-separated tags
     context: $ => seq(
-      '+',
+      field('icon', '+'),
       field('tag', $.tag),
       repeat(seq(',', field('tag', $.tag)))
     ),
@@ -151,7 +155,7 @@ module.exports = grammar({
 
     // Do-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
     do_date: $ => seq(
-      '@',
+      field('icon', '@'),
       field('datetime', $.datetime),
       optional(field('duration', $.duration)),
       optional(field('recurrence', $.recurrence))
@@ -178,14 +182,17 @@ module.exports = grammar({
 
     // Completed date: % followed by ISO 8601 date/time
     completed_date: $ => seq(
-      '%',
+      field('icon', '%'),
       field('datetime', $.datetime)
     ),
 
+    // UUID value as named node
+    uuid_value: $ => new RegExp(PATTERNS.uuid),
+
     // ID: # followed by UUID
     id: $ => seq(
-      '#',
-      field('uuid', new RegExp(PATTERNS.uuid))
+      field('icon', '#'),
+      field('uuid', $.uuid_value)
     ),
   }
 });

@@ -12,6 +12,16 @@
             "named": true
           }
         ]
+      },
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "%",
+            "named": false
+          }
+        ]
       }
     }
   },
@@ -19,6 +29,16 @@
     "type": "context",
     "named": true,
     "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "+",
+            "named": false
+          }
+        ]
+      },
       "tag": {
         "multiple": true,
         "required": true,
@@ -42,6 +62,16 @@
           {
             "type": "depth2_action",
             "named": true
+          }
+        ]
+      },
+      "marker": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ">",
+            "named": false
           }
         ]
       },
@@ -115,6 +145,16 @@
           }
         ]
       },
+      "marker": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ">>",
+            "named": false
+          }
+        ]
+      },
       "metadata": {
         "multiple": true,
         "required": false,
@@ -182,6 +222,16 @@
           {
             "type": "depth4_action",
             "named": true
+          }
+        ]
+      },
+      "marker": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ">>>",
+            "named": false
           }
         ]
       },
@@ -255,6 +305,16 @@
           }
         ]
       },
+      "marker": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ">>>>",
+            "named": false
+          }
+        ]
+      },
       "metadata": {
         "multiple": true,
         "required": false,
@@ -315,6 +375,16 @@
     "type": "depth5_action",
     "named": true,
     "fields": {
+      "marker": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ">>>>>",
+            "named": false
+          }
+        ]
+      },
       "metadata": {
         "multiple": true,
         "required": false,
@@ -375,6 +445,16 @@
     "type": "description",
     "named": true,
     "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "$",
+            "named": false
+          }
+        ]
+      },
       "text": {
         "multiple": true,
         "required": true,
@@ -415,6 +495,16 @@
           }
         ]
       },
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "@",
+            "named": false
+          }
+        ]
+      },
       "recurrence": {
         "multiple": false,
         "required": false,
@@ -446,7 +536,28 @@
   {
     "type": "id",
     "named": true,
-    "fields": {}
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "#",
+            "named": false
+          }
+        ]
+      },
+      "uuid": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "uuid_value",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "link",
@@ -511,7 +622,18 @@
   {
     "type": "priority",
     "named": true,
-    "fields": {}
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!",
+            "named": false
+          }
+        ]
+      }
+    }
   },
   {
     "type": "recurrence",
@@ -619,6 +741,26 @@
     "type": "state",
     "named": true,
     "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "]",
+            "named": false
+          }
+        ]
+      },
+      "open": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "[",
+            "named": false
+          }
+        ]
+      },
       "value": {
         "multiple": false,
         "required": true,
@@ -650,7 +792,18 @@
   {
     "type": "story",
     "named": true,
-    "fields": {}
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "*",
+            "named": false
+          }
+        ]
+      }
+    }
   },
   {
     "type": "!",
@@ -766,6 +919,10 @@
   },
   {
     "type": "tag",
+    "named": true
+  },
+  {
+    "type": "uuid_value",
     "named": true
   },
   {
