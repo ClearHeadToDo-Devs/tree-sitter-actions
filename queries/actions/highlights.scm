@@ -1,32 +1,54 @@
-; State markers - hide brackets using fields
-(state open: "[" @conceal)
-(state close: "]" @conceal)
-(state_not_started) @conceal (#set! conceal "󰄱")
-(state_completed) @conceal (#set! conceal "󰄵")
-(state_in_progress) @conceal (#set! conceal "󰄳")
-(state_blocked) @conceal (#set! conceal "󰅙")
-(state_cancelled) @conceal (#set! conceal "󰪑")
+;; ============================================================================
+;; State Icons - Replace entire state based on type
+;; ============================================================================
 
-; Child markers - using field queries
-(depth1_action marker: ">" @conceal (#set! conceal "├"))
-(depth2_action marker: ">>" @conceal (#set! conceal "│├"))
-(depth3_action marker: ">>>" @conceal (#set! conceal "││├"))
-(depth4_action marker: ">>>>" @conceal (#set! conceal "│││├"))
-(depth5_action marker: ">>>>>" @conceal (#set! conceal "││││├"))
+; Not started: [ ] -> 󰄱
+(state (state_not_started)) @conceal (#set! conceal "󰄱")
+
+; Completed: [x] -> 󰄵
+(state (state_completed)) @conceal (#set! conceal "󰄵")
+
+; In progress: [-] -> 󰄳
+(state (state_in_progress)) @conceal (#set! conceal "󰄳")
+
+; Blocked: [=] -> 󰅙
+(state (state_blocked)) @conceal (#set! conceal "󰅙")
+
+; Cancelled: [_] -> 󰪑
+(state (state_cancelled)) @conceal (#set! conceal "󰪑")
+
+
+;; ============================================================================
+;; Child Markers - Make completely invisible
+;; ============================================================================
+
+; Depth markers: >, >>, >>>, etc. -> invisible
+(depth1_action ">" @conceal)
+(depth2_action ">>" @conceal)
+(depth3_action ">>>" @conceal)
+(depth4_action ">>>>" @conceal)
+(depth5_action ">>>>>" @conceal)
+
+
+;; ============================================================================
+;; ID - Replace entire ID (# + UUID) with single icon
+;; ============================================================================
+
+(id) @conceal (#set! conceal "🆔")
+
+
+;; ============================================================================
+;; Other Highlighting
+;; ============================================================================
 
 ; Action content - make name bold
 (name) @markup.strong
 (description) @text.note
 
-; Metadata icons - using field queries
-(priority icon: "!" @conceal (#set! conceal "󰀦")) @number
-(story icon: "*" @conceal (#set! conceal "󰙨")) @type
-(context icon: "+" @conceal (#set! conceal "󰓹")) @tag
-(description icon: "$" @conceal (#set! conceal "💬"))
-
-(do_date icon: "@" @conceal (#set! conceal "󰃭")) @string.special
-(completed_date icon: "%" @conceal (#set! conceal "󰄬")) @string.special
-
-; ID - show icon, hide UUID
-(id icon: "#" @conceal (#set! conceal "🆔"))
-(id uuid: (uuid_value) @conceal)
+; Metadata icons - replace markers with icons
+(priority "!" @conceal (#set! conceal "󰀦"))
+(story "*" @conceal (#set! conceal "󰙨"))
+(context "+" @conceal (#set! conceal "󰓹"))
+(description "$" @conceal (#set! conceal "💬"))
+(do_date "@" @conceal (#set! conceal "󰃭"))
+(completed_date "%" @conceal (#set! conceal "󰄬"))
