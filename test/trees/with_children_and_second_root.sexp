@@ -1,16 +1,23 @@
 (source_file
   (root_action
     state: (state
-      value: (state_not_started))
+      open: (state_open)
+      value: (state_not_started)
+      close: (state_close))
     name: (name
       (name_text_chunk))
     child: (depth1_action
+      marker: (depth1_marker)
       state: (state
-        value: (state_not_started))
+        open: (state_open)
+        value: (state_not_started)
+        close: (state_close))
       name: (name
         (name_text_chunk))))
   (root_action
     state: (state
-      value: (state_not_started))
+      open: (state_open)
+      value: (state_not_started)
+      close: (state_close))
     name: (name
       (name_text_chunk))))

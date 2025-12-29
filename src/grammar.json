@@ -68,8 +68,8 @@
           "type": "FIELD",
           "name": "marker",
           "content": {
-            "type": "STRING",
-            "value": ">"
+            "type": "SYMBOL",
+            "name": "depth1_marker"
           }
         },
         {
@@ -96,8 +96,8 @@
           "type": "FIELD",
           "name": "marker",
           "content": {
-            "type": "STRING",
-            "value": ">>"
+            "type": "SYMBOL",
+            "name": "depth2_marker"
           }
         },
         {
@@ -124,8 +124,8 @@
           "type": "FIELD",
           "name": "marker",
           "content": {
-            "type": "STRING",
-            "value": ">>>"
+            "type": "SYMBOL",
+            "name": "depth3_marker"
           }
         },
         {
@@ -152,8 +152,8 @@
           "type": "FIELD",
           "name": "marker",
           "content": {
-            "type": "STRING",
-            "value": ">>>>"
+            "type": "SYMBOL",
+            "name": "depth4_marker"
           }
         },
         {
@@ -180,8 +180,8 @@
           "type": "FIELD",
           "name": "marker",
           "content": {
-            "type": "STRING",
-            "value": ">>>>>"
+            "type": "SYMBOL",
+            "name": "depth5_marker"
           }
         },
         {
@@ -190,6 +190,26 @@
         }
       ]
     },
+    "depth1_marker": {
+      "type": "STRING",
+      "value": ">"
+    },
+    "depth2_marker": {
+      "type": "STRING",
+      "value": ">>"
+    },
+    "depth3_marker": {
+      "type": "STRING",
+      "value": ">>>"
+    },
+    "depth4_marker": {
+      "type": "STRING",
+      "value": ">>>>"
+    },
+    "depth5_marker": {
+      "type": "STRING",
+      "value": ">>>>>"
+    },
     "state": {
       "type": "SEQ",
       "members": [
@@ -197,8 +217,8 @@
           "type": "FIELD",
           "name": "open",
           "content": {
-            "type": "STRING",
-            "value": "["
+            "type": "SYMBOL",
+            "name": "state_open"
           }
         },
         {
@@ -234,11 +254,19 @@
           "type": "FIELD",
           "name": "close",
           "content": {
-            "type": "STRING",
-            "value": "]"
+            "type": "SYMBOL",
+            "name": "state_close"
           }
         }
       ]
+    },
+    "state_open": {
+      "type": "STRING",
+      "value": "["
+    },
+    "state_close": {
+      "type": "STRING",
+      "value": "]"
     },
     "state_not_started": {
       "type": "STRING",
@@ -627,8 +655,8 @@
           "type": "FIELD",
           "name": "icon",
           "content": {
-            "type": "STRING",
-            "value": "#"
+            "type": "SYMBOL",
+            "name": "id_hash"
           }
         },
         {
@@ -640,6 +668,10 @@
           }
         }
       ]
+    },
+    "id_hash": {
+      "type": "STRING",
+      "value": "#"
     }
   },
   "extras": [

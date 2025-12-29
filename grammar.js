@@ -26,41 +26,48 @@ module.exports = grammar({
 
     // Depth 1 actions (one > prefix)
     depth1_action: $ => seq(
-      field('marker', '>'),
+      field('marker', $.depth1_marker),
       $._action_body,
       repeat(field('child', $.depth2_action))
     ),
 
     // Depth 2 actions (two > prefixes)
     depth2_action: $ => seq(
-      field('marker', '>>'),
+      field('marker', $.depth2_marker),
       $._action_body,
       repeat(field('child', $.depth3_action))
     ),
 
     // Depth 3 actions (three > prefixes)
     depth3_action: $ => seq(
-      field('marker', '>>>'),
+      field('marker', $.depth3_marker),
       $._action_body,
       repeat(field('child', $.depth4_action))
     ),
 
     // Depth 4 actions (four > prefixes)
     depth4_action: $ => seq(
-      field('marker', '>>>>'),
+      field('marker', $.depth4_marker),
       $._action_body,
       repeat(field('child', $.depth5_action))
     ),
 
     // Depth 5 actions (five > prefixes) - leaf level
     depth5_action: $ => seq(
-      field('marker', '>>>>>'),
+      field('marker', $.depth5_marker),
       $._action_body
     ),
 
+    // Depth markers as named nodes for syntax highlighting
+    depth1_marker: $ => '>',
+    depth2_marker: $ => '>>',
+    depth3_marker: $ => '>>>',
+    depth4_marker: $ => '>>>>',
+    depth5_marker: $ => '>>>>>',
+
     // State markers - explicit state names per specification
     state: $ => seq(
-      field('open', '['),
+      field('open', $.state_open),
       field('value', choice(
         $.state_not_started,
         $.state_completed,
@@ -68,8 +75,11 @@ module.exports = grammar({
         $.state_blocked,
         $.state_cancelled
       )),
-      field('close', ']')
+      field('close', $.state_close)
     ),
+
+    state_open: $ => '[',
+    state_close: $ => ']',
 
     state_not_started: $ => ' ',
     state_completed: $ => 'x',
@@ -191,8 +201,10 @@ module.exports = grammar({
 
     // ID: # followed by UUID
     id: $ => seq(
-      field('icon', '#'),
+      field('icon', $.id_hash),
       field('uuid', $.uuid_value)
     ),
+
+    id_hash: $ => '#',
   }
 });

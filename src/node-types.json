@@ -70,8 +70,8 @@
         "required": true,
         "types": [
           {
-            "type": ">",
-            "named": false
+            "type": "depth1_marker",
+            "named": true
           }
         ]
       },
@@ -150,8 +150,8 @@
         "required": true,
         "types": [
           {
-            "type": ">>",
-            "named": false
+            "type": "depth2_marker",
+            "named": true
           }
         ]
       },
@@ -230,8 +230,8 @@
         "required": true,
         "types": [
           {
-            "type": ">>>",
-            "named": false
+            "type": "depth3_marker",
+            "named": true
           }
         ]
       },
@@ -310,8 +310,8 @@
         "required": true,
         "types": [
           {
-            "type": ">>>>",
-            "named": false
+            "type": "depth4_marker",
+            "named": true
           }
         ]
       },
@@ -380,8 +380,8 @@
         "required": true,
         "types": [
           {
-            "type": ">>>>>",
-            "named": false
+            "type": "depth5_marker",
+            "named": true
           }
         ]
       },
@@ -542,8 +542,8 @@
         "required": true,
         "types": [
           {
-            "type": "#",
-            "named": false
+            "type": "id_hash",
+            "named": true
           }
         ]
       },
@@ -746,8 +746,8 @@
         "required": true,
         "types": [
           {
-            "type": "]",
-            "named": false
+            "type": "state_close",
+            "named": true
           }
         ]
       },
@@ -756,8 +756,8 @@
         "required": true,
         "types": [
           {
-            "type": "[",
-            "named": false
+            "type": "state_open",
+            "named": true
           }
         ]
       },
@@ -810,10 +810,6 @@
     "named": false
   },
   {
-    "type": "#",
-    "named": false
-  },
-  {
     "type": "$",
     "named": false
   },
@@ -834,26 +830,6 @@
     "named": false
   },
   {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": ">>",
-    "named": false
-  },
-  {
-    "type": ">>>",
-    "named": false
-  },
-  {
-    "type": ">>>>",
-    "named": false
-  },
-  {
-    "type": ">>>>>",
-    "named": false
-  },
-  {
     "type": "@",
     "named": false
   },
@@ -866,15 +842,7 @@
     "named": false
   },
   {
-    "type": "[",
-    "named": false
-  },
-  {
     "type": "[[",
-    "named": false
-  },
-  {
-    "type": "]",
     "named": false
   },
   {
@@ -886,7 +854,31 @@
     "named": true
   },
   {
+    "type": "depth1_marker",
+    "named": true
+  },
+  {
+    "type": "depth2_marker",
+    "named": true
+  },
+  {
+    "type": "depth3_marker",
+    "named": true
+  },
+  {
+    "type": "depth4_marker",
+    "named": true
+  },
+  {
+    "type": "depth5_marker",
+    "named": true
+  },
+  {
     "type": "description_text_chunk",
+    "named": true
+  },
+  {
+    "type": "id_hash",
     "named": true
   },
   {
@@ -906,6 +898,10 @@
     "named": true
   },
   {
+    "type": "state_close",
+    "named": true
+  },
+  {
     "type": "state_completed",
     "named": true
   },
@@ -915,6 +911,10 @@
   },
   {
     "type": "state_not_started",
+    "named": true
+  },
+  {
+    "type": "state_open",
     "named": true
   },
   {

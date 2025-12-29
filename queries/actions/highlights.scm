@@ -2,20 +2,16 @@
 ;; State Icons - Replace entire state based on type
 ;; ============================================================================
 
-; Not started: [ ] -> 󰄱
-(state (state_not_started)) @conceal (#set! conceal "󰄱")
+; Conceal brackets (hide completely)
+((state_open) @conceal (#set! conceal ""))
+((state_close) @conceal (#set! conceal ""))
 
-; Completed: [x] -> 󰄵
-(state (state_completed)) @conceal (#set! conceal "󰄵")
-
-; In progress: [-] -> 󰄳
-(state (state_in_progress)) @conceal (#set! conceal "󰄳")
-
-; Blocked: [=] -> 󰅙
-(state (state_blocked)) @conceal (#set! conceal "󰅙")
-
-; Cancelled: [_] -> 󰪑
-(state (state_cancelled)) @conceal (#set! conceal "󰪑")
+; Conceal state value and replace with icon based on type
+((state_not_started) @conceal (#set! conceal "󰄱"))
+((state_completed) @conceal (#set! conceal "󰄵"))
+((state_in_progress) @conceal (#set! conceal "󰄳"))
+((state_blocked) @conceal (#set! conceal "󰅙"))
+((state_cancelled) @conceal (#set! conceal "󰪑"))
 
 
 ;; ============================================================================
@@ -23,18 +19,22 @@
 ;; ============================================================================
 
 ; Depth markers: >, >>, >>>, etc. -> invisible
-(depth1_action ">" @conceal)
-(depth2_action ">>" @conceal)
-(depth3_action ">>>" @conceal)
-(depth4_action ">>>>" @conceal)
-(depth5_action ">>>>>" @conceal)
+((depth1_marker) @conceal (#set! conceal ""))
+((depth2_marker) @conceal (#set! conceal ""))
+((depth3_marker) @conceal (#set! conceal ""))
+((depth4_marker) @conceal (#set! conceal ""))
+((depth5_marker) @conceal (#set! conceal ""))
 
 
 ;; ============================================================================
-;; ID - Replace entire ID (# + UUID) with single icon
+;; ID - Replace # with icon and hide UUID
 ;; ============================================================================
 
-(id) @conceal (#set! conceal "🆔")
+; Replace # with icon
+((id_hash) @conceal (#set! conceal "🆔"))
+
+; Hide the UUID completely
+((uuid_value) @conceal (#set! conceal ""))
 
 
 ;; ============================================================================

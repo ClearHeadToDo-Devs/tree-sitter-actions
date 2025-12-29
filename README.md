@@ -220,4 +220,21 @@ Regenerate tests after modifying the grammar or examples:
 npm run regen:verify
 ```
 
+## Neovim Integration Debugging
+
+When working on syntax highlighting and queries for Neovim, use the debugging scripts in `scripts/nvim/`:
+
+```bash
+# Check if Neovim can find the queries
+nvim --headless examples/minimal.actions +"source scripts/nvim/check_queries.lua" +q
+
+# Test if highlights are capturing correctly
+nvim --headless examples/recurring_log_example.actions +"source scripts/nvim/test_highlights.lua" +q
+
+# Check if conceal metadata is being applied
+nvim --headless examples/minimal.actions +"source scripts/nvim/check_conceal_metadata.lua" +q
+```
+
+See `scripts/nvim/README.md` for detailed documentation on debugging Neovim integration issues.
+
 For details on the test architecture, build system, and contributing workflow, see [docs/contributing.md](docs/contributing.md).
