@@ -10,6 +10,7 @@ categories = ["parser-implementations", "parsing", "text-editors"]
 repository = "https://github.com/clearheadtodo-devs/tree-sitter-actions"
 edition = "2021"
 autoexamples = false
+build = "bindings/rust/build.rs"
 include = [
   "LICENSE",
   "bindings/rust/*",
