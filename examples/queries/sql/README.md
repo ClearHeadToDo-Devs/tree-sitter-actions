@@ -299,7 +299,6 @@ actions-to-json tasks.actions | \
   sqlite3 myapp.db < import-filtered.sql
 ```
 
-See the [main README](../../../README.md#querying-actions) for a complete comparison of query approaches.
 
 ## Further Reading
 

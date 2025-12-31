@@ -3,7 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.9.0] - 2025-12-30
+### Removed
+No longer exporting the schema or examples within the rust bindings.
+
+These were always janky and ive decided to move them and all other shared docs to the new [specifications repo](https://github.com/ClearHeadToDo-Devs/specifications.git) to better separate concerns.
+
+This means downstream consumers are expected to vendor the examples and schemas directly to reduce direct dependencies and allow migration at at their own pace instead of coupling them to the treesitter implementation.
 
 ## [0.6.0] - 2024-12-24
 
