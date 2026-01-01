@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-actions",
-  "version": "0.9.0",
+  "version": "0.9.01",
   "description": "parser for the actions file as defined by the specification therein",
   "repository": "https://github.com/clearheadtodo-devs/tree-sitter-actions",
   "license": "MIT",

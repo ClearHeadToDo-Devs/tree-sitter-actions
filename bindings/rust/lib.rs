@@ -30,3 +30,19 @@ pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_actio
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
+/// The syntax highlighting query for this grammar.
+pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/actions/highlights.scm");
+
+/// The indentation query for this grammar.
+pub const INDENTS_QUERY: &str = include_str!("../../queries/actions/indents.scm");
+
+/// The Topiary formatting query for this grammar.
+///
+/// This query implements the formatting rules defined in the
+/// [formatting specification](https://github.com/clearheadtodo-devs/specifications/blob/main/formatting_specification.md).
+///
+/// Supports two modes controlled by Topiary's single-line vs multi-line context:
+/// - Compact: metadata on same line (single-line mode)
+/// - List: metadata on separate indented lines (multi-line mode)
+pub const TOPIARY_QUERY: &str = include_str!("../../queries/actions/topiary.scm");
+
