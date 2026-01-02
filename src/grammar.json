@@ -452,11 +452,15 @@
           "type": "FIELD",
           "name": "level",
           "content": {
-            "type": "PATTERN",
-            "value": "[0-9]+"
+            "type": "SYMBOL",
+            "name": "priority_level"
           }
         }
       ]
+    },
+    "priority_level": {
+      "type": "PATTERN",
+      "value": "[0-9]+"
     },
     "story": {
       "type": "SEQ",
@@ -473,11 +477,15 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "PATTERN",
-            "value": "[^\\n!$+@%#>]+"
+            "type": "SYMBOL",
+            "name": "story_name"
           }
         }
       ]
+    },
+    "story_name": {
+      "type": "PATTERN",
+      "value": "[^\\n!$+@%#>]+"
     },
     "context": {
       "type": "SEQ",

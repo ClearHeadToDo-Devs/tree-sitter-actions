@@ -8,8 +8,10 @@
       (name_text_chunk))
     metadata: (description
       text: (description_text_chunk))
-    metadata: (priority)
-    metadata: (story)
+    metadata: (priority
+      level: (priority_level))
+    metadata: (story
+      name: (story_name))
     metadata: (context
       tag: (tag)
       tag: (tag)

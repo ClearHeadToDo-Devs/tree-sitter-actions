@@ -144,14 +144,20 @@ module.exports = grammar({
     // Priority: ! followed by number
     priority: $ => seq(
       field('icon', '!'),
-      field('level', new RegExp(PATTERNS.priority_level))
+      field('level', $.priority_level)
     ),
+
+    // Priority level (1-5)
+    priority_level: $ => new RegExp(PATTERNS.priority_level),
 
     // Story/Project: * followed by name (root actions only)
     story: $ => seq(
       field('icon', '*'),
-      field('name', new RegExp(PATTERNS.story_name))
+      field('name', $.story_name)
     ),
+
+    // Story name
+    story_name: $ => new RegExp(PATTERNS.story_name),
 
     // Context: + followed by comma-separated tags
     context: $ => seq(

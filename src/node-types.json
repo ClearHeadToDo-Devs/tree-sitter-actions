@@ -632,8 +632,23 @@
             "named": false
           }
         ]
+      },
+      "level": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "priority_level",
+            "named": true
+          }
+        ]
       }
     }
+  },
+  {
+    "type": "priority_level",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "recurrence",
@@ -802,6 +817,16 @@
             "named": false
           }
         ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "story_name",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -915,6 +940,10 @@
   },
   {
     "type": "state_open",
+    "named": true
+  },
+  {
+    "type": "story_name",
     "named": true
   },
   {

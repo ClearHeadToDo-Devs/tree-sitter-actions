@@ -58,8 +58,6 @@
 (link_text) @leaf
 (link_url) @leaf
 
-;; TODO: Need to mark anonymous regex-matched content as leaves
-;; Problem: priority level (the number after !) and story name (text after *)
-;; are anonymous nodes from regex patterns in the grammar.
-;; Tree-sitter won't let us use (priority (_) @leaf) - says "Impossible pattern"
-;; See TOPIARY_FORMATTING_STATUS.md for solutions
+;; Priority and story content (now named nodes from grammar refactor)
+(priority_level) @leaf
+(story_name) @leaf

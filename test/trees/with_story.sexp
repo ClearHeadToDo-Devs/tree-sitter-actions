@@ -6,4 +6,5 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
-    metadata: (story)))
+    metadata: (story
+      name: (story_name))))
