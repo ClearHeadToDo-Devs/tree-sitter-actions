@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-actions",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "parser for the actions file as defined by the specification therein",
   "repository": "https://github.com/clearheadtodo-devs/tree-sitter-actions",
   "license": "MIT",
@@ -65,7 +65,8 @@
     "test": "node --test bindings/node/*_test.js && node --test test/parser_test.js",
     "test:grammar": "tree-sitter test",
     "test:schema": "node test/schema_validation_test.js",
-    "test:all": "npm run test:grammar && npm run test:schema && npm test",
+    "test:formatting": "node scripts/test_formatting.js",
+    "test:all": "npm run test:grammar && npm run test:schema && npm run test:formatting && npm test",
     "test-parser": "node --test test/parser_test.js",
     "parse": "node parser.js",
     "parse-simple": "node parser.js test/files/simple.actions",

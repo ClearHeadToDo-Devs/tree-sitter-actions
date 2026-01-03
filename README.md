@@ -189,6 +189,42 @@ For complete documentation on querying, see:
 - [`examples/queries/jq/README.md`](examples/queries/jq/README.md) - jq query examples
 - [`examples/queries/sql/README.md`](examples/queries/sql/README.md) - SQL query examples
 
+# Formatting Actions Files
+
+This grammar integrates with [Topiary](https://topiary.tweag.io/) to provide automatic formatting for `.actions` files.
+
+## Current Formatting Support
+
+The formatter currently focuses on **structural layout** (vertical spacing):
+- ✅ Enforces one action per line
+- ✅ Proper newlines between parent and child actions
+- ✅ Consistent vertical spacing throughout the file
+
+**Note:** Horizontal spacing (spaces between tokens) is preserved from the input. Users should ensure proper spacing in their files:
+- Space after state brackets: `[x] Task` (not `[x]Task`)
+- Space before metadata: `Task $ Desc` (not `Task$Desc`)
+- Space after `$` icon: `$ Description` (not `$Description`)
+
+See the [Formatting Specification](https://github.com/ClearHeadToDo-Devs/specifications/blob/main/formatting_specification.md) for complete formatting guidelines.
+
+## Using Topiary
+
+Format a `.actions` file:
+```bash
+topiary format --language actions file.actions
+```
+
+The formatter is configured in `.topiary/languages.ncl` and uses queries from `queries/actions/topiary.scm`.
+
+## Testing
+
+Formatting tests verify the formatter's behavior:
+```bash
+npm run test:formatting
+```
+
+Test cases are in `examples/formatting/` covering compact style, hierarchies, and edge cases.
+
 # Inspirations
 - [Neovim](https://neovim.io/) was one of the first editors to use tree-sitter for syntax highlighting and code understanding and gave me a glimpse into the power and speed of tree-sitter
 - [Todoist](https://www.todoist.com/) has been my main GTD tool, and while i want to create a FOSS alternative here, much of my design language has come from using todoist for years
