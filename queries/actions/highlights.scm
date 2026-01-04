@@ -52,3 +52,4 @@
 (description "$" @conceal (#set! conceal "💬"))
 (do_date "@" @conceal (#set! conceal "󰃭"))
 (completed_date "%" @conceal (#set! conceal "󰄬"))
+(created_date "^" @conceal (#set! conceal "󰄬"))

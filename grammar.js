@@ -104,6 +104,7 @@ module.exports = grammar({
       $.context,
       $.do_date,
       $.completed_date,
+      $.created_date,
       $.id
     ),
 
@@ -199,6 +200,12 @@ module.exports = grammar({
     // Completed date: % followed by ISO 8601 date/time
     completed_date: $ => seq(
       field('icon', '%'),
+      field('datetime', $.datetime)
+    ),
+
+    // Created date: ^ followed by ISO 8601 date/time
+    created_date: $ => seq(
+      field('icon', '^'),
       field('datetime', $.datetime)
     ),
 

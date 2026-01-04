@@ -52,6 +52,32 @@
     }
   },
   {
+    "type": "created_date",
+    "named": true,
+    "fields": {
+      "datetime": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "datetime",
+            "named": true
+          }
+        ]
+      },
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "^",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "depth1_action",
     "named": true,
     "fields": {
@@ -85,6 +111,10 @@
           },
           {
             "type": "context",
+            "named": true
+          },
+          {
+            "type": "created_date",
             "named": true
           },
           {
@@ -168,6 +198,10 @@
             "named": true
           },
           {
+            "type": "created_date",
+            "named": true
+          },
+          {
             "type": "description",
             "named": true
           },
@@ -245,6 +279,10 @@
           },
           {
             "type": "context",
+            "named": true
+          },
+          {
+            "type": "created_date",
             "named": true
           },
           {
@@ -328,6 +366,10 @@
             "named": true
           },
           {
+            "type": "created_date",
+            "named": true
+          },
+          {
             "type": "description",
             "named": true
           },
@@ -395,6 +437,10 @@
           },
           {
             "type": "context",
+            "named": true
+          },
+          {
+            "type": "created_date",
             "named": true
           },
           {
@@ -693,6 +739,10 @@
             "named": true
           },
           {
+            "type": "created_date",
+            "named": true
+          },
+          {
             "type": "description",
             "named": true
           },
@@ -872,6 +922,10 @@
   },
   {
     "type": "]]",
+    "named": false
+  },
+  {
+    "type": "^",
     "named": false
   },
   {
