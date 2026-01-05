@@ -94,7 +94,7 @@ module.exports = grammar({
     )),
 
     // Text chunk within name (excludes metadata markers and [)
-    name_text_chunk: $ => /[^\n$!*+@%#>\[]+/,
+    name_text_chunk: $ => /[^\n$!*+@%#>^\[]+/,
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -118,7 +118,7 @@ module.exports = grammar({
     ),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
-    description_text_chunk: $ => /[^\n!*+@%#>\[]+/,
+    description_text_chunk: $ => /[^\n!*+@%#>^\[]+/,
 
     // Link: [[text|url]] or [[url]]
     link: $ => seq(

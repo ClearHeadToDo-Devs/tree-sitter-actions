@@ -21,6 +21,8 @@
         minutes: (minutes)))
     metadata: (completed_date
       datetime: (datetime))
+    metadata: (created_date
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       uuid: (uuid_value))

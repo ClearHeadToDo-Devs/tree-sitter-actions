@@ -24,10 +24,12 @@ for (const exampleFile of exampleFiles) {
       cwd: path.join(__dirname, '..')
     });
 
-    // Strip coordinates from output (no need to skip lines anymore)
+    // Strip coordinates and warnings from output
     const cleanedOutput = output
       .trim()
-      .replace(/ \[[0-9]+, [0-9]+\] - \[[0-9]+, [0-9]+\]/g, '');
+      .replace(/Warning: You have not configured any parser directories![\s\S]*?language grammars\./, '')
+      .replace(/ \[[0-9]+, [0-9]+\] - \[[0-9]+, [0-9]+\]/g, '')
+      .trim();
 
     fs.writeFileSync(treePath, cleanedOutput);
     console.log(`✓ Generated test/trees/${baseName}.sexp`);

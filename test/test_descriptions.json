@@ -1,6 +1,7 @@
 {
   "actions": {
-    "with_everything": "With Everything"
+    "with_everything": "With Everything",
+    "conformance_test": "Conformance Test"
   },
   "properties": {
     "with_description": "With Description",

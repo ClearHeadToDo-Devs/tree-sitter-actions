@@ -306,7 +306,7 @@
     },
     "name_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%#>\\[]+"
+      "value": "[^\\n$!*+@%#>^\\[]+"
     },
     "_metadata": {
       "type": "CHOICE",
@@ -380,7 +380,7 @@
     },
     "description_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n!*+@%#>\\[]+"
+      "value": "[^\\n!*+@%#>^\\[]+"
     },
     "link": {
       "type": "SEQ",
