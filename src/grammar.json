@@ -489,7 +489,7 @@
     },
     "story_name": {
       "type": "PATTERN",
-      "value": "[^\\n!$+@%#>]+"
+      "value": "[^\\n!$+@%^#>]+"
     },
     "context": {
       "type": "SEQ",
@@ -534,7 +534,7 @@
     },
     "tag": {
       "type": "PATTERN",
-      "value": "[^,\\n!$*@%#>]+"
+      "value": "[^,\\n!$*@%^#>]+"
     },
     "do_date": {
       "type": "SEQ",

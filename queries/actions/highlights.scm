@@ -38,6 +38,17 @@
 
 
 ;; ============================================================================
+;; Created Date - Replace ^ with icon and hide datetime
+;; ============================================================================
+
+; Replace ^ with icon (same approach as ID)
+(created_date "^" @conceal (#set! conceal "󰜋"))
+
+; Hide the datetime value within created_date completely
+(created_date (datetime) @conceal (#set! conceal ""))
+
+
+;; ============================================================================
 ;; Other Highlighting
 ;; ============================================================================
 
@@ -52,4 +63,3 @@
 (description "$" @conceal (#set! conceal "💬"))
 (do_date "@" @conceal (#set! conceal "󰃭"))
 (completed_date "%" @conceal (#set! conceal "󰄬"))
-(created_date "^" @conceal (#set! conceal "󰄬"))

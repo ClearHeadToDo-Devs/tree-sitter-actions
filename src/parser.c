@@ -810,6 +810,11 @@ static const TSCharacterRange sym_description_text_chunk_character_set_1[] = {
   {'\\', ']'}, {'_', 0x10ffff},
 };
 
+static const TSCharacterRange sym_tag_character_set_1[] = {
+  {0, '\t'}, {0x0b, ' '}, {'"', '"'}, {'&', ')'}, {'+', '+'}, {'-', '='}, {'?', '?'}, {'A', ']'},
+  {'_', 0x10ffff},
+};
+
 static bool ts_lex(TSLexer *lexer, TSStateId state) {
   START_LEXER();
   eof = lexer->eof(lexer);
@@ -859,20 +864,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           (lookahead < '#' || '%' < lookahead) &&
           lookahead != '+' &&
           lookahead != '>' &&
-          lookahead != '@') ADVANCE(101);
+          lookahead != '@' &&
+          lookahead != '^') ADVANCE(101);
       END_STATE();
     case 3:
       if (lookahead == '\n') SKIP(3);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(104);
-      if (lookahead != 0 &&
-          lookahead != ' ' &&
-          lookahead != '!' &&
-          (lookahead < '#' || '%' < lookahead) &&
-          lookahead != '*' &&
-          lookahead != ',' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(105);
+      if ((!eof && set_contains(sym_tag_character_set_1, 9, lookahead))) ADVANCE(105);
       END_STATE();
     case 4:
       if (lookahead == ' ') ADVANCE(76);
@@ -1260,24 +1259,15 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\t' ||
           (0x0b <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(100);
-      if (lookahead != 0 &&
-          (lookahead < '\t' || '\r' < lookahead) &&
-          lookahead != ' ' &&
-          lookahead != '!' &&
-          (lookahead < '#' || '%' < lookahead) &&
-          lookahead != '+' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(101);
+      if ((!eof && set_contains(sym_name_text_chunk_character_set_1, 9, lookahead)) ||
+          lookahead == '*' ||
+          lookahead == '[') ADVANCE(101);
       END_STATE();
     case 101:
       ACCEPT_TOKEN(sym_story_name);
-      if (lookahead != 0 &&
-          lookahead != '\n' &&
-          lookahead != '!' &&
-          (lookahead < '#' || '%' < lookahead) &&
-          lookahead != '+' &&
-          lookahead != '>' &&
-          lookahead != '@') ADVANCE(101);
+      if ((!eof && set_contains(sym_name_text_chunk_character_set_1, 9, lookahead)) ||
+          lookahead == '*' ||
+          lookahead == '[') ADVANCE(101);
       END_STATE();
     case 102:
       ACCEPT_TOKEN(anon_sym_PLUS);
@@ -1290,19 +1280,11 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\t' ||
           (0x0b <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(104);
-      if (((!eof && set_contains(sym_name_text_chunk_character_set_1, 9, lookahead)) ||
-          lookahead == '+' ||
-          lookahead == '[' ||
-          lookahead == '^') &&
-          lookahead != ',') ADVANCE(105);
+      if ((!eof && set_contains(sym_tag_character_set_1, 9, lookahead))) ADVANCE(105);
       END_STATE();
     case 105:
       ACCEPT_TOKEN(sym_tag);
-      if (((!eof && set_contains(sym_name_text_chunk_character_set_1, 9, lookahead)) ||
-          lookahead == '+' ||
-          lookahead == '[' ||
-          lookahead == '^') &&
-          lookahead != ',') ADVANCE(105);
+      if ((!eof && set_contains(sym_tag_character_set_1, 9, lookahead))) ADVANCE(105);
       END_STATE();
     case 106:
       ACCEPT_TOKEN(anon_sym_AT);

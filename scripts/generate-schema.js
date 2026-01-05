@@ -96,6 +96,11 @@ const schema = {
           "description": "ISO 8601 formatted completion date/time",
           "pattern": PATTERNS.datetime_completed
         },
+        "createdDate": {
+          "type": "string",
+          "description": "ISO 8601 formatted creation date/time",
+          "pattern": PATTERNS.datetime_created
+        },
         "id": {
           "type": "string",
           "description": "UUIDv7 identifier",

@@ -10,15 +10,16 @@
 
 module.exports = {
   // Character classes for metadata markers
-  metadata_chars: '$!*+@%#>',
+  metadata_chars: '$!*+@%^#>',
 
   // Core field patterns
-  name: '[^\\n$!*+@%#>]+',
-  description_text: '[^\\n!*+@%#>]+',  // Exclude all metadata markers except $
+  name: '[^\\n$!*+@%^#>]+',
+  description_text: '[^\\n!*+@%^#>]+',  // Exclude all metadata markers except $
   priority_level: '[0-9]+',
-  story_name: '[^\\n!$+@%#>]+',
-  tag: '[^,\\n!$*@%#>]+',
-  datetime_do: '[^\\n!$*+%#>]+',
-  datetime_completed: '[^\\n!$*+@#>]+',
+  story_name: '[^\\n!$+@%^#>]+',
+  tag: '[^,\\n!$*@%^#>]+',
+  datetime_do: '[^\\n!$*+%^#>]+',
+  datetime_completed: '[^\\n!$*+@^#>]+',
+  datetime_created: '[^\\n!$*+@%#>]+',
   uuid: '[0-9a-fA-F-]+',
 };
