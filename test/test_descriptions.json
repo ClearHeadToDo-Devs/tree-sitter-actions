@@ -22,5 +22,9 @@
     "minimal": "Basic Root Action",
     "with_children": "With Children",
     "with_children_and_second_root": "Children Followed by Root Action"
+  },
+  "predecessors": {
+    "laundry_workflow": "Sequential Laundry Workflow",
+    "deployment_workflow": "Multi-step Deployment with Dependencies"
   }
 }

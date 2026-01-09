@@ -306,7 +306,7 @@
     },
     "name_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%#>^\\[]+"
+      "value": "[^\\n$!*+@%#><^\\[]+"
     },
     "_metadata": {
       "type": "CHOICE",
@@ -338,6 +338,10 @@
         {
           "type": "SYMBOL",
           "name": "created_date"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "predecessor"
         },
         {
           "type": "SYMBOL",
@@ -489,7 +493,7 @@
     },
     "story_name": {
       "type": "PATTERN",
-      "value": "[^\\n!$+@%^#>]+"
+      "value": "[^\\n!$+@%^#><]+"
     },
     "context": {
       "type": "SEQ",
@@ -534,7 +538,7 @@
     },
     "tag": {
       "type": "PATTERN",
-      "value": "[^,\\n!$*@%^#>]+"
+      "value": "[^,\\n!$*@%^#><]+"
     },
     "do_date": {
       "type": "SEQ",
@@ -676,6 +680,44 @@
           }
         }
       ]
+    },
+    "predecessor": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "icon",
+          "content": {
+            "type": "STRING",
+            "value": "<"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "reference",
+          "content": {
+            "type": "SYMBOL",
+            "name": "predecessor_reference"
+          }
+        }
+      ]
+    },
+    "predecessor_reference": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "uuid_value"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "predecessor_name"
+        }
+      ]
+    },
+    "predecessor_name": {
+      "type": "PATTERN",
+      "value": "[^\\n$!*+@%#><^\\[]+"
     },
     "uuid_value": {
       "type": "PATTERN",

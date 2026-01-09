@@ -94,7 +94,7 @@ module.exports = grammar({
     )),
 
     // Text chunk within name (excludes metadata markers and [)
-    name_text_chunk: $ => /[^\n$!*+@%#>^\[]+/,
+    name_text_chunk: $ => /[^\n$!*+@%#><^\[]+/,
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -105,6 +105,7 @@ module.exports = grammar({
       $.do_date,
       $.completed_date,
       $.created_date,
+      $.predecessor,
       $.id
     ),
 
@@ -208,6 +209,22 @@ module.exports = grammar({
       field('icon', '^'),
       field('datetime', $.datetime)
     ),
+
+    // Predecessor: < followed by action name or UUID
+    predecessor: $ => seq(
+      field('icon', '<'),
+      field('reference', $.predecessor_reference)
+    ),
+
+    // Predecessor reference can be a UUID or an action name
+    predecessor_reference: $ => choice(
+      $.uuid_value,
+      $.predecessor_name
+    ),
+
+    // Predecessor name - action name reference (not UUID)
+    // Excludes characters that would indicate UUID format and metadata markers
+    predecessor_name: $ => /[^\n$!*+@%#><^\[]+/,
 
     // UUID value as named node
     uuid_value: $ => new RegExp(PATTERNS.uuid),
