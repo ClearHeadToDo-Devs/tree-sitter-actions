@@ -17,7 +17,7 @@ module.exports = {
   description_text: '[^\\n!*+@%^#><]+',  // Exclude all metadata markers except $
   priority_level: '[0-9]+',
   story_name: '[^\\n!$+@%^#><]+',
-  tag: '[^,\\n!$*@%^#><]+',
+  tag: '[^,\\n!$*+@%^#><]+',
   datetime_do: '[^\\n!$*+%^#><]+',
   datetime_completed: '[^\\n!$*+@^#><]+',
   datetime_created: '[^\\n!$*+@%#><]+',

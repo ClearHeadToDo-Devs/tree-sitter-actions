@@ -1,3 +1,16 @@
-[ ] Fix Dependency Bug $ Currently the dependency is being eaten by things like the name, we need to add the new character to the list of ignored characters and ensure we have an example to test this with ^2026-01-10T20:41 #019bab5c-6af6-7ba3-9711-4cd7fb78817c
-[ ] Support multiple tags $ currently we assume we have a single comma-separated list of tags but even the LLMs naturally find themsleves simply putting multiple tags with a separate addition character for each as that feels natural for when we are adding tags we likely just want to adopt both so people can use what they like the most ^2026-01-10T20:43 #019bab5d-e6b5-7313-bb93-f5f742b07645
+[x] Fix Dependency Bug $ Currently the dependency is being eaten by things like the name, we need to add the new character to the list of ignored characters and ensure we have an example to test this with ^2026-01-10T20:41 #019bab5c-6af6-7ba3-9711-4cd7fb78817c %2026-01-10T23:15
+>[x] Read grammar to understand where < is being consumed by name $ Found that description_text_chunk is missing < in exclusions
+>[x] Verified patterns.js already had < in description_text exclusions
+>[x] Did clean rebuild and confirmed fix works $ description now correctly stops at <
+>[ ] Support multiple predecessors per action $ Spec shows examples like task <pred1 <pred2
+>[ ] Create test examples in spec repo with predecessors
+[-] Support multiple tags $ currently we assume we have a single comma-separated list of tags but even the LLMs naturally find themsleves simply putting multiple tags with a separate addition character for each as that feels natural for when we are adding tags we likely just want to adopt both so people can use what they like the most ^2026-01-10T20:43 #019bab5d-e6b5-7313-bb93-f5f742b07645
+>[-] Review current context grammar implementation
+>[ ] Design support for both +tag,tag and +tag +tag patterns
+>[ ] Update grammar to allow multiple context metadata nodes
+>[ ] Create test examples for both styles
 [ ] Support doing EITHER a do date with an optional RRULE or just a straight RRULE $ in the second case we will need them to provide a start date but thats for the linter not the parser to worry about ^2026-01-10T20:44 #019bab5e-8075-78a1-ad35-c1af1540c6e3
+>[ ] Understand current recurrence as child of do_date
+>[ ] Make recurrence a standalone metadata option
+>[ ] Keep backward compatibility with @datetime R:RRULE
+>[ ] Add test examples for standalone R:RRULE

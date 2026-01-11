@@ -119,7 +119,7 @@ module.exports = grammar({
     ),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
-    description_text_chunk: $ => /[^\n!*+@%#>^\[]+/,
+    description_text_chunk: $ => new RegExp(PATTERNS.description_text),
 
     // Link: [[text|url]] or [[url]]
     link: $ => seq(
