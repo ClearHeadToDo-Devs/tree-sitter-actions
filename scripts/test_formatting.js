@@ -1,8 +1,8 @@
 /**
  * Formatting Test Suite
  *
- * Tests that the topiary.scm query produces spec-compliant formatting.
- * Test cases are vendored from specifications/examples/formatting/
+ * Tests that the Topiary query produces spec-compliant formatting.
+ * Test cases are symlinked from specifications/examples/formatting/
  *
  * Requirements:
  * - topiary CLI must be installed (cargo install topiary-cli)
@@ -12,14 +12,16 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// Path to local formatting examples
-const FORMATTING_EXAMPLES = path.join(__dirname, '..', 'examples', 'formatting');
+// Paths
+const ROOT = path.join(__dirname, '..');
+const FORMATTING_EXAMPLES = path.join(ROOT, 'examples', 'formatting');
+const TOPIARY_CONFIG = path.join(ROOT, '.topiary', 'languages.ncl');
+const TOPIARY_QUERY = path.join(ROOT, 'queries', 'actions', 'formatting.scm');
 
 // Check if formatting examples exist
 if (!fs.existsSync(FORMATTING_EXAMPLES)) {
   console.error('❌ ERROR: formatting examples not found at:', FORMATTING_EXAMPLES);
-  console.error('Expected: examples/formatting/');
-  console.error('These should be vendored from specifications/examples/formatting/');
+  console.error('Expected: examples/formatting/ (symlink to specifications/examples/formatting/)');
   process.exit(1);
 }
 
@@ -32,7 +34,13 @@ try {
   process.exit(1);
 }
 
-console.log('Testing topiary formatting against spec examples...\n');
+// Check if topiary config exists
+if (!fs.existsSync(TOPIARY_CONFIG)) {
+  console.error('❌ ERROR: Topiary config not found at:', TOPIARY_CONFIG);
+  process.exit(1);
+}
+
+console.log('Testing Topiary formatting against spec examples...\n');
 
 let totalTests = 0;
 let passedTests = 0;
@@ -40,29 +48,29 @@ let failedTests = 0;
 const failures = [];
 
 /**
- * Run formatting tests for a specific style
+ * Run formatting tests for a category
  */
-function testStyle(styleName, topiaryArgs = []) {
-  const styleDir = path.join(FORMATTING_EXAMPLES, styleName);
+function testCategory(categoryName) {
+  const categoryDir = path.join(FORMATTING_EXAMPLES, categoryName);
 
-  if (!fs.existsSync(styleDir)) {
-    console.log(`⚠️  SKIP: ${styleName} (directory not found)`);
+  if (!fs.existsSync(categoryDir)) {
+    console.log(`⚠️  SKIP: ${categoryName} (directory not found)`);
     return;
   }
 
   console.log(`\n${'='.repeat(50)}`);
-  console.log(`Testing ${styleName} style`);
+  console.log(`Testing: ${categoryName}`);
   console.log('='.repeat(50));
 
-  const testCases = fs.readdirSync(styleDir)
+  const testCases = fs.readdirSync(categoryDir)
     .filter(name => {
-      const fullPath = path.join(styleDir, name);
+      const fullPath = path.join(categoryDir, name);
       return fs.statSync(fullPath).isDirectory();
     })
     .sort();
 
   for (const testCase of testCases) {
-    const testDir = path.join(styleDir, testCase);
+    const testDir = path.join(categoryDir, testCase);
     const inputFile = path.join(testDir, 'input.actions');
     const expectedFile = path.join(testDir, 'expected.actions');
 
@@ -77,15 +85,15 @@ function testStyle(styleName, topiaryArgs = []) {
       // Read expected output
       const expected = fs.readFileSync(expectedFile, 'utf8');
 
-      // Run topiary on input via stdin
-      // Note: Using --skip-idempotence because the topiary query has known idempotence issues
-      // See: tree-sitter-actions/src/format.rs:164
+      // Read input
       const input = fs.readFileSync(inputFile, 'utf8');
-      const topiaryCmd = `topiary format --skip-idempotence --language actions ${topiaryArgs.join(' ')}`;
+
+      // Run topiary
+      const topiaryCmd = `TOPIARY_CONFIG_FILE="${TOPIARY_CONFIG}" topiary format --language actions --query "${TOPIARY_QUERY}"`;
       const actual = execSync(topiaryCmd, {
         input: input,
         encoding: 'utf8',
-        cwd: path.join(__dirname, '..'),
+        cwd: ROOT,
         stdio: ['pipe', 'pipe', 'pipe']
       });
 
@@ -95,12 +103,10 @@ function testStyle(styleName, topiaryArgs = []) {
         passedTests++;
       } else {
         console.log(`  ❌ FAIL: ${testCase}`);
-        console.log(`    Expected:`);
-        console.log(`      ${JSON.stringify(expected)}`);
-        console.log(`    Got:`);
-        console.log(`      ${JSON.stringify(actual)}`);
+        console.log(`    Expected: ${JSON.stringify(expected)}`);
+        console.log(`    Got:      ${JSON.stringify(actual)}`);
         failedTests++;
-        failures.push(`${styleName}/${testCase}`);
+        failures.push(`${categoryName}/${testCase}`);
       }
     } catch (error) {
       console.log(`  ❌ FAIL: ${testCase} (topiary error)`);
@@ -109,21 +115,13 @@ function testStyle(styleName, topiaryArgs = []) {
         console.log(`    Stderr: ${error.stderr.toString()}`);
       }
       failedTests++;
-      failures.push(`${styleName}/${testCase}`);
+      failures.push(`${categoryName}/${testCase}`);
     }
   }
 }
 
-// Test compact style (default)
-testStyle('compact');
-
-// Test list style (multiline mode)
-// Note: Topiary doesn't have a --style flag yet, this tests compact for now
-// TODO: Update when topiary supports style selection
-testStyle('list');
-
-// Test edge cases
-testStyle('edge_cases');
+// Test newlines (the only formatting rule)
+testCategory('newlines');
 
 // Summary
 console.log('\n' + '='.repeat(50));

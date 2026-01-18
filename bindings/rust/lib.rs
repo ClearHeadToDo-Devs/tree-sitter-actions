@@ -35,3 +35,6 @@ pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/actions/highlight
 
 /// The indentation query for this grammar.
 pub const INDENTS_QUERY: &str = include_str!("../../queries/actions/indents.scm");
+
+/// The formatting query for this grammar.
+pub const FORMATTING_QUERY: &str = include_str!("../../queries/actions/formatting.scm");

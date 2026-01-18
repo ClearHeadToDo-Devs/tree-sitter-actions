@@ -207,6 +207,46 @@ For complete documentation on querying, see:
 - [todo.txt](todotxt.org) to show the power of simplicity in plaintext task management and being something that ive seen inspire many great engineers when using the most simple tools
   - Still, for this purpose, we needed more things than what we got
 
+# Formatting
+
+The repository includes a [Topiary](https://topiary.tweag.io/) formatter for `.actions` files. The formatter enforces **vertical spacing only** - each action on its own line. Horizontal spacing and indentation are preserved from input (the format is whitespace-insensitive by design).
+
+## Using the Formatter
+
+```bash
+# Format a file
+TOPIARY_CONFIG_FILE=.topiary/languages.ncl topiary format myfile.actions
+
+# Format via stdin
+cat myfile.actions | TOPIARY_CONFIG_FILE=.topiary/languages.ncl topiary format --language actions --query .topiary/queries/actions.scm
+```
+
+## Formatter Scope
+
+The formatter does one thing: ensures each action is on its own line.
+
+**Before:**
+```actions
+[ ] Task 1[ ] Task 2>[ ] Child
+```
+
+**After:**
+```actions
+[ ] Task 1
+[ ] Task 2
+>[ ] Child
+```
+
+Horizontal spacing (`[x]Task` vs `[x] Task`) and indentation are **not** enforced - the format is whitespace-insensitive, so both are valid. See the [formatting specification](../specifications/formatting.md) for details.
+
+## Testing the Formatter
+
+```bash
+npm run test:formatting
+```
+
+Test cases are in `examples/formatting/` (symlinked from `specifications/examples/formatting/`).
+
 # Development and Testing
 
 Tests are organized into `examples/`, `test/trees/`, and `test/corpus/` directories that work together to enable reuse by downstream projects.
