@@ -6,6 +6,12 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (predecessor
+      reference: (predecessor_reference
+        (predecessor_name)))
+    metadata: (predecessor
+      reference: (predecessor_reference
+        (predecessor_name)))
     metadata: (priority
       level: (priority_level))
     metadata: (story
@@ -27,6 +33,9 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (predecessor
+      reference: (predecessor_reference
+        (predecessor_name)))
     metadata: (priority
       level: (priority_level))
     metadata: (story
@@ -45,6 +54,9 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (predecessor
+      reference: (predecessor_reference
+        (predecessor_name)))
     metadata: (priority
       level: (priority_level))
     metadata: (story

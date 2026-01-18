@@ -306,7 +306,7 @@
     },
     "name_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%#><^\\[]+"
+      "value": "[^\\n$!*+@%\\^#><\\[\\]]+"
     },
     "_metadata": {
       "type": "CHOICE",
@@ -384,7 +384,7 @@
     },
     "description_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n!*+@%^#><]+"
+      "value": "[^\\n!*+@%\\^#><\\[\\]]+"
     },
     "link": {
       "type": "SEQ",
@@ -493,7 +493,7 @@
     },
     "story_name": {
       "type": "PATTERN",
-      "value": "[^\\n!$+@%^#><]+"
+      "value": "[^\\n$!*+@%\\^#><\\[\\]]+"
     },
     "context": {
       "type": "SEQ",
@@ -507,38 +507,59 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "tag",
-          "content": {
-            "type": "SYMBOL",
-            "name": "tag"
-          }
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ","
-              },
-              {
-                "type": "FIELD",
-                "name": "tag",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "tag"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "tag",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "tag"
+                  }
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "FIELD",
+                            "name": "tag",
+                            "content": {
+                              "type": "SYMBOL",
+                              "name": "tag"
+                            }
+                          },
+                          {
+                            "type": "BLANK"
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 }
-              }
-            ]
-          }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
     "tag": {
       "type": "PATTERN",
-      "value": "[^,\\n!$*+@%^#><]+"
+      "value": "[^\\n$!*+@%\\^#><,\\[\\]]+"
     },
     "do_date": {
       "type": "SEQ",
@@ -717,7 +738,7 @@
     },
     "predecessor_name": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%#><^\\[]+"
+      "value": "[^\\n$!*+@%\\^#><\\[\\]]+"
     },
     "uuid_value": {
       "type": "PATTERN",

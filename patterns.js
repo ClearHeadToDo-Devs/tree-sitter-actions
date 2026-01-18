@@ -1,25 +1,33 @@
 /**
  * Regex patterns used throughout the grammar
  *
- * These patterns are the single source of truth for both:
- * - Tree-sitter grammar parsing (grammar.js)
- * - JSON Schema validation (schema/actions.schema.json)
- *
- * This ensures parsing and validation use identical rules.
+ * Exports actual RegExp objects to avoid double-escaping hell.
+ * Use these directly in grammar.js rules (no `new RegExp()` needed).
  */
 
-module.exports = {
-  // Character classes for metadata markers
-  metadata_chars: '$!*+@%^#><',
+// Characters that introduce metadata fields
+const METADATA_CHARS = '$!*+@%^#><';
 
-  // Core field patterns
-  name: '[^\\n$!*+@%^#><]+',
-  description_text: '[^\\n!*+@%^#><]+',  // Exclude all metadata markers except $
-  priority_level: '[0-9]+',
-  story_name: '[^\\n!$+@%^#><]+',
-  tag: '[^,\\n!$*+@%^#><]+',
-  datetime_do: '[^\\n!$*+%^#><]+',
-  datetime_completed: '[^\\n!$*+@^#><]+',
-  datetime_created: '[^\\n!$*+@%#><]+',
-  uuid: '[0-9a-fA-F-]+',
+// Build a character class that excludes specific chars plus newline and brackets
+const notChars = (chars) => new RegExp(`[^\\n${escapeForCharClass(chars)}\\[\\]]+`);
+
+// Escape chars that have special meaning inside a character class
+function escapeForCharClass(str) {
+  return str.replace(/[\^\-\]\\]/g, '\\$&');
+}
+
+module.exports = {
+  // Reference for documentation/other tools
+  metadata_chars: METADATA_CHARS,
+
+  // Text content patterns (RegExp objects - use directly, no new RegExp())
+  name: notChars(METADATA_CHARS),
+  description_text: notChars('!*+@%^#><'),  // allows $ within descriptions
+  story_name: notChars(METADATA_CHARS),
+  tag: notChars(METADATA_CHARS + ','),
+  predecessor_name: notChars(METADATA_CHARS),
+
+  // Simple patterns
+  priority_level: /[0-9]+/,
+  uuid: /[0-9a-fA-F-]+/,
 };

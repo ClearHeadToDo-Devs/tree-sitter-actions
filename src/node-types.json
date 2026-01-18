@@ -41,7 +41,7 @@
       },
       "tag": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "tag",
@@ -960,6 +960,11 @@
     }
   },
   {
+    "type": "story_name",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -1073,10 +1078,6 @@
   },
   {
     "type": "state_open",
-    "named": true
-  },
-  {
-    "type": "story_name",
     "named": true
   },
   {

@@ -94,7 +94,7 @@ module.exports = grammar({
     )),
 
     // Text chunk within name (excludes metadata markers and [)
-    name_text_chunk: $ => /[^\n$!*+@%#><^\[]+/,
+    name_text_chunk: $ => PATTERNS.name,
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -119,7 +119,7 @@ module.exports = grammar({
     ),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
-    description_text_chunk: $ => new RegExp(PATTERNS.description_text),
+    description_text_chunk: $ => PATTERNS.description_text,
 
     // Link: [[text|url]] or [[url]]
     link: $ => seq(
@@ -150,7 +150,7 @@ module.exports = grammar({
     ),
 
     // Priority level (1-5)
-    priority_level: $ => new RegExp(PATTERNS.priority_level),
+    priority_level: $ => PATTERNS.priority_level,
 
     // Story/Project: * followed by name (root actions only)
     story: $ => seq(
@@ -159,17 +159,19 @@ module.exports = grammar({
     ),
 
     // Story name
-    story_name: $ => new RegExp(PATTERNS.story_name),
+    story_name: $ => PATTERNS.story_name,
 
     // Context: + followed by comma-separated tags
     context: $ => seq(
       field('icon', '+'),
-      field('tag', $.tag),
-      repeat(seq(',', field('tag', $.tag)))
+      optional(seq(
+        field('tag', $.tag),
+        repeat(seq(',', optional(field('tag', $.tag))))
+      ))
     ),
 
     // Individual context tag
-    tag: $ => new RegExp(PATTERNS.tag),
+    tag: $ => PATTERNS.tag,
 
     // Do-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
     do_date: $ => seq(
@@ -224,10 +226,10 @@ module.exports = grammar({
 
     // Predecessor name - action name reference (not UUID)
     // Excludes characters that would indicate UUID format and metadata markers
-    predecessor_name: $ => /[^\n$!*+@%#><^\[]+/,
+    predecessor_name: $ => PATTERNS.predecessor_name,
 
     // UUID value as named node
-    uuid_value: $ => new RegExp(PATTERNS.uuid),
+    uuid_value: $ => PATTERNS.uuid,
 
     // ID: # followed by UUID
     id: $ => seq(
