@@ -29,5 +29,12 @@
   },
   "linting": {
     "linting_e003": "Empty context tag edge cases"
+  },
+  "new_features": {
+    "with_alias": "With Alias",
+    "with_sequential": "With Sequential Children Marker",
+    "with_short_uuid": "With Short UUID References",
+    "with_story_path": "With Hierarchical Story Paths",
+    "with_new_features": "With All New Features Combined"
   }
 }

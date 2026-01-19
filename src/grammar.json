@@ -306,7 +306,7 @@
     },
     "name_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
     },
     "_metadata": {
       "type": "CHOICE",
@@ -342,6 +342,14 @@
         {
           "type": "SYMBOL",
           "name": "predecessor"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "alias"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "sequential"
         },
         {
           "type": "SYMBOL",
@@ -384,7 +392,7 @@
     },
     "description_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n!*+@%\\^#><\\[\\]]+"
+      "value": "[^\\n!*+@%\\^#><~=\\[\\]]+"
     },
     "link": {
       "type": "SEQ",
@@ -493,7 +501,7 @@
     },
     "story_name": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
     },
     "context": {
       "type": "SEQ",
@@ -559,7 +567,7 @@
     },
     "tag": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><,\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=,\\[\\]]+"
     },
     "do_date": {
       "type": "SEQ",
@@ -732,17 +740,66 @@
         },
         {
           "type": "SYMBOL",
+          "name": "short_uuid_value"
+        },
+        {
+          "type": "SYMBOL",
           "name": "predecessor_name"
         }
       ]
     },
     "predecessor_name": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
     },
     "uuid_value": {
       "type": "PATTERN",
       "value": "[0-9a-fA-F-]+"
+    },
+    "short_uuid_value": {
+      "type": "PATTERN",
+      "value": "[0-9a-fA-F]{8}"
+    },
+    "alias": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "icon",
+          "content": {
+            "type": "STRING",
+            "value": "="
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "alias_name"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "alias_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9_-]+"
+    },
+    "sequential": {
+      "type": "FIELD",
+      "name": "icon",
+      "content": {
+        "type": "STRING",
+        "value": "~"
+      }
     },
     "id": {
       "type": "SEQ",

@@ -1,5 +1,31 @@
 [
   {
+    "type": "alias",
+    "named": true,
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "=",
+            "named": false
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "alias_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "completed_date",
     "named": true,
     "fields": {
@@ -106,6 +132,10 @@
         "required": false,
         "types": [
           {
+            "type": "alias",
+            "named": true
+          },
+          {
             "type": "completed_date",
             "named": true
           },
@@ -135,6 +165,10 @@
           },
           {
             "type": "priority",
+            "named": true
+          },
+          {
+            "type": "sequential",
             "named": true
           },
           {
@@ -194,6 +228,10 @@
         "required": false,
         "types": [
           {
+            "type": "alias",
+            "named": true
+          },
+          {
             "type": "completed_date",
             "named": true
           },
@@ -223,6 +261,10 @@
           },
           {
             "type": "priority",
+            "named": true
+          },
+          {
+            "type": "sequential",
             "named": true
           },
           {
@@ -282,6 +324,10 @@
         "required": false,
         "types": [
           {
+            "type": "alias",
+            "named": true
+          },
+          {
             "type": "completed_date",
             "named": true
           },
@@ -311,6 +357,10 @@
           },
           {
             "type": "priority",
+            "named": true
+          },
+          {
+            "type": "sequential",
             "named": true
           },
           {
@@ -370,6 +420,10 @@
         "required": false,
         "types": [
           {
+            "type": "alias",
+            "named": true
+          },
+          {
             "type": "completed_date",
             "named": true
           },
@@ -399,6 +453,10 @@
           },
           {
             "type": "priority",
+            "named": true
+          },
+          {
+            "type": "sequential",
             "named": true
           },
           {
@@ -448,6 +506,10 @@
         "required": false,
         "types": [
           {
+            "type": "alias",
+            "named": true
+          },
+          {
             "type": "completed_date",
             "named": true
           },
@@ -477,6 +539,10 @@
           },
           {
             "type": "priority",
+            "named": true
+          },
+          {
+            "type": "sequential",
             "named": true
           },
           {
@@ -734,6 +800,10 @@
           "named": true
         },
         {
+          "type": "short_uuid_value",
+          "named": true
+        },
+        {
           "type": "uuid_value",
           "named": true
         }
@@ -806,6 +876,10 @@
         "required": false,
         "types": [
           {
+            "type": "alias",
+            "named": true
+          },
+          {
             "type": "completed_date",
             "named": true
           },
@@ -838,6 +912,10 @@
             "named": true
           },
           {
+            "type": "sequential",
+            "named": true
+          },
+          {
             "type": "story",
             "named": true
           }
@@ -860,6 +938,22 @@
           {
             "type": "state",
             "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "sequential",
+    "named": true,
+    "fields": {
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "~",
+            "named": false
           }
         ]
       }
@@ -934,6 +1028,11 @@
     }
   },
   {
+    "type": "state_blocked",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "story",
     "named": true,
     "fields": {
@@ -993,6 +1092,10 @@
     "named": false
   },
   {
+    "type": "=",
+    "named": false
+  },
+  {
     "type": "@",
     "named": false
   },
@@ -1015,6 +1118,10 @@
   {
     "type": "^",
     "named": false
+  },
+  {
+    "type": "alias_name",
+    "named": true
   },
   {
     "type": "datetime",
@@ -1053,7 +1160,7 @@
     "named": true
   },
   {
-    "type": "state_blocked",
+    "type": "short_uuid_value",
     "named": true
   },
   {
@@ -1090,6 +1197,10 @@
   },
   {
     "type": "|",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]

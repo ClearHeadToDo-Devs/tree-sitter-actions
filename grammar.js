@@ -106,6 +106,8 @@ module.exports = grammar({
       $.completed_date,
       $.created_date,
       $.predecessor,
+      $.alias,
+      $.sequential,
       $.id
     ),
 
@@ -218,9 +220,10 @@ module.exports = grammar({
       field('reference', $.predecessor_reference)
     ),
 
-    // Predecessor reference can be a UUID or an action name
+    // Predecessor reference can be a UUID, short UUID, or an action name
     predecessor_reference: $ => choice(
       $.uuid_value,
+      $.short_uuid_value,
       $.predecessor_name
     ),
 
@@ -228,8 +231,23 @@ module.exports = grammar({
     // Excludes characters that would indicate UUID format and metadata markers
     predecessor_name: $ => PATTERNS.predecessor_name,
 
-    // UUID value as named node
+    // UUID value as named node (full UUID with hyphens)
     uuid_value: $ => PATTERNS.uuid,
+
+    // Short UUID value - first 8 hex characters only
+    short_uuid_value: $ => PATTERNS.short_uuid,
+
+    // Alias: = followed by alias name
+    alias: $ => seq(
+      field('icon', '='),
+      optional(field('name', $.alias_name))
+    ),
+
+    // Alias name - alphanumeric, underscores, hyphens
+    alias_name: $ => PATTERNS.alias_name,
+
+    // Sequential marker: ~ indicates children are sequential
+    sequential: $ => field('icon', '~'),
 
     // ID: # followed by UUID
     id: $ => seq(
