@@ -23,7 +23,7 @@ module.exports = {
 
   // Text content patterns (RegExp objects - use directly, no new RegExp())
   name: notChars(METADATA_CHARS),
-  description_text: notChars('!*+@%^#><~='),  // allows $ within descriptions
+  description_text: /[^$\n]+/,  // Only exclude $ and newline
   story_name: notChars(METADATA_CHARS),
   tag: notChars(METADATA_CHARS + ','),
   predecessor_name: notChars(METADATA_CHARS),

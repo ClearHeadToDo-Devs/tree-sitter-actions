@@ -14,6 +14,12 @@ const path = require('path');
 // Import patterns from shared source
 const PATTERNS = require('../patterns.js');
 
+// Helper to convert RegExp to pattern string
+function patternToString(regex) {
+  if (!regex) return ''; // Handle undefined patterns
+  return regex.source; // Extract just the pattern string
+}
+
 // Build the JSON Schema
 const schema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -45,12 +51,12 @@ const schema = {
           "type": "string",
           "description": "Name/title of the action",
           "minLength": 1,
-          "pattern": PATTERNS.name
+          "pattern": patternToString(PATTERNS.name)
         },
         "description": {
           "type": "string",
           "description": "Long-form description of the action",
-          "pattern": PATTERNS.description_text
+          "pattern": patternToString(PATTERNS.description_text)
         },
         "priority": {
           "type": "integer",
@@ -60,14 +66,14 @@ const schema = {
         "story": {
           "type": "string",
           "description": "Parent project/story name (root actions only)",
-          "pattern": PATTERNS.story_name
+          "pattern": patternToString(PATTERNS.story_name)
         },
         "contexts": {
           "type": "array",
           "description": "Array of context tags",
           "items": {
             "type": "string",
-            "pattern": PATTERNS.tag
+            "pattern": patternToString(PATTERNS.tag)
           },
           "minItems": 1
         },
@@ -79,7 +85,7 @@ const schema = {
             "datetime": {
               "type": "string",
               "description": "ISO 8601 formatted date/time",
-              "pattern": PATTERNS.datetime_do
+              "pattern": patternToString(PATTERNS.datetime_do)
             },
             "duration": {
               "type": "integer",
@@ -94,17 +100,17 @@ const schema = {
         "completedDate": {
           "type": "string",
           "description": "ISO 8601 formatted completion date/time",
-          "pattern": PATTERNS.datetime_completed
+          "pattern": patternToString(PATTERNS.datetime_completed)
         },
         "createdDate": {
           "type": "string",
           "description": "ISO 8601 formatted creation date/time",
-          "pattern": PATTERNS.datetime_created
+          "pattern": patternToString(PATTERNS.datetime_created)
         },
         "id": {
           "type": "string",
           "description": "UUIDv7 identifier",
-          "pattern": PATTERNS.uuid
+          "pattern": patternToString(PATTERNS.uuid)
         },
         "children": {
           "type": "array",

@@ -25,7 +25,8 @@
   },
   "predecessors": {
     "laundry_workflow": "Sequential Laundry Workflow",
-    "deployment_workflow": "Multi-step Deployment with Dependencies"
+    "deployment_workflow": "Multi-step Deployment with Dependencies",
+    "multiple_dependencies": "Multiple Dependencies Workflow"
   },
   "linting": {
     "linting_e003": "Empty context tag edge cases"
