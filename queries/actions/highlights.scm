@@ -60,6 +60,8 @@
 (priority "!" @conceal (#set! conceal "󰀦"))
 (story "*" @conceal (#set! conceal "󰙨"))
 (context "+" @conceal (#set! conceal "󰓹"))
-(description "$" @conceal (#set! conceal "💬"))
+; Description markers: opening $ with icon, closing $ hidden
+(description icon: (description_marker) @conceal (#set! conceal "💬"))
+(description close: (description_marker) @conceal (#set! conceal ""))
 (do_date "@" @conceal (#set! conceal "󰃭"))
 (completed_date "%" @conceal (#set! conceal "󰄬"))

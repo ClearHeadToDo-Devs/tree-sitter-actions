@@ -8,7 +8,10 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story
@@ -66,7 +69,10 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (created_date
       datetime: (datetime))
     metadata: (completed_date
@@ -96,7 +102,10 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (created_date
       datetime: (datetime))
     metadata: (id
@@ -126,7 +135,10 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value))))

@@ -25,7 +25,10 @@
       duration: (duration
         minutes: (minutes)))
     metadata: (description
-      text: (description_text_chunk)))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker)))
   (root_action
     state: (state
       open: (state_open)

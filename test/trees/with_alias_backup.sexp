@@ -9,7 +9,10 @@
     metadata: (alias
       value: (alias_name))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story
@@ -27,7 +30,10 @@
     metadata: (alias
       value: (alias_name))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story
@@ -48,7 +54,10 @@
     metadata: (alias
       value: (alias_name))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story
@@ -85,7 +94,10 @@
     metadata: (alias
       value: (alias_name))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story

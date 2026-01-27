@@ -7,7 +7,10 @@
     name: (name
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (predecessor
       value: (predecessor_reference
         (predecessor_name)))))

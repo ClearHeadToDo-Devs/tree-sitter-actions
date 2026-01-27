@@ -8,7 +8,10 @@
       (name_text_chunk))
     metadata: (sequential)
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story
@@ -24,7 +27,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level))
       metadata: (context
@@ -38,7 +44,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level))
       metadata: (context
@@ -52,7 +61,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level))
       metadata: (context
@@ -66,7 +78,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level))
       metadata: (context
@@ -80,7 +95,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level))
       metadata: (context
@@ -94,7 +112,10 @@
       (name_text_chunk))
     metadata: (sequential)
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (story
       value: (story_name))
     metadata: (context
@@ -148,7 +169,10 @@
       (name_text_chunk))
     metadata: (sequential)
     metadata: (description
-      text: (description_text_chunk))
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
     metadata: (priority
       value: (priority_level))
     metadata: (story
@@ -165,7 +189,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level)))
     child: (depth1_action
@@ -187,7 +214,10 @@
       name: (name
         (name_text_chunk))
       metadata: (description
-        text: (description_text_chunk))
+        icon: (description_marker)
+        text: (description_content
+          (description_text_chunk))
+        close: (description_marker))
       metadata: (priority
         value: (priority_level)))
     child: (depth1_action
