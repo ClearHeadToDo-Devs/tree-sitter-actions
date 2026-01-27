@@ -8,7 +8,7 @@
       (name_text_chunk))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -17,7 +17,7 @@
     name: (name
       (name_text_chunk))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name))))
   (root_action
     state: (state
@@ -27,5 +27,5 @@
     name: (name
       (name_text_chunk))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name)))))

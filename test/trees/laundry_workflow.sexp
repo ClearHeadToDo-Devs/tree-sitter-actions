@@ -11,13 +11,13 @@
       datetime: (datetime))
     metadata: (sequential)
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))
+      value: (uuid_value))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -30,7 +30,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value)))
+        value: (uuid_value)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -43,7 +43,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value)))
+        value: (uuid_value)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -56,7 +56,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value)))
+        value: (uuid_value)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -69,7 +69,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value)))
+        value: (uuid_value)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -82,4 +82,4 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value)))))
+        value: (uuid_value)))))

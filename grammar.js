@@ -1,6 +1,29 @@
 // Import patterns from shared source
 const PATTERNS = require('./patterns.js');
 
+// Configuration
+const MAX_DEPTH = 5;
+
+// Generate depth rules programmatically
+const depthRules = {};
+for (let i = 1; i <= MAX_DEPTH; i++) {
+  // Marker rule: >, >>, >>>, etc.
+  depthRules[`depth${i}_marker`] = $ => '>'.repeat(i);
+
+  // Action rule with optional children (leaf level has no children)
+  const isLeaf = i === MAX_DEPTH;
+  depthRules[`depth${i}_action`] = isLeaf
+    ? $ => seq(
+        field('marker', $[`depth${i}_marker`]),
+        $._action_body
+      )
+    : $ => seq(
+        field('marker', $[`depth${i}_marker`]),
+        $._action_body,
+        repeat(field('child', $[`depth${i + 1}_action`]))
+      );
+}
+
 module.exports = grammar({
   name: 'actions',
 
@@ -24,46 +47,8 @@ module.exports = grammar({
       repeat(field('child', $.depth1_action))
     ),
 
-    // Depth 1 actions (one > prefix)
-    depth1_action: $ => seq(
-      field('marker', $.depth1_marker),
-      $._action_body,
-      repeat(field('child', $.depth2_action))
-    ),
-
-    // Depth 2 actions (two > prefixes)
-    depth2_action: $ => seq(
-      field('marker', $.depth2_marker),
-      $._action_body,
-      repeat(field('child', $.depth3_action))
-    ),
-
-    // Depth 3 actions (three > prefixes)
-    depth3_action: $ => seq(
-      field('marker', $.depth3_marker),
-      $._action_body,
-      repeat(field('child', $.depth4_action))
-    ),
-
-    // Depth 4 actions (four > prefixes)
-    depth4_action: $ => seq(
-      field('marker', $.depth4_marker),
-      $._action_body,
-      repeat(field('child', $.depth5_action))
-    ),
-
-    // Depth 5 actions (five > prefixes) - leaf level
-    depth5_action: $ => seq(
-      field('marker', $.depth5_marker),
-      $._action_body
-    ),
-
-    // Depth markers as named nodes for syntax highlighting
-    depth1_marker: $ => '>',
-    depth2_marker: $ => '>>',
-    depth3_marker: $ => '>>>',
-    depth4_marker: $ => '>>>>',
-    depth5_marker: $ => '>>>>>',
+    // Spread generated depth rules (depth1-5 markers and actions)
+    ...depthRules,
 
     // State markers - explicit state names per specification
     state: $ => seq(
@@ -94,7 +79,7 @@ module.exports = grammar({
     )),
 
     // Text chunk within name (excludes metadata markers and [)
-    name_text_chunk: $ => PATTERNS.name,
+    name_text_chunk: $ => PATTERNS.safe_text,
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -111,14 +96,19 @@ module.exports = grammar({
       $.id
     ),
 
-    // Description: $ followed by text and/or links
-    description: $ => seq(
-      field('icon', '$'),
-      field('text', repeat1(choice(
-        $.link,
-        $.description_text_chunk
-      )))
-    ),
+    // Description: delimited by $ ... $ (can span lines, content is optional)
+    description: $ => prec.right(seq(
+      field('icon', $.description_marker),
+      field('text', optional($.description_content)),
+      field('close', $.description_marker)
+    )),
+
+    description_content: $ => repeat1(choice(
+      $.link,
+      $.description_text_chunk
+    )),
+
+    description_marker: $ => token('$'),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
     description_text_chunk: $ => PATTERNS.description_text,
@@ -145,37 +135,38 @@ module.exports = grammar({
     // Link URL (everything except | and ])
     link_url: $ => /[^\|\]]+/,
 
-    // Priority: ! followed by number
+    // Priority: ! followed by number (icon_value archetype)
     priority: $ => seq(
       field('icon', '!'),
-      field('level', $.priority_level)
+      field('value', $.priority_level)
     ),
 
     // Priority level (1-5)
-    priority_level: $ => PATTERNS.priority_level,
+    priority_level: $ => PATTERNS.number,
 
-    // Story/Project: * followed by name (root actions only)
+    // Story/Project: * followed by name (icon_value archetype)
     story: $ => seq(
       field('icon', '*'),
-      field('name', $.story_name)
+      field('value', $.story_name)
     ),
 
     // Story name
-    story_name: $ => PATTERNS.story_name,
+    story_name: $ => PATTERNS.safe_text,
 
-    // Context: + followed by comma-separated tags
+    // Context: + followed by comma-separated tags (icon_list archetype)
     context: $ => seq(
       field('icon', '+'),
       optional(seq(
-        field('tag', $.tag),
-        repeat(seq(',', optional(field('tag', $.tag))))
+        field('item', $.tag),
+        repeat(seq(',', optional(field('item', $.tag))))
       ))
     ),
 
     // Individual context tag
-    tag: $ => PATTERNS.tag,
+    tag: $ => PATTERNS.tag_text,
 
     // Do-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
+    // (icon_composite archetype)
     do_date: $ => seq(
       field('icon', '@'),
       field('datetime', $.datetime),
@@ -192,7 +183,7 @@ module.exports = grammar({
       field('minutes', $.minutes)
     ),
 
-    minutes: $ => /[0-9]+/,
+    minutes: $ => PATTERNS.number,
 
     // Recurrence: R: followed by RRULE syntax
     recurrence: $ => seq(
@@ -202,22 +193,22 @@ module.exports = grammar({
 
     rrule_content: $ => /FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*/,
 
-    // Completed date: % followed by ISO 8601 date/time
+    // Completed date: % followed by ISO 8601 date/time (icon_datetime archetype)
     completed_date: $ => seq(
       field('icon', '%'),
       field('datetime', $.datetime)
     ),
 
-    // Created date: ^ followed by ISO 8601 date/time
+    // Created date: ^ followed by ISO 8601 date/time (icon_datetime archetype)
     created_date: $ => seq(
       field('icon', '^'),
       field('datetime', $.datetime)
     ),
 
-    // Predecessor: < followed by action name or UUID
+    // Predecessor: < followed by action name or UUID (icon_value archetype)
     predecessor: $ => seq(
       field('icon', '<'),
-      field('reference', $.predecessor_reference)
+      field('value', $.predecessor_reference)
     ),
 
     // Predecessor reference can be a UUID, short UUID, or an action name
@@ -229,7 +220,7 @@ module.exports = grammar({
 
     // Predecessor name - action name reference (not UUID)
     // Excludes characters that would indicate UUID format and metadata markers
-    predecessor_name: $ => PATTERNS.predecessor_name,
+    predecessor_name: $ => PATTERNS.safe_text,
 
     // UUID value as named node (full UUID with hyphens)
     uuid_value: $ => PATTERNS.uuid,
@@ -237,22 +228,22 @@ module.exports = grammar({
     // Short UUID value - first 8 hex characters only
     short_uuid_value: $ => PATTERNS.short_uuid,
 
-    // Alias: = followed by alias name
+    // Alias: = followed by alias name (icon_value archetype)
     alias: $ => seq(
       field('icon', '='),
-      optional(field('name', $.alias_name))
+      optional(field('value', $.alias_name))
     ),
 
     // Alias name - alphanumeric, underscores, hyphens
-    alias_name: $ => PATTERNS.alias_name,
+    alias_name: $ => PATTERNS.identifier,
 
-    // Sequential marker: ~ indicates children are sequential
+    // Sequential marker: ~ indicates children are sequential (marker_only archetype)
     sequential: $ => field('icon', '~'),
 
-    // ID: # followed by UUID
+    // ID: # followed by UUID (icon_value archetype)
     id: $ => seq(
       field('icon', $.id_hash),
-      field('uuid', $.uuid_value)
+      field('value', $.uuid_value)
     ),
 
     id_hash: $ => '#',

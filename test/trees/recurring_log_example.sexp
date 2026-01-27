@@ -6,13 +6,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -20,13 +20,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -34,13 +34,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -48,13 +48,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -62,13 +62,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -76,13 +76,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -90,13 +90,13 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value)))
+      datetime: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -104,10 +104,10 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))
     metadata: (do_date
       datetime: (datetime))
     metadata: (completed_date
-      datetime: (datetime))
-    metadata: (id
-      icon: (id_hash)
-      uuid: (uuid_value))))
+      datetime: (datetime))))

@@ -7,4 +7,4 @@
     name: (name
       (name_text_chunk))
     metadata: (story
-      name: (story_name))))
+      value: (story_name))))

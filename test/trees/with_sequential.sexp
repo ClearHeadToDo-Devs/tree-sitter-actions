@@ -10,11 +10,11 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag))
+      item: (tag))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -26,9 +26,9 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level))
+        value: (priority_level))
       metadata: (context
-        tag: (tag)))
+        item: (tag)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -40,9 +40,9 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level))
+        value: (priority_level))
       metadata: (context
-        tag: (tag)))
+        item: (tag)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -54,9 +54,9 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level))
+        value: (priority_level))
       metadata: (context
-        tag: (tag)))
+        item: (tag)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -68,9 +68,9 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level))
+        value: (priority_level))
       metadata: (context
-        tag: (tag)))
+        item: (tag)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -82,9 +82,9 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level))
+        value: (priority_level))
       metadata: (context
-        tag: (tag))))
+        item: (tag))))
   (root_action
     state: (state
       open: (state_open)
@@ -96,9 +96,9 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag))
+      item: (tag))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -150,12 +150,12 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -167,7 +167,7 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level)))
+        value: (priority_level)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -177,7 +177,7 @@
       name: (name
         (name_text_chunk))
       metadata: (priority
-        level: (priority_level)))
+        value: (priority_level)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -189,7 +189,7 @@
       metadata: (description
         text: (description_text_chunk))
       metadata: (priority
-        level: (priority_level)))
+        value: (priority_level)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -199,7 +199,7 @@
       name: (name
         (name_text_chunk))
       metadata: (priority
-        level: (priority_level)))
+        value: (priority_level)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -209,7 +209,7 @@
       name: (name
         (name_text_chunk))
       metadata: (priority
-        level: (priority_level)))
+        value: (priority_level)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -219,7 +219,7 @@
       name: (name
         (name_text_chunk))
       metadata: (priority
-        level: (priority_level)))
+        value: (priority_level)))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -229,4 +229,4 @@
       name: (name
         (name_text_chunk))
       metadata: (priority
-        level: (priority_level)))))
+        value: (priority_level)))))

@@ -13,7 +13,7 @@
           }
         ]
       },
-      "name": {
+      "value": {
         "multiple": false,
         "required": false,
         "types": [
@@ -65,7 +65,7 @@
           }
         ]
       },
-      "tag": {
+      "item": {
         "multiple": true,
         "required": false,
         "types": [
@@ -577,30 +577,55 @@
     "type": "description",
     "named": true,
     "fields": {
+      "close": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "description_marker",
+            "named": true
+          }
+        ]
+      },
       "icon": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "$",
-            "named": false
+            "type": "description_marker",
+            "named": true
           }
         ]
       },
       "text": {
-        "multiple": true,
-        "required": true,
+        "multiple": false,
+        "required": false,
         "types": [
           {
-            "type": "description_text_chunk",
-            "named": true
-          },
-          {
-            "type": "link",
+            "type": "description_content",
             "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "description_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "description_text_chunk",
+          "named": true
+        },
+        {
+          "type": "link",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -679,7 +704,7 @@
           }
         ]
       },
-      "uuid": {
+      "value": {
         "multiple": false,
         "required": true,
         "types": [
@@ -770,7 +795,7 @@
           }
         ]
       },
-      "reference": {
+      "value": {
         "multiple": false,
         "required": true,
         "types": [
@@ -824,7 +849,7 @@
           }
         ]
       },
-      "level": {
+      "value": {
         "multiple": false,
         "required": true,
         "types": [
@@ -1046,7 +1071,7 @@
           }
         ]
       },
-      "name": {
+      "value": {
         "multiple": false,
         "required": true,
         "types": [
@@ -1065,10 +1090,6 @@
   },
   {
     "type": "!",
-    "named": false
-  },
-  {
-    "type": "$",
     "named": false
   },
   {
@@ -1145,6 +1166,10 @@
   },
   {
     "type": "depth5_marker",
+    "named": true
+  },
+  {
+    "type": "description_marker",
     "named": true
   },
   {

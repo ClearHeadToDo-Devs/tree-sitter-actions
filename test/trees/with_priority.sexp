@@ -7,4 +7,4 @@
     name: (name
       (name_text_chunk))
     metadata: (priority
-      level: (priority_level))))
+      value: (priority_level))))

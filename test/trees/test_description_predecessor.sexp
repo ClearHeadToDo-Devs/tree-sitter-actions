@@ -9,5 +9,5 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name)))))

@@ -12,7 +12,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -28,7 +28,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -42,7 +42,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -56,7 +56,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -70,7 +70,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -84,7 +84,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -100,7 +100,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -114,7 +114,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -128,7 +128,7 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -142,4 +142,4 @@
         rrule: (rrule_content)))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))))
+      value: (uuid_value))))

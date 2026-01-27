@@ -15,8 +15,8 @@
     name: (name
       (name_text_chunk))
     metadata: (context
-      tag: (tag)
-      tag: (tag)))
+      item: (tag)
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -25,9 +25,9 @@
     name: (name
       (name_text_chunk))
     metadata: (context
-      tag: (tag))
+      item: (tag))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -36,7 +36,7 @@
     name: (name
       (name_text_chunk))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -45,4 +45,4 @@
     name: (name
       (name_text_chunk))
     metadata: (context
-      tag: (tag))))
+      item: (tag))))

@@ -13,16 +13,15 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -37,17 +36,16 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (context
-      tag: (tag)
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -62,17 +60,16 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (context
-      tag: (tag)
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -87,19 +84,18 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -114,17 +110,16 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (context
-      tag: (tag)
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -139,14 +134,13 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -161,19 +155,18 @@
       recurrence: (recurrence
         rrule: (rrule_content)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -186,17 +179,16 @@
       duration: (duration
         minutes: (minutes)))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (context
-      tag: (tag)
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -209,13 +201,12 @@
     metadata: (completed_date
       datetime: (datetime))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (context
-      tag: (tag))
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -226,11 +217,10 @@
     metadata: (do_date
       datetime: (datetime))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))))
+      value: (uuid_value))))

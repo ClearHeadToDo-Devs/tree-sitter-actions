@@ -39,12 +39,12 @@
           "type": "string",
           "description": "Name/title of the action",
           "minLength": 1,
-          "pattern": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
+          "pattern": ""
         },
         "description": {
           "type": "string",
           "description": "Long-form description of the action",
-          "pattern": "[^$\\n]+"
+          "pattern": "[^$]+"
         },
         "priority": {
           "type": "integer",
@@ -54,14 +54,14 @@
         "story": {
           "type": "string",
           "description": "Parent project/story name (root actions only)",
-          "pattern": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
+          "pattern": ""
         },
         "contexts": {
           "type": "array",
           "description": "Array of context tags",
           "items": {
             "type": "string",
-            "pattern": "[^\\n$!*+@%\\^#><~=,\\[\\]]+"
+            "pattern": ""
           },
           "minItems": 1
         },

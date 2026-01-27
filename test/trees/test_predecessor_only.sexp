@@ -7,5 +7,5 @@
     name: (name
       (name_text_chunk))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name)))))

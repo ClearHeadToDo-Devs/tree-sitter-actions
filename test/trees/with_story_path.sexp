@@ -9,12 +9,12 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)))
+      item: (tag)
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -25,11 +25,11 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -40,11 +40,11 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -55,11 +55,11 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -70,11 +70,11 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -85,12 +85,12 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)))
+      item: (tag)
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -101,11 +101,11 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -116,12 +116,12 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)))
+      item: (tag)
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -132,12 +132,12 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)))
+      item: (tag)
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -148,8 +148,8 @@
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag))))
+      item: (tag))))

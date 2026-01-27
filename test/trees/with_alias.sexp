@@ -7,16 +7,16 @@
     name: (name
       (name_text_chunk))
     metadata: (alias
-      name: (alias_name))
+      value: (alias_name))
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag)))
+      item: (tag)
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -25,18 +25,18 @@
     name: (name
       (name_text_chunk))
     metadata: (alias
-      name: (alias_name))
+      value: (alias_name))
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name))))
   (root_action
     state: (state
@@ -46,15 +46,15 @@
     name: (name
       (name_text_chunk))
     metadata: (alias
-      name: (alias_name))
+      value: (alias_name))
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)))
+      item: (tag)))
   (root_action
     state: (state
       open: (state_open)
@@ -63,17 +63,17 @@
     name: (name
       (name_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name)))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name))))
   (root_action
     state: (state
@@ -83,15 +83,15 @@
     name: (name
       (name_text_chunk))
     metadata: (alias
-      name: (alias_name))
+      value: (alias_name))
     metadata: (description
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag))
+      item: (tag))
     metadata: (predecessor
-      reference: (predecessor_reference
+      value: (predecessor_reference
         (predecessor_name)))))

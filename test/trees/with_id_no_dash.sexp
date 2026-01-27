@@ -8,4 +8,4 @@
       (name_text_chunk))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))))
+      value: (uuid_value))))

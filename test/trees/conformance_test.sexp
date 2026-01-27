@@ -8,15 +8,14 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (priority
-      level: (priority_level))
+      value: (priority_level))
     metadata: (story
-      name: (story_name))
+      value: (story_name))
     metadata: (context
-      tag: (tag)
-      tag: (tag))
+      item: (tag)
+      item: (tag))
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
@@ -27,7 +26,7 @@
       datetime: (datetime))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value)))
+      value: (uuid_value)))
   (root_action
     state: (state
       open: (state_open)
@@ -42,7 +41,7 @@
       datetime: (datetime))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))
+      value: (uuid_value))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -57,7 +56,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value))))
+        value: (uuid_value))))
   (root_action
     state: (state
       open: (state_open)
@@ -67,7 +66,6 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (created_date
       datetime: (datetime))
@@ -75,7 +73,7 @@
       datetime: (datetime))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))
+      value: (uuid_value))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -88,7 +86,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value))))
+        value: (uuid_value))))
   (root_action
     state: (state
       open: (state_open)
@@ -98,13 +96,12 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (created_date
       datetime: (datetime))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))
+      value: (uuid_value))
     child: (depth1_action
       marker: (depth1_marker)
       state: (state
@@ -119,7 +116,7 @@
         datetime: (datetime))
       metadata: (id
         icon: (id_hash)
-        uuid: (uuid_value))))
+        value: (uuid_value))))
   (root_action
     state: (state
       open: (state_open)
@@ -129,8 +126,7 @@
       (name_text_chunk)
       (name_text_chunk))
     metadata: (description
-      text: (description_text_chunk)
       text: (description_text_chunk))
     metadata: (id
       icon: (id_hash)
-      uuid: (uuid_value))))
+      value: (uuid_value))))

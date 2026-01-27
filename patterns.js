@@ -3,6 +3,14 @@
  *
  * Exports actual RegExp objects to avoid double-escaping hell.
  * Use these directly in grammar.js rules (no `new RegExp()` needed).
+ *
+ * Structural Archetypes:
+ * - icon_value: icon + text (priority, story, alias, predecessor, id)
+ * - icon_datetime: icon + datetime (completed_date, created_date)
+ * - icon_composite: icon + parts (do_date: datetime, duration, recurrence)
+ * - icon_list: icon + items (context)
+ * - icon_rich_text: icon + text/links (description)
+ * - marker_only: just icon (sequential)
  */
 
 // Characters that introduce metadata fields
@@ -21,21 +29,17 @@ module.exports = {
   // Reference for documentation/other tools
   metadata_chars: METADATA_CHARS,
 
-  // Text content patterns (RegExp objects - use directly, no new RegExp())
-  name: notChars(METADATA_CHARS),
-  description_text: /[^$\n]+/,  // Only exclude $ and newline
-  story_name: notChars(METADATA_CHARS),
-  tag: notChars(METADATA_CHARS + ','),
-  predecessor_name: notChars(METADATA_CHARS),
-
-  // Alias pattern: alphanumeric, underscores, hyphens only
-  alias_name: /[a-zA-Z0-9_-]+/,
-
-  // Simple patterns
-  priority_level: /[0-9]+/,
+  // Structural primitives (consolidated patterns)
+  safe_text: notChars(METADATA_CHARS),      // General text excluding metadata markers
+  identifier: /[a-zA-Z0-9_-]+/,             // Alphanumeric identifiers with underscores/hyphens
+  number: /[0-9]+/,                         // Numeric values
+  tag_text: notChars(METADATA_CHARS + ','), // Tag text (excludes comma for list separation)
+  description_text: /[^$]+/,                 // Description text (delimited by $, can span lines)
 
   // UUID patterns
   uuid: /[0-9a-fA-F-]+/,
-  // Short UUID: exactly 8 hex characters (first segment of full UUID)
   short_uuid: /[0-9a-fA-F]{8}/,
+
+  // Export helper for custom patterns
+  notChars,
 };
