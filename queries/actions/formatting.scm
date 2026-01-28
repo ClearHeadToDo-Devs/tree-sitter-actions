@@ -36,18 +36,10 @@
 (depth4_marker) @leaf
 (depth5_marker) @leaf
 
-;; State and metadata preserved unchanged
-(state) @leaf
-(name) @leaf
-(description) @leaf
-(priority) @leaf
-(story) @leaf
-(context) @leaf
-(do_date) @leaf
-(duration) @leaf
-(recurrence) @leaf
-(completed_date) @leaf
-(created_date) @leaf
-(predecessor) @leaf
-(id) @leaf
-(link) @leaf
+;; Entire action body treated as leaf to preserve all spacing exactly
+(root_action) @leaf
+(depth1_action) @leaf
+(depth2_action) @leaf
+(depth3_action) @leaf
+(depth4_action) @leaf
+(depth5_action) @leaf
