@@ -1,17 +1,17 @@
 ((root_action) @indent.begin
   (#set! indent.immediate 1))
 
-((depth1_action) @indent.begin
+((depth1_marker) @indent.begin
   (#set! indent.immediate 1))
 
-((depth2_action) @indent.begin
+((depth2_marker) @indent.begin
   (#set! indent.immediate 1))
 
-((depth3_action) @indent.begin
+((depth3_marker) @indent.begin
   (#set! indent.immediate 1))
 
-((depth4_action) @indent.begin
+((depth4_marker) @indent.begin
   (#set! indent.immediate 1))
 
-((depth5_action) @indent.begin
+((depth5_marker) @indent.begin
   (#set! indent.immediate 1))
