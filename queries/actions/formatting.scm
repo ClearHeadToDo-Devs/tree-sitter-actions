@@ -1,9 +1,8 @@
 ;; ==============================================================================
 ;; Topiary formatting query for .actions files
 ;;
-;; Scope: Vertical spacing only.
-;; Horizontal spacing and indentation preserved from input.
-;; The format is whitespace-insensitive by design.
+;; Scope: Vertical spacing AND indentation.
+;; The format enforces consistent indentation based on action depth.
 ;;
 ;; See specifications/formatting.md for details.
 ;; ==============================================================================
@@ -23,23 +22,30 @@
 (depth5_action) @prepend_hardline
 
 ;; ------------------------------------------------------------------------------
-;; Leaf Nodes - Preserve content unchanged
-;;
-;; Mark all the internal nodes as leaves so their content (including any
-;; whitespace) is preserved exactly as written.
+;; Indentation - Each depth level indents its children
 ;; ------------------------------------------------------------------------------
 
-;; Depth markers preserve their formatting (including any leading indent)
-(depth1_marker) @leaf
-(depth2_marker) @leaf
-(depth3_marker) @leaf
-(depth4_marker) @leaf
-(depth5_marker) @leaf
+;; Root actions contain depth1 children - indent them
+(root_action
+  (depth1_action) @prepend_indent_start @append_indent_end
+)
 
-;; Entire action body treated as leaf to preserve all spacing exactly
-(root_action) @leaf
-(depth1_action) @leaf
-(depth2_action) @leaf
-(depth3_action) @leaf
-(depth4_action) @leaf
-(depth5_action) @leaf
+;; Depth1 actions contain depth2 children - indent them
+(depth1_action
+  (depth2_action) @prepend_indent_start @append_indent_end
+)
+
+;; Depth2 actions contain depth3 children - indent them
+(depth2_action
+  (depth3_action) @prepend_indent_start @append_indent_end
+)
+
+;; Depth3 actions contain depth4 children - indent them
+(depth3_action
+  (depth4_action) @prepend_indent_start @append_indent_end
+)
+
+;; Depth4 actions contain depth5 children - indent them
+(depth4_action
+  (depth5_action) @prepend_indent_start @append_indent_end
+)

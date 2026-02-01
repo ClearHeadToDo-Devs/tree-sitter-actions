@@ -1,17 +1,27 @@
-((root_action) @indent.begin
-  (#set! indent.immediate 1))
+; Indent child actions relative to their parent
+; This matches the Topiary formatting behavior
 
-((depth1_marker) @indent.begin
-  (#set! indent.immediate 1))
+; Root actions contain depth1 children
+(root_action
+  (depth1_action) @indent.begin @indent.end
+)
 
-((depth2_marker) @indent.begin
-  (#set! indent.immediate 1))
+; Depth1 actions contain depth2 children
+(depth1_action
+  (depth2_action) @indent.begin @indent.end
+)
 
-((depth3_marker) @indent.begin
-  (#set! indent.immediate 1))
+; Depth2 actions contain depth3 children
+(depth2_action
+  (depth3_action) @indent.begin @indent.end
+)
 
-((depth4_marker) @indent.begin
-  (#set! indent.immediate 1))
+; Depth3 actions contain depth4 children
+(depth3_action
+  (depth4_action) @indent.begin @indent.end
+)
 
-((depth5_marker) @indent.begin
-  (#set! indent.immediate 1))
+; Depth4 actions contain depth5 children
+(depth4_action
+  (depth5_action) @indent.begin @indent.end
+)
