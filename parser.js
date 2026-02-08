@@ -22,7 +22,7 @@ class ActionsParser {
     let order = 0;
 
     const rootNode = tree.rootNode;
-    
+
     // Process each root action
     for (let i = 0; i < rootNode.childCount; i++) {
       const child = rootNode.child(i);
@@ -31,7 +31,7 @@ class ActionsParser {
         const actionId = actionData.id || actionData.generated_id;
         actions[actionId] = actionData;
         rootActions.push(actionId);
-        
+
         // Process children recursively
         this.processChildren(child, sourceCode, actionId, actions);
       }
@@ -77,7 +77,7 @@ class ActionsParser {
   processNestedChildren(actionNode, sourceCode, parentId, currentDepth, actions) {
     const nextDepth = currentDepth + 1;
     let listType;
-    
+
     switch (currentDepth) {
       case 1:
         listType = 'grandchild_action_list';
@@ -156,11 +156,16 @@ class ActionsParser {
     for (let i = 0; i < stateNode.childCount; i++) {
       const child = stateNode.child(i);
       switch (child.type) {
-        case 'not_started': return ' ';
-        case 'completed': return 'x';
-        case 'in_progress': return '-';
-        case 'blocked': return '=';
-        case 'cancelled': return '_';
+        case 'not_started':
+          return ' ';
+        case 'completed':
+          return 'x';
+        case 'in_progress':
+          return '-';
+        case 'blocked':
+          return '=';
+        case 'cancelled':
+          return '_';
       }
     }
     return ' ';
@@ -175,37 +180,37 @@ class ActionsParser {
   parseDescription(coreAction, sourceCode) {
     const descNode = this.findChildByType(coreAction, 'description');
     if (!descNode) return null;
-    
+
     const descTextNode = this.findChildByType(descNode, 'description_text');
     if (!descTextNode) return null;
-    
+
     return this.getNodeText(descTextNode, sourceCode).trim();
   }
 
   parsePriority(coreAction, sourceCode) {
     const priorityNode = this.findChildByType(coreAction, 'priority');
     if (!priorityNode) return null;
-    
+
     const priorityNumNode = this.findChildByType(priorityNode, 'priority_number');
     if (!priorityNumNode) return null;
-    
+
     return parseInt(this.getNodeText(priorityNumNode, sourceCode));
   }
 
   parseStory(actionNode, sourceCode) {
     const storyNode = this.findChildByType(actionNode, 'story');
     if (!storyNode) return null;
-    
+
     const storyNameNode = this.findChildByType(storyNode, 'story_name');
     if (!storyNameNode) return null;
-    
+
     return this.getNodeText(storyNameNode, sourceCode).trim();
   }
 
   parseContexts(coreAction, sourceCode) {
     const contextListNode = this.findChildByType(coreAction, 'context_list');
     if (!contextListNode) return [];
-    
+
     const contexts = [];
     for (let i = 0; i < contextListNode.childCount; i++) {
       const child = contextListNode.child(i);
@@ -264,7 +269,9 @@ class ActionsParser {
 
     const dailyNode = this.findChildByType(recurrenceStructNode, 'daily_recurrance');
     if (dailyNode) {
-      const recurrence = { type: 'daily' };
+      const recurrence = {
+        type: 'daily'
+      };
       const timeNode = this.findChildByType(dailyNode, 'time');
       if (timeNode) {
         recurrence.time = this.getNodeText(timeNode, sourceCode);
@@ -274,7 +281,9 @@ class ActionsParser {
 
     const weeklyNode = this.findChildByType(recurrenceStructNode, 'weekly_recurrance');
     if (weeklyNode) {
-      const recurrence = { type: 'weekly' };
+      const recurrence = {
+        type: 'weekly'
+      };
       const daysNode = this.findChildByType(weeklyNode, 'weekly_recurrance_days');
       if (daysNode) {
         const days = [];
@@ -318,10 +327,10 @@ class ActionsParser {
   parseId(coreAction, sourceCode) {
     const idNode = this.findChildByType(coreAction, 'id');
     if (!idNode) return null;
-    
+
     const uuidNode = this.findChildByType(idNode, 'uuid');
     if (!uuidNode) return null;
-    
+
     return this.getNodeText(uuidNode, sourceCode);
   }
 
@@ -336,8 +345,9 @@ class ActionsParser {
   }
 
   isActionNode(node) {
-    return ['child_action', 'grandchild_action', 'great_grandchild_action', 
-            'double_great_grandchild_action', 'leaf_action'].includes(node.type);
+    return ['child_action', 'grandchild_action', 'great_grandchild_action',
+      'double_great_grandchild_action', 'leaf_action'
+    ].includes(node.type);
   }
 
   getNodeText(node, sourceCode) {

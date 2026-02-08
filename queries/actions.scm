@@ -54,9 +54,3 @@
 (completed_date) @prepend_space
 (created_date) @prepend_space
 (predecessor) @prepend_space
-(priority) @prepend_space
-(context) @prepend_space
-(alias) @prepend_space
-(sequential) @prepend_space
-(id) @prepend_space
-(description) @prepend_space

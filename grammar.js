@@ -12,16 +12,16 @@ for (let i = 1; i <= MAX_DEPTH; i++) {
 
   // Action rule with optional children (leaf level has no children)
   const isLeaf = i === MAX_DEPTH;
-  depthRules[`depth${i}_action`] = isLeaf
-    ? $ => seq(
-        field('marker', $[`depth${i}_marker`]),
-        $._action_body
-      )
-    : $ => seq(
-        field('marker', $[`depth${i}_marker`]),
-        $._action_body,
-        repeat(field('child', $[`depth${i + 1}_action`]))
-      );
+  depthRules[`depth${i}_action`] = isLeaf ?
+    $ => seq(
+      field('marker', $[`depth${i}_marker`]),
+      $._action_body
+    ) :
+    $ => seq(
+      field('marker', $[`depth${i}_marker`]),
+      $._action_body,
+      repeat(field('child', $[`depth${i + 1}_action`]))
+    );
 }
 
 module.exports = grammar({
