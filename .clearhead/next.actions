@@ -1,0 +1,3 @@
+[ ] hide url when it has a title  !3 +query  ^2026-02-08T11:57 #019c3ed4-d66f-7ae2-a3a1-63eb7f47fd27
+[ ] update formatter to prepend space for some metadata  $ not huge but it looks a bit tight right now $ !3 +query  ^2026-02-05T21:15 #019c3160-5fa0-7b32-83f4-5e33af51708c
+[ ] give optional ability for frontmatter at beginning of file  $ looking at the markdown spec i realize it would actually be kinda nice to be able to just define the charter at the top of the actions file instead of needing to make a markdown file for it, we can still do the normal thing otherwise for bigger charters but forquick charters or subcharters this could help keep things more concise $ ^2026-02-11T22:07 #019c5076-0dec-71f3-9f8f-918156855abc
