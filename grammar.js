@@ -88,6 +88,7 @@ module.exports = grammar({
       $.story,
       $.context,
       $.do_date,
+      $.due_date,
       $.completed_date,
       $.created_date,
       $.predecessor,
@@ -169,6 +170,15 @@ module.exports = grammar({
     // (icon_composite archetype)
     do_date: $ => seq(
       field('icon', '@'),
+      field('datetime', $.datetime),
+      optional(field('duration', $.duration)),
+      optional(field('recurrence', $.recurrence))
+    ),
+
+    // Due-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
+    // (icon_composite archetype)
+    due_date: $ => seq(
+      field('icon', ':'),
       field('datetime', $.datetime),
       optional(field('duration', $.duration)),
       optional(field('recurrence', $.recurrence))

@@ -156,6 +156,10 @@
             "named": true
           },
           {
+            "type": "due_date",
+            "named": true
+          },
+          {
             "type": "id",
             "named": true
           },
@@ -249,6 +253,10 @@
           },
           {
             "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "due_date",
             "named": true
           },
           {
@@ -348,6 +356,10 @@
             "named": true
           },
           {
+            "type": "due_date",
+            "named": true
+          },
+          {
             "type": "id",
             "named": true
           },
@@ -444,6 +456,10 @@
             "named": true
           },
           {
+            "type": "due_date",
+            "named": true
+          },
+          {
             "type": "id",
             "named": true
           },
@@ -527,6 +543,10 @@
           },
           {
             "type": "do_date",
+            "named": true
+          },
+          {
+            "type": "due_date",
             "named": true
           },
           {
@@ -658,6 +678,52 @@
         "types": [
           {
             "type": "@",
+            "named": false
+          }
+        ]
+      },
+      "recurrence": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "recurrence",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "due_date",
+    "named": true,
+    "fields": {
+      "datetime": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "datetime",
+            "named": true
+          }
+        ]
+      },
+      "duration": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "duration",
+            "named": true
+          }
+        ]
+      },
+      "icon": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": ":",
             "named": false
           }
         ]
@@ -925,6 +991,10 @@
             "named": true
           },
           {
+            "type": "due_date",
+            "named": true
+          },
+          {
             "type": "id",
             "named": true
           },
@@ -1106,6 +1176,10 @@
   },
   {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": ":",
     "named": false
   },
   {

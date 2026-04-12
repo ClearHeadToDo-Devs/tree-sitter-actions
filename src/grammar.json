@@ -306,7 +306,7 @@
     },
     "name_text_chunk": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=:\\[\\]]+"
     },
     "_metadata": {
       "type": "CHOICE",
@@ -330,6 +330,10 @@
         {
           "type": "SYMBOL",
           "name": "do_date"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "due_date"
         },
         {
           "type": "SYMBOL",
@@ -532,7 +536,7 @@
     },
     "story_name": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=:\\[\\]]+"
     },
     "context": {
       "type": "SEQ",
@@ -598,7 +602,7 @@
     },
     "tag": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><~=,\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=:,\\[\\]]+"
     },
     "do_date": {
       "type": "SEQ",
@@ -609,6 +613,59 @@
           "content": {
             "type": "STRING",
             "value": "@"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "datetime",
+          "content": {
+            "type": "SYMBOL",
+            "name": "datetime"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "duration",
+              "content": {
+                "type": "SYMBOL",
+                "name": "duration"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "recurrence",
+              "content": {
+                "type": "SYMBOL",
+                "name": "recurrence"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "due_date": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "icon",
+          "content": {
+            "type": "STRING",
+            "value": ":"
           }
         },
         {
@@ -781,7 +838,7 @@
     },
     "predecessor_name": {
       "type": "PATTERN",
-      "value": "[^\\n$!*+@%\\^#><~=\\[\\]]+"
+      "value": "[^\\n$!*+@%\\^#><~=:\\[\\]]+"
     },
     "uuid_value": {
       "type": "PATTERN",
