@@ -81,9 +81,6 @@
               "type": "integer",
               "description": "Duration in minutes",
               "minimum": 1
-            },
-            "recurrence": {
-              "$ref": "#/definitions/recurrence"
             }
           }
         },
@@ -107,97 +104,6 @@
           "description": "Nested child actions",
           "items": {
             "$ref": "#/definitions/action"
-          }
-        }
-      },
-      "additionalProperties": false
-    },
-    "recurrence": {
-      "type": "object",
-      "required": [
-        "frequency"
-      ],
-      "properties": {
-        "frequency": {
-          "type": "string",
-          "description": "Recurrence frequency",
-          "enum": [
-            "minutely",
-            "hourly",
-            "daily",
-            "weekly",
-            "monthly",
-            "yearly"
-          ]
-        },
-        "interval": {
-          "type": "integer",
-          "description": "Interval between recurrences",
-          "minimum": 1,
-          "default": 1
-        },
-        "count": {
-          "type": "integer",
-          "description": "Maximum number of occurrences",
-          "minimum": 1
-        },
-        "until": {
-          "type": "string",
-          "description": "End date in ISO 8601 format"
-        },
-        "byMinute": {
-          "type": "array",
-          "description": "Minutes within the hour",
-          "items": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 60
-          }
-        },
-        "byHour": {
-          "type": "array",
-          "description": "Hours within the day",
-          "items": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 23
-          }
-        },
-        "byDay": {
-          "type": "array",
-          "description": "Days of the week",
-          "items": {
-            "type": "string",
-            "enum": [
-              "Mon",
-              "Tue",
-              "Wed",
-              "Thu",
-              "Fri",
-              "Sat",
-              "Sun"
-            ]
-          }
-        },
-        "byMonthDay": {
-          "type": "array",
-          "description": "Days of the month",
-          "items": {
-            "type": "integer",
-            "minimum": -31,
-            "maximum": 31,
-            "not": {
-              "const": 0
-            }
-          }
-        },
-        "byMonth": {
-          "type": "array",
-          "description": "Months of the year",
-          "items": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 12
           }
         }
       },

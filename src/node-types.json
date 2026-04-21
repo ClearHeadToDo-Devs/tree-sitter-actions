@@ -681,16 +681,6 @@
             "named": false
           }
         ]
-      },
-      "recurrence": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "recurrence",
-            "named": true
-          }
-        ]
       }
     }
   },
@@ -725,16 +715,6 @@
           {
             "type": ":",
             "named": false
-          }
-        ]
-      },
-      "recurrence": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "recurrence",
-            "named": true
           }
         ]
       }
@@ -931,22 +911,6 @@
     "type": "priority_level",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "recurrence",
-    "named": true,
-    "fields": {
-      "rrule": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "rrule_content",
-            "named": true
-          }
-        ]
-      }
-    }
   },
   {
     "type": "root_action",
@@ -1199,10 +1163,6 @@
     "named": false
   },
   {
-    "type": "R:",
-    "named": false
-  },
-  {
     "type": "[[",
     "named": false
   },
@@ -1252,10 +1212,6 @@
   },
   {
     "type": "id_hash",
-    "named": true
-  },
-  {
-    "type": "rrule_content",
     "named": true
   },
   {

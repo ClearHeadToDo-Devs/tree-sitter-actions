@@ -166,22 +166,20 @@ module.exports = grammar({
     // Individual context tag
     tag: $ => PATTERNS.tag_text,
 
-    // Do-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
+    // Do-date/time: @ followed by ISO 8601 date/time, optional duration
     // (icon_composite archetype)
     do_date: $ => seq(
       field('icon', '@'),
       field('datetime', $.datetime),
-      optional(field('duration', $.duration)),
-      optional(field('recurrence', $.recurrence))
+      optional(field('duration', $.duration))
     ),
 
-    // Due-date/time: @ followed by ISO 8601 date/time, optional duration, optional recurrence
+    // Due-date/time: : followed by ISO 8601 date/time, optional duration
     // (icon_composite archetype)
     due_date: $ => seq(
       field('icon', ':'),
       field('datetime', $.datetime),
-      optional(field('duration', $.duration)),
-      optional(field('recurrence', $.recurrence))
+      optional(field('duration', $.duration))
     ),
 
     // ISO 8601 datetime: YYYY-MM-DD or YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS with optional timezone
@@ -194,14 +192,6 @@ module.exports = grammar({
     ),
 
     minutes: $ => PATTERNS.number,
-
-    // Recurrence: R: followed by RRULE syntax
-    recurrence: $ => seq(
-      'R:',
-      field('rrule', $.rrule_content)
-    ),
-
-    rrule_content: $ => /FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*/,
 
     // Completed date: % followed by ISO 8601 date/time (icon_datetime archetype)
     completed_date: $ => seq(

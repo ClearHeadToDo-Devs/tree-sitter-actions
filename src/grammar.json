@@ -638,22 +638,6 @@
               "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "recurrence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "recurrence"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
         }
       ]
     },
@@ -691,22 +675,6 @@
               "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "recurrence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "recurrence"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
         }
       ]
     },
@@ -734,27 +702,6 @@
     "minutes": {
       "type": "PATTERN",
       "value": "[0-9]+"
-    },
-    "recurrence": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "R:"
-        },
-        {
-          "type": "FIELD",
-          "name": "rrule",
-          "content": {
-            "type": "SYMBOL",
-            "name": "rrule_content"
-          }
-        }
-      ]
-    },
-    "rrule_content": {
-      "type": "PATTERN",
-      "value": "FREQ=(SECONDLY|MINUTELY|HOURLY|DAILY|WEEKLY|MONTHLY|YEARLY)(;[A-Z]+(=[A-Z0-9,+-]+)?)*"
     },
     "completed_date": {
       "type": "SEQ",
