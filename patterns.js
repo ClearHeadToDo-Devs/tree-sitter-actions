@@ -7,7 +7,7 @@
  * Structural Archetypes:
  * - icon_value: icon + text (priority, story, alias, predecessor, id)
  * - icon_datetime: icon + datetime (completed_date, created_date)
- * - icon_composite: icon + parts (do_date: datetime, duration, recurrence)
+ * - icon_composite: icon + parts (do_date: datetime, duration)
  * - icon_list: icon + items (context)
  * - icon_rich_text: icon + text/links (description)
  * - marker_only: just icon (sequential)

@@ -44,7 +44,7 @@ In particular, the values are (you can also read this in the file specification 
 ## Quick Example
 
 ```actions
-[ ] Take out trash @2025-01-21T19:00 R:FREQ=WEEKLY;BYDAY=TU #01950000-0000-7000-8000-000000000001
+[ ] Take out trash @2025-01-21T19:00 #01950000-0000-7000-8000-000000000001
 [x] Team meeting $ Discuss Q1 roadmap !1 *Projects +Work @2025-01-20T14:00 D60 %2025-01-20T15:05
 [ ] Parent task >[ ] Child task >>[ ] Grandchild task
 ```
@@ -52,7 +52,7 @@ In particular, the values are (you can also read this in the file specification 
 **Key features:**
 - **States**: `[ ]` not started, `[x]` completed, `[-]` in-progress, `[=]` blocked, `[_]` cancelled
 - **Metadata**: `$` description, `!` priority, `*` story/project, `+` contexts (tags)
-- **Scheduling**: `@` do-date/time, `D` duration (minutes), `R:` recurrence ([RFC 5545 RRULE](https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10))
+- **Scheduling**: `@` do-date/time, `D` duration (minutes); recurring schedules are represented in `.ics` files
 - **Tracking**: `%` completed date, `#` UUID
 - **Hierarchy**: `>` child actions (up to 5 levels deep)
 
@@ -157,7 +157,7 @@ GROUP BY story;
 ```
 
 **Schema includes:**
-- Normalized tables: `actions`, `action_contexts`, `action_recurrence`
+- Normalized tables: `actions`, `action_contexts` (plus optional extension tables as needed by implementations)
 - Indexes for common query patterns
 - Views for convenient access
 - Adapts to SQLite, PostgreSQL, MySQL

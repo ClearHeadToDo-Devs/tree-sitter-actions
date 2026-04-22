@@ -133,7 +133,6 @@ class ActionsParser {
     if (dateTime.do_date) action.do_date = dateTime.do_date;
     if (dateTime.do_time) action.do_time = dateTime.do_time;
     if (dateTime.duration) action.duration = dateTime.duration;
-    if (dateTime.recurrence) action.recurrence = dateTime.recurrence;
 
     const completedDateTime = this.parseCompletedDateTime(coreAction, sourceCode);
     if (completedDateTime.completed_date) action.completed_date = completedDateTime.completed_date;
@@ -255,52 +254,7 @@ class ActionsParser {
       }
     }
 
-    const recurrenceNode = this.findChildByType(doDateNode, 'recurrance');
-    if (recurrenceNode) {
-      result.recurrence = this.parseRecurrence(recurrenceNode, sourceCode);
-    }
-
     return result;
-  }
-
-  parseRecurrence(recurrenceNode, sourceCode) {
-    const recurrenceStructNode = this.findChildByType(recurrenceNode, 'recurrance_structure');
-    if (!recurrenceStructNode) return null;
-
-    const dailyNode = this.findChildByType(recurrenceStructNode, 'daily_recurrance');
-    if (dailyNode) {
-      const recurrence = {
-        type: 'daily'
-      };
-      const timeNode = this.findChildByType(dailyNode, 'time');
-      if (timeNode) {
-        recurrence.time = this.getNodeText(timeNode, sourceCode);
-      }
-      return recurrence;
-    }
-
-    const weeklyNode = this.findChildByType(recurrenceStructNode, 'weekly_recurrance');
-    if (weeklyNode) {
-      const recurrence = {
-        type: 'weekly'
-      };
-      const daysNode = this.findChildByType(weeklyNode, 'weekly_recurrance_days');
-      if (daysNode) {
-        const days = [];
-        for (let i = 0; i < daysNode.childCount; i++) {
-          const dayNode = daysNode.child(i);
-          days.push(this.getNodeText(dayNode, sourceCode));
-        }
-        recurrence.days = days;
-      }
-      const timeNode = this.findChildByType(weeklyNode, 'time');
-      if (timeNode) {
-        recurrence.time = this.getNodeText(timeNode, sourceCode);
-      }
-      return recurrence;
-    }
-
-    return null;
   }
 
   parseCompletedDateTime(coreAction, sourceCode) {
