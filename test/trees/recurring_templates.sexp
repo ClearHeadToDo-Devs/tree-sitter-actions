@@ -7,9 +7,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -23,9 +21,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -37,9 +33,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -51,9 +45,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -65,9 +57,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -79,9 +69,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -95,9 +83,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -109,9 +95,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -123,9 +107,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))
@@ -137,9 +119,7 @@
     name: (name
       (name_text_chunk))
     metadata: (do_date
-      datetime: (datetime)
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+      datetime: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value))))

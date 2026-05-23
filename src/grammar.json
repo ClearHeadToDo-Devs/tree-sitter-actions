@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "actions",
   "rules": {
     "source_file": {
@@ -427,7 +426,7 @@
     },
     "description_text_chunk": {
       "type": "PATTERN",
-      "value": "[^$]+"
+      "value": "[^$\\[]+"
     },
     "link": {
       "type": "SEQ",
@@ -872,6 +871,5 @@
   "precedences": [],
   "externals": [],
   "inline": [],
-  "supertypes": [],
-  "reserved": {}
+  "supertypes": []
 }

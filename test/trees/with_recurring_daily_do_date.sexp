@@ -9,6 +9,4 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))))
+        minutes: (minutes)))))

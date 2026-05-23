@@ -13,5 +13,12 @@
     metadata: (description
       icon: (description_marker)
       text: (description_content
+        (description_text_chunk)
+        (link
+          text: (link_text)
+          url: (link_url))
+        (description_text_chunk)
+        (link
+          url: (link_url))
         (description_text_chunk))
       close: (description_marker))))

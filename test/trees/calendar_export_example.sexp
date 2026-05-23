@@ -9,9 +9,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -35,36 +33,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
-    metadata: (description
-      icon: (description_marker)
-      text: (description_content
-        (description_text_chunk))
-      close: (description_marker))
-    metadata: (priority
-      value: (priority_level))
-    metadata: (context
-      item: (tag)
-      item: (tag)
-      item: (tag))
-    metadata: (id
-      icon: (id_hash)
-      value: (uuid_value)))
-  (root_action
-    state: (state
-      open: (state_open)
-      value: (state_not_started)
-      close: (state_close))
-    name: (name
-      (name_text_chunk))
-    metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -89,9 +58,32 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
+    metadata: (description
+      icon: (description_marker)
+      text: (description_content
+        (description_text_chunk))
+      close: (description_marker))
+    metadata: (priority
+      value: (priority_level))
+    metadata: (context
+      item: (tag)
+      item: (tag)
+      item: (tag))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value)))
+  (root_action
+    state: (state
+      open: (state_open)
+      value: (state_not_started)
+      close: (state_close))
+    name: (name
+      (name_text_chunk))
+    metadata: (do_date
+      datetime: (datetime)
+      duration: (duration
+        minutes: (minutes)))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -118,9 +110,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -145,9 +135,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -169,9 +157,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (description
       icon: (description_marker)
       text: (description_content

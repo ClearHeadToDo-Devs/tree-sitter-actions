@@ -22,9 +22,7 @@
     metadata: (do_date
       datetime: (datetime)
       duration: (duration
-        minutes: (minutes))
-      recurrence: (recurrence
-        rrule: (rrule_content)))
+        minutes: (minutes)))
     metadata: (created_date
       datetime: (datetime))
     metadata: (id

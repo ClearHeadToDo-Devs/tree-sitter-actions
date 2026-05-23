@@ -34,7 +34,7 @@ module.exports = {
   identifier: /[a-zA-Z0-9_-]+/, // Alphanumeric identifiers with underscores/hyphens
   number: /[0-9]+/, // Numeric values
   tag_text: notChars(METADATA_CHARS + ','), // Tag text (excludes comma for list separation)
-  description_text: /[^$]+/, // Description text (delimited by $, can span lines)
+  description_text: /[^$\[]+/, // Description text (delimited by $, can span lines; excludes [ so links can parse)
 
   // UUID patterns
   uuid: /[0-9a-fA-F-]+/,

@@ -44,7 +44,7 @@
         "description": {
           "type": "string",
           "description": "Long-form description of the action",
-          "pattern": "[^$]+"
+          "pattern": "[^$\\[]+"
         },
         "priority": {
           "type": "integer",

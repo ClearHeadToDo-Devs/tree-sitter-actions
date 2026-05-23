@@ -65,3 +65,9 @@
 (description close: (description_marker) @conceal (#set! conceal ""))
 (do_date "@" @conceal (#set! conceal "󰃭"))
 (completed_date "%" @conceal (#set! conceal "󰄬"))
+
+;; Links - show title when present, otherwise show the URL
+((link "[[" @conceal (#set! conceal "")))
+((link "]]" @conceal (#set! conceal "")))
+((link text: (link_text) "|" @conceal (#set! conceal "")))
+((link text: (link_text) url: (link_url) @conceal (#set! conceal "")))
