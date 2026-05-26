@@ -71,3 +71,10 @@
 ((link "]]" @conceal (#set! conceal "")))
 ((link text: (link_text) "|" @conceal (#set! conceal "")))
 ((link text: (link_text) url: (link_url) @conceal (#set! conceal "")))
+
+; Give visible link text link styling plus an underline, even when the destination is concealed
+(link text: (link_text) @markup.link.label)
+(link text: (link_text) @markup.underline)
+
+; URLs should remain obviously link-like when visible
+(link url: (link_url) @markup.link.url)
