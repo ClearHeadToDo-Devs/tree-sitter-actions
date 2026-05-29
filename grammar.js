@@ -222,11 +222,16 @@ module.exports = grammar({
     // Excludes characters that would indicate UUID format and metadata markers
     predecessor_name: $ => PATTERNS.safe_text,
 
-    // UUID value as named node (full UUID with hyphens)
-    uuid_value: $ => PATTERNS.uuid,
+    // UUID value: hyphenated (standard) or compact (32 hex, no dashes)
+    // prec(2): wins over short_uuid_value and predecessor_name
+    uuid_value: $ => choice(
+      token(prec(2, PATTERNS.uuid_hyphenated)),
+      token(prec(2, PATTERNS.uuid_compact)),
+    ),
 
-    // Short UUID value - first 8 hex characters only
-    short_uuid_value: $ => PATTERNS.short_uuid,
+    // Short UUID value - 8 or more contiguous hex chars (no dashes), like git short hashes
+    // prec(1): wins over predecessor_name (safe_text) when the input is pure hex
+    short_uuid_value: $ => token(prec(1, PATTERNS.short_uuid)),
 
     // Alias: = followed by alias name (icon_value archetype)
     alias: $ => seq(

@@ -37,8 +37,13 @@ module.exports = {
   description_text: /[^$\[]+/, // Description text (delimited by $, can span lines; excludes [ so links can parse)
 
   // UUID patterns
-  uuid: /[0-9a-fA-F-]+/,
-  short_uuid: /[0-9a-fA-F]{8}/,
+  // Full hyphenated UUID (standard format)
+  uuid_hyphenated: /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/,
+  // Compact 32-char UUID (no dashes)
+  uuid_compact: /[0-9a-fA-F]{32}/,
+  // Short UUID is 8 or more contiguous hex chars (no dashes), like git short hashes
+  // Written as {8}[hex]* instead of {8,} — tree-sitter's DFA handles the split form greedily
+  short_uuid: /[0-9a-fA-F]{8}[0-9a-fA-F]*/,
 
   // Export helper for custom patterns
   notChars,

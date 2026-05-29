@@ -1123,6 +1123,11 @@
     "fields": {}
   },
   {
+    "type": "uuid_value",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -1244,10 +1249,6 @@
   },
   {
     "type": "tag",
-    "named": true
-  },
-  {
-    "type": "uuid_value",
     "named": true
   },
   {
