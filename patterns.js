@@ -20,6 +20,21 @@ const METADATA_CHARS = '$!*+@%^#><~=:';
 // Build a character class that excludes specific chars plus newline and brackets
 const notChars = (chars) => new RegExp(`[^\\n${escapeForCharClass(chars)}\\[\\]]+`);
 
+// Same as notChars, but never lets the match start or end on whitespace.
+// Interior whitespace is still allowed (so "do something" stays one token
+// worth of prose), but trailing space before a following metadata sigil is
+// left for the formatter to own, instead of being silently swallowed into
+// this token's own byte range. Without this, a greedy tree-sitter token can
+// absorb the exact same space a topiary `@prepend_space` rule also adds,
+// producing a double space that depends on which field precedes the
+// boundary rather than on any query rule.
+const notCharsTrimmed = (chars) => {
+  const excluded = escapeForCharClass(chars);
+  const boundary = `[^\\s\\n${excluded}\\[\\]]`;
+  const interior = `[^\\n${excluded}\\[\\]]`;
+  return new RegExp(`${boundary}(?:${interior}*${boundary})?`);
+};
+
 // Escape chars that have special meaning inside a character class
 function escapeForCharClass(str) {
   return str.replace(/[\^\-\]\\]/g, '\\$&');
@@ -30,10 +45,10 @@ module.exports = {
   metadata_chars: METADATA_CHARS,
 
   // Structural primitives (consolidated patterns)
-  safe_text: notChars(METADATA_CHARS), // General text excluding metadata markers
+  safe_text: notCharsTrimmed(METADATA_CHARS), // General text excluding metadata markers, trailing space left to the formatter
   identifier: /[a-zA-Z0-9_-]+/, // Alphanumeric identifiers with underscores/hyphens
   number: /[0-9]+/, // Numeric values
-  tag_text: notChars(METADATA_CHARS + ','), // Tag text (excludes comma for list separation)
+  tag_text: notCharsTrimmed(METADATA_CHARS + ','), // Tag text (excludes comma for list separation), trailing space left to the formatter
   description_text: /[^$\[]+/, // Description text (delimited by $, can span lines; excludes [ so links can parse)
 
   // UUID patterns

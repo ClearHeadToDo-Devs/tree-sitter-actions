@@ -51,6 +51,12 @@
 )
 
 ;; Adding Spaces Before and After Metadata
-(completed_date) @prepend_space
-(created_date) @prepend_space
-(predecessor) @prepend_space
+;;
+;; Two rules, covering every horizontal boundary: state -> name, and
+;; name/field -> field. This only works because the grammar's text-bearing
+;; tokens (name, story, tags, predecessor names) are defined to never
+;; absorb leading/trailing whitespace into their own byte range (see
+;; patterns.js notCharsTrimmed) -- otherwise these directives would double
+;; up with whitespace already baked into the neighboring leaf.
+(_ name: (_) @prepend_space)
+(_ metadata: (_) @prepend_space)
