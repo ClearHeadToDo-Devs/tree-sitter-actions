@@ -35,21 +35,45 @@ const notCharsTrimmed = (chars) => {
   return new RegExp(`${boundary}(?:${interior}*${boundary})?`);
 };
 
-// Escape chars that have special meaning inside a character class
+// Escape chars that have special meaning inside a character class. `[` is
+// included because tree-sitter's Rust regex engine treats a bare `[` inside a
+// class as the start of a nested class (set operations), not a literal.
 function escapeForCharClass(str) {
-  return str.replace(/[\^\-\]\\]/g, '\\$&');
+  return str.replace(/[\^\-\]\[\\]/g, '\\$&');
 }
+
+// A single escape sequence: a backslash followed by any escapable char — a
+// metadata sigil, a bracket, or a backslash itself. This is what lets a
+// freeform field hold a literal reserved char (\$500, \#42, \\ for a literal
+// backslash) written with a leading backslash.
+const escapeSeq = (chars) => `\\\\[${escapeForCharClass(chars + '[]\\')}]`;
+
+// Like notCharsTrimmed, but a backslash-escape sequence counts as ordinary
+// content and may appear at the trimmed boundaries too. A bare backslash
+// before a non-escapable char stays literal (a lenient parse); the formatter
+// always writes \\ for a literal backslash, so its own output round-trips
+// unambiguously.
+const escapedTextTrimmed = (chars) => {
+  const excluded = escapeForCharClass(chars);
+  const esc = escapeSeq(chars);
+  const boundary = `(?:${esc}|[^\\s\\n${excluded}\\[\\]])`;
+  const interior = `(?:${esc}|[^\\n${excluded}\\[\\]])`;
+  return new RegExp(`${boundary}(?:${interior}*${boundary})?`);
+};
 
 module.exports = {
   // Reference for documentation/other tools
   metadata_chars: METADATA_CHARS,
 
   // Structural primitives (consolidated patterns)
-  safe_text: notCharsTrimmed(METADATA_CHARS), // General text excluding metadata markers, trailing space left to the formatter
+  safe_text: escapedTextTrimmed(METADATA_CHARS), // General text excluding metadata markers (but \-escapes allowed), trailing space left to the formatter
   identifier: /[a-zA-Z0-9_-]+/, // Alphanumeric identifiers with underscores/hyphens
   number: /[0-9]+/, // Numeric values
   tag_text: notCharsTrimmed(METADATA_CHARS + ','), // Tag text (excludes comma for list separation), trailing space left to the formatter
-  description_text: /[^$\[]+/, // Description text (delimited by $, can span lines; excludes [ so links can parse)
+  // Description text (delimited by $, can span lines; excludes [ so links can
+  // parse). A backslash-escape (\$ \[ \] \\) counts as literal content, so a
+  // description can hold a literal $ without closing the block.
+  description_text: /(?:\\[$\[\]\\]|[^$\[])+/,
 
   // UUID patterns
   // Full hyphenated UUID (standard format)
