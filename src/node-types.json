@@ -755,6 +755,10 @@
         "required": true,
         "types": [
           {
+            "type": "malformed_id",
+            "named": true
+          },
+          {
             "type": "uuid_value",
             "named": true
           }
@@ -1217,6 +1221,10 @@
   },
   {
     "type": "id_hash",
+    "named": true
+  },
+  {
+    "type": "malformed_id",
     "named": true
   },
   {

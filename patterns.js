@@ -83,6 +83,13 @@ module.exports = {
   // Short UUID is 8 or more contiguous hex chars (no dashes), like git short hashes
   // Written as {8}[hex]* instead of {8,} — tree-sitter's DFA handles the split form greedily
   short_uuid: /[0-9a-fA-F]{8}[0-9a-fA-F]*/,
+  // Malformed id: a permissive run of alphanumerics/hyphens accepted after `#`
+  // so a bad or half-typed id (#123, #abc-def, #01950000-0000-7000-8000) forms an
+  // `id` node instead of erroring the whole line. The grammar stays relaxed
+  // (Decision 6); the linter classifies the captured text as invalid (E006) or
+  // incomplete (W013). Lower precedence than uuid_value, so a real uuid still
+  // parses as a uuid.
+  malformed_id: /[0-9A-Za-z][0-9A-Za-z-]*/,
 
   // Export helper for custom patterns
   notChars,

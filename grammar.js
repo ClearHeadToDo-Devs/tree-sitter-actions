@@ -233,6 +233,11 @@ module.exports = grammar({
     // prec(1): wins over predecessor_name (safe_text) when the input is pure hex
     short_uuid_value: $ => token(prec(1, PATTERNS.short_uuid)),
 
+    // Malformed id value - a permissive fallback so a bad/half-typed id parses
+    // as an `id` node rather than erroring the line (relaxed parser, Decision 6).
+    // prec(1) keeps a real uuid_value (prec 2) winning when the text is valid.
+    malformed_id: $ => token(prec(1, PATTERNS.malformed_id)),
+
     // Alias: = followed by alias name (icon_value archetype)
     alias: $ => seq(
       field('icon', '='),
@@ -245,10 +250,11 @@ module.exports = grammar({
     // Sequential marker: ~ indicates children are sequential (marker_only archetype)
     sequential: $ => field('icon', '~'),
 
-    // ID: # followed by UUID (icon_value archetype)
+    // ID: # followed by a UUID, or a permissive malformed fallback the linter
+    // then flags as invalid (E006) or incomplete (W013). (icon_value archetype)
     id: $ => seq(
       field('icon', $.id_hash),
-      field('value', $.uuid_value)
+      field('value', choice($.uuid_value, $.malformed_id))
     ),
 
     id_hash: $ => '#',

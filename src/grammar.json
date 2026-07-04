@@ -825,6 +825,17 @@
         }
       }
     },
+    "malformed_id": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[0-9A-Za-z][0-9A-Za-z-]*"
+        }
+      }
+    },
     "alias": {
       "type": "SEQ",
       "members": [
@@ -881,8 +892,17 @@
           "type": "FIELD",
           "name": "value",
           "content": {
-            "type": "SYMBOL",
-            "name": "uuid_value"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "uuid_value"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "malformed_id"
+              }
+            ]
           }
         }
       ]
