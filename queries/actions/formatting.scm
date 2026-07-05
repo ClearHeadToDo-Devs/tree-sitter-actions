@@ -73,3 +73,10 @@
 ;; space before following metadata (owned by the metadata: rule).
 (_ (_) @append_space . (link))
 (_ (link) @append_space . (_))
+
+;; A link hugging the opening or closing $ of a description has no text sibling
+;; to anchor against (the $ marker lives one level up, on the description). So a
+;; link that is the first/last child of the content still floats with a space,
+;; while plain-text descriptions stay compact against their markers.
+(description_content . (link) @prepend_space)
+(description_content (link) @append_space .)
