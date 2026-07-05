@@ -66,6 +66,12 @@
 (do_date "@" @conceal (#set! conceal "󰃭"))
 (completed_date "%" @conceal (#set! conceal "󰄬"))
 
+; Date/time values and durations read as data, not plain text (they were white)
+(do_date datetime: (datetime) @number)
+(do_date duration: (duration) @number)
+(due_date datetime: (datetime) @number)
+(due_date duration: (duration) @number)
+
 ;; Links - show title when present, otherwise show the URL
 ((link "[[" @conceal (#set! conceal "")))
 ((link "]]" @conceal (#set! conceal "")))
