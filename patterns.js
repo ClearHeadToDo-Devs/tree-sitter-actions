@@ -73,7 +73,16 @@ module.exports = {
   // Description text (delimited by $, can span lines; excludes [ so links can
   // parse). A backslash-escape (\$ \[ \] \\) counts as literal content, so a
   // description can hold a literal $ without closing the block.
-  description_text: /(?:\\[$\[\]\\]|[^$\[])+/,
+  //
+  // Trimmed like safe_text/tag_text: the match never starts or ends on
+  // whitespace, so a space adjacent to a link or the closing $ is left as an
+  // unowned gap for the formatter to own -- not baked into this leaf's byte
+  // range. Without this, topiary's reconstructed spacing stacked on top of the
+  // swallowed space and produced a non-idempotent double space around links.
+  // Interior whitespace (including newlines) is still allowed. Unlike
+  // safe_text this excludes only $ and [ (not every metadata sigil), because
+  // inside a description !@%+ etc. are ordinary text.
+  description_text: /(?:\\[$\[\]\\]|[^\s$\[])(?:(?:\\[$\[\]\\]|[^$\[])*(?:\\[$\[\]\\]|[^\s$\[]))?/,
 
   // UUID patterns
   // Full hyphenated UUID (standard format)

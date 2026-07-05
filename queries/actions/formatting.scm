@@ -54,9 +54,22 @@
 ;;
 ;; Two rules, covering every horizontal boundary: state -> name, and
 ;; name/field -> field. This only works because the grammar's text-bearing
-;; tokens (name, story, tags, predecessor names) are defined to never
-;; absorb leading/trailing whitespace into their own byte range (see
-;; patterns.js notCharsTrimmed) -- otherwise these directives would double
-;; up with whitespace already baked into the neighboring leaf.
+;; tokens (name, description text, story, tags, predecessor names) are defined
+;; to never absorb leading/trailing whitespace into their own byte range (see
+;; patterns.js notCharsTrimmed) -- otherwise these directives, and topiary's
+;; own single-space gap reconstruction around links inside a description, would
+;; double up with whitespace already baked into the neighboring leaf.
 (_ name: (_) @prepend_space)
 (_ metadata: (_) @prepend_space)
+
+;; Spaces Around Links
+;;
+;; Links ([[...]]) live inside name/description content, interleaved with text
+;; chunks. Because those chunks are trimmed (notCharsTrimmed), the space that
+;; separated a link from its neighbor is stored in no leaf and would be dropped
+;; on format. Re-add exactly one space at each boundary a link participates in
+;; -- but only toward an *existing* sibling, so we never emit a leading space
+;; (owned by the name: rule), a trailing space at end-of-line, or a doubled
+;; space before following metadata (owned by the metadata: rule).
+(_ (_) @append_space . (link))
+(_ (link) @append_space . (_))
