@@ -130,11 +130,11 @@ module.exports = grammar({
       ']]'
     ),
 
-    // Link text (everything except | and ])
-    link_text: $ => /[^\|\]]+/,
-
-    // Link URL (everything except | and ])
-    link_url: $ => /[^\|\]]+/,
+    // Link text/URL may span whitespace, including newlines, but an unescaped
+    // `[` is a structural synchronization point. This keeps an incomplete link
+    // from consuming the state marker of the next action.
+    link_text: $ => /[^\|\]\[]+/,
+    link_url: $ => /[^\|\]\[]+/,
 
     // Priority: ! followed by number (icon_value archetype)
     priority: $ => seq(

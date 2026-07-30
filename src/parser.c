@@ -1013,6 +1013,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(97);
       if (lookahead != 0 &&
+          lookahead != '[' &&
           lookahead != ']' &&
           lookahead != '|') ADVANCE(98);
       END_STATE();
@@ -1673,12 +1674,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(97);
       if (lookahead != 0 &&
+          lookahead != '[' &&
           lookahead != ']' &&
           lookahead != '|') ADVANCE(98);
       END_STATE();
     case 98:
       ACCEPT_TOKEN(aux_sym_link_text_token1);
       if (lookahead != 0 &&
+          lookahead != '[' &&
           lookahead != ']' &&
           lookahead != '|') ADVANCE(98);
       END_STATE();

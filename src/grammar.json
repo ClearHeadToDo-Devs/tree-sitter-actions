@@ -482,11 +482,11 @@
     },
     "link_text": {
       "type": "PATTERN",
-      "value": "[^\\|\\]]+"
+      "value": "[^\\|\\]\\[]+"
     },
     "link_url": {
       "type": "PATTERN",
-      "value": "[^\\|\\]]+"
+      "value": "[^\\|\\]\\[]+"
     },
     "priority": {
       "type": "SEQ",
