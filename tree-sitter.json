@@ -14,7 +14,7 @@
     }
   ],
   "metadata": {
-    "version": "0.1.0",
+    "version": "0.10.0",
     "license": "MIT",
     "description": "parser for the actions file as defined by the specification therein",
     "authors": [
