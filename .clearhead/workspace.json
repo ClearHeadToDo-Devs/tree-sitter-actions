@@ -1,0 +1,6 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ClearHeadToDo-Devs/specifications/master/schemas/workspace.schema.json",
+  "created_at": "2026-08-05",
+  "workspace_id": "019fd521-e09e-7281-b0f1-3073d9a00df5",
+  "workspace_name": "tree-sitter-actions"
+}
