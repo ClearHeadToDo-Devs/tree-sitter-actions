@@ -125,7 +125,7 @@
       item: (tag))
     metadata: (predecessor
       value: (predecessor_reference
-        (predecessor_name)))
+        (short_uuid_value)))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value)))

@@ -35,8 +35,7 @@
       close: (state_close))
     name: (name
       (name_text_chunk))
-    metadata: (context
-      item: (tag)))
+    metadata: (context))
   (root_action
     state: (state
       open: (state_open)

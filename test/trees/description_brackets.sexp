@@ -5,10 +5,7 @@
       value: (state_not_started)
       close: (state_close))
     name: (name
-      (name_text_chunk)
-      (link
-        text: (link_text)
-        url: (link_url)))
+      (name_text_chunk))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -16,7 +13,8 @@
         (link
           text: (link_text)
           url: (link_url))
-        (description_text_chunk)
-        (link
-          url: (link_url)))
-      close: (description_marker))))
+        (description_text_chunk))
+      close: (description_marker))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))))

@@ -261,15 +261,8 @@
       ]
     },
     "state_open": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "STRING",
-          "value": "["
-        }
-      }
+      "type": "STRING",
+      "value": "["
     },
     "state_close": {
       "type": "STRING",
@@ -421,10 +414,6 @@
           {
             "type": "SYMBOL",
             "name": "description_text_chunk"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "description_lone_open_bracket"
           }
         ]
       }
@@ -436,17 +425,6 @@
         "value": "$"
       }
     },
-    "description_lone_open_bracket": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
-          "type": "STRING",
-          "value": "["
-        }
-      }
-    },
     "description_text_chunk": {
       "type": "PATTERN",
       "value": "(?:\\\\[$\\[\\]\\\\]|[^\\s$\\[])(?:(?:\\\\[$\\[\\]\\\\]|[^$\\[])*(?:\\\\[$\\[\\]\\\\]|[^\\s$\\[]))?"
@@ -455,15 +433,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 2,
-            "content": {
-              "type": "STRING",
-              "value": "[["
-            }
-          }
+          "type": "STRING",
+          "value": "[["
         },
         {
           "type": "CHOICE",
@@ -511,11 +482,11 @@
     },
     "link_text": {
       "type": "PATTERN",
-      "value": "[^|\\x5b\\x5d]+"
+      "value": "[^\\|\\]\\[]+"
     },
     "link_url": {
       "type": "PATTERN",
-      "value": "[^|\\x5b\\x5d]+"
+      "value": "[^\\|\\]\\[]+"
     },
     "priority": {
       "type": "SEQ",

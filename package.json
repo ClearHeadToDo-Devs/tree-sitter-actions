@@ -63,7 +63,7 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js",
-    "test:grammar": "tree-sitter test",
+    "test:grammar": "npm run regen:corpus && tree-sitter test",
     "test:schema": "node test/schema_validation_test.js",
     "test:formatting": "node scripts/test_formatting.js",
     "test:highlights": "node test/highlights_query_test.js",

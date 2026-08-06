@@ -5,7 +5,6 @@
       value: (state_not_started)
       close: (state_close))
     name: (name
-      (name_text_chunk)
       (name_text_chunk))
     metadata: (description
       icon: (description_marker)
@@ -34,7 +33,6 @@
       value: (state_completed)
       close: (state_close))
     name: (name
-      (name_text_chunk)
       (name_text_chunk))
     metadata: (created_date
       datetime: (datetime))
@@ -64,7 +62,6 @@
       value: (state_completed)
       close: (state_close))
     name: (name
-      (name_text_chunk)
       (name_text_chunk))
     metadata: (description
       icon: (description_marker)
@@ -97,7 +94,6 @@
       value: (state_not_started)
       close: (state_close))
     name: (name
-      (name_text_chunk)
       (name_text_chunk))
     metadata: (description
       icon: (description_marker)
@@ -130,7 +126,6 @@
       value: (state_not_started)
       close: (state_close))
     name: (name
-      (name_text_chunk)
       (name_text_chunk))
     metadata: (description
       icon: (description_marker)

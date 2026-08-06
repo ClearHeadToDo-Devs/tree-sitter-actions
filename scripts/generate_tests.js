@@ -1,8 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-// Read the test descriptions
-const testDescriptions = JSON.parse(fs.readFileSync('test/test_descriptions.json', 'utf8'));
+function loadTestDescriptions() {
+  try {
+    return JSON.parse(fs.readFileSync('test/test_descriptions.json', 'utf8'));
+  } catch (error) {
+    console.error(`Failed to read test descriptions: ${error.message}`);
+    process.exit(1);
+  }
+}
+
+const testDescriptions = loadTestDescriptions();
 
 // Process each test category
 for (const [category, tests] of Object.entries(testDescriptions)) {
@@ -15,13 +23,13 @@ for (const [category, tests] of Object.entries(testDescriptions)) {
     const sexpPath = path.join('test', 'trees', `${testName}.sexp`);
     
     if (!fs.existsSync(examplePath)) {
-      console.warn(`Warning: Example file not found: ${examplePath}`);
-      continue;
+      console.error(`Registered example file not found: ${examplePath}`);
+      process.exit(1);
     }
-    
+
     if (!fs.existsSync(sexpPath)) {
-      console.warn(`Warning: S-expression file not found: ${sexpPath}`);
-      continue;
+      console.error(`Registered expected tree not found: ${sexpPath}`);
+      process.exit(1);
     }
     
     const exampleContent = fs.readFileSync(examplePath, 'utf8').trim();
@@ -42,7 +50,9 @@ ${sexpContent}
     output += testCase;
   }
 
-  // Write the output file
+  // Corpus files are generated build artifacts, so the directory may not exist
+  // in a fresh checkout.
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, output.trim() + '\n');
   console.log(`Generated: ${outputPath}`);
 }

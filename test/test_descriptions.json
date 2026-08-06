@@ -3,6 +3,11 @@
     "with_everything": "With Everything",
     "conformance_test": "Conformance Test"
   },
+  "descriptions": {
+    "description_brackets": "Escaped description brackets and links",
+    "description_unescaped_bracket": "Unescaped description bracket is an error",
+    "incomplete_description_link": "Incomplete description link preserves the next action"
+  },
   "properties": {
     "with_description": "With Description",
     "with_priority": "With Priority",
