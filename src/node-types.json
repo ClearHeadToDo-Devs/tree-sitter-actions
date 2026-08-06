@@ -638,6 +638,10 @@
       "required": true,
       "types": [
         {
+          "type": "description_lone_open_bracket",
+          "named": true
+        },
+        {
           "type": "description_text_chunk",
           "named": true
         },
@@ -1209,6 +1213,10 @@
   },
   {
     "type": "depth5_marker",
+    "named": true
+  },
+  {
+    "type": "description_lone_open_bracket",
     "named": true
   },
   {

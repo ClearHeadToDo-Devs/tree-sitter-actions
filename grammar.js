@@ -8,7 +8,7 @@ const MAX_DEPTH = 5;
 const depthRules = {};
 for (let i = 1; i <= MAX_DEPTH; i++) {
   // Marker rule: >, >>, >>>, etc.
-  depthRules[`depth${i}_marker`] = $ => '>'.repeat(i);
+  depthRules[`depth${i}_marker`] = _ => '>'.repeat(i);
 
   // Action rule with optional children (leaf level has no children)
   const isLeaf = i === MAX_DEPTH;
@@ -27,7 +27,7 @@ for (let i = 1; i <= MAX_DEPTH; i++) {
 module.exports = grammar({
   name: 'actions',
 
-  extras: $ => [
+  extras: _ => [
     /\s/, // Allow whitespace anywhere
   ],
 
@@ -63,14 +63,14 @@ module.exports = grammar({
       field('close', $.state_close)
     ),
 
-    state_open: $ => '[',
-    state_close: $ => ']',
+    state_open: _ => '[',
+    state_close: _ => ']',
 
-    state_not_started: $ => ' ',
-    state_completed: $ => 'x',
-    state_in_progress: $ => '-',
-    state_blocked: $ => '=',
-    state_cancelled: $ => '_',
+    state_not_started: _ => ' ',
+    state_completed: _ => 'x',
+    state_in_progress: _ => '-',
+    state_blocked: _ => '=',
+    state_cancelled: _ => '_',
 
     // Action name - can contain text and links
     name: $ => repeat1(choice(
@@ -79,7 +79,7 @@ module.exports = grammar({
     )),
 
     // Text chunk within name (excludes metadata markers and [)
-    name_text_chunk: $ => PATTERNS.safe_text,
+    name_text_chunk: _ => PATTERNS.safe_text,
 
     // Metadata fields (hidden node, children are the actual metadata)
     _metadata: $ => choice(
@@ -106,13 +106,20 @@ module.exports = grammar({
 
     description_content: $ => repeat1(choice(
       $.link,
-      $.description_text_chunk
+      $.description_text_chunk,
+      $.description_lone_open_bracket
     )),
 
-    description_marker: $ => token('$'),
+    description_marker: _ => token('$'),
+
+    // A same-line single `[` is ordinary description prose. Making this token
+    // immediate (while owning only horizontal whitespace) prevents an incomplete
+    // multiline link from swallowing the `[` state marker of the next action.
+    // Lower lexical precedence leaves the longer `[[` token to the link rule.
+    description_lone_open_bracket: _ => token.immediate(prec(-1, /[ \t]*\[/)),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
-    description_text_chunk: $ => PATTERNS.description_text,
+    description_text_chunk: _ => PATTERNS.description_text,
 
     // Link: [[text|url]] or [[url]]
     link: $ => seq(
@@ -133,8 +140,8 @@ module.exports = grammar({
     // Link text/URL may span whitespace, including newlines, but an unescaped
     // `[` is a structural synchronization point. This keeps an incomplete link
     // from consuming the state marker of the next action.
-    link_text: $ => /[^\|\]\[]+/,
-    link_url: $ => /[^\|\]\[]+/,
+    link_text: _ => /[^|\x5b\x5d]+/,
+    link_url: _ => /[^|\x5b\x5d]+/,
 
     // Priority: ! followed by number (icon_value archetype)
     priority: $ => seq(
@@ -143,7 +150,7 @@ module.exports = grammar({
     ),
 
     // Priority level (1-5)
-    priority_level: $ => PATTERNS.number,
+    priority_level: _ => PATTERNS.number,
 
     // Story/Project: * followed by name (icon_value archetype)
     story: $ => seq(
@@ -152,7 +159,7 @@ module.exports = grammar({
     ),
 
     // Story name
-    story_name: $ => PATTERNS.safe_text,
+    story_name: _ => PATTERNS.safe_text,
 
     // Context: + followed by comma-separated tags (icon_list archetype)
     context: $ => seq(
@@ -164,7 +171,7 @@ module.exports = grammar({
     ),
 
     // Individual context tag
-    tag: $ => PATTERNS.tag_text,
+    tag: _ => PATTERNS.tag_text,
 
     // Do-date/time: @ followed by ISO 8601 date/time, optional duration
     // (icon_composite archetype)
@@ -183,7 +190,7 @@ module.exports = grammar({
     ),
 
     // ISO 8601 datetime: YYYY-MM-DD or YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS with optional timezone
-    datetime: $ => /[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\.[0-9]+)?)?(Z|[+-][0-9]{2}:?[0-9]{2})?)?/,
+    datetime: _ => /[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\.[0-9]+)?)?(Z|[+-][0-9]{2}:?[0-9]{2})?)?/,
 
     // Duration: D followed by number of minutes
     duration: $ => seq(
@@ -191,7 +198,7 @@ module.exports = grammar({
       field('minutes', $.minutes)
     ),
 
-    minutes: $ => PATTERNS.number,
+    minutes: _ => PATTERNS.number,
 
     // Completed date: % followed by ISO 8601 date/time (icon_datetime archetype)
     completed_date: $ => seq(
@@ -220,23 +227,23 @@ module.exports = grammar({
 
     // Predecessor name - action name reference (not UUID)
     // Excludes characters that would indicate UUID format and metadata markers
-    predecessor_name: $ => PATTERNS.safe_text,
+    predecessor_name: _ => PATTERNS.safe_text,
 
     // UUID value: hyphenated (standard) or compact (32 hex, no dashes)
     // prec(2): wins over short_uuid_value and predecessor_name
-    uuid_value: $ => choice(
+    uuid_value: _ => choice(
       token(prec(2, PATTERNS.uuid_hyphenated)),
       token(prec(2, PATTERNS.uuid_compact)),
     ),
 
     // Short UUID value - 8 or more contiguous hex chars (no dashes), like git short hashes
     // prec(1): wins over predecessor_name (safe_text) when the input is pure hex
-    short_uuid_value: $ => token(prec(1, PATTERNS.short_uuid)),
+    short_uuid_value: _ => token(prec(1, PATTERNS.short_uuid)),
 
     // Malformed id value - a permissive fallback so a bad/half-typed id parses
     // as an `id` node rather than erroring the line (relaxed parser, Decision 6).
     // prec(1) keeps a real uuid_value (prec 2) winning when the text is valid.
-    malformed_id: $ => token(prec(1, PATTERNS.malformed_id)),
+    malformed_id: _ => token(prec(1, PATTERNS.malformed_id)),
 
     // Alias: = followed by alias name (icon_value archetype)
     alias: $ => seq(
@@ -245,10 +252,10 @@ module.exports = grammar({
     ),
 
     // Alias name - alphanumeric, underscores, hyphens
-    alias_name: $ => PATTERNS.identifier,
+    alias_name: _ => PATTERNS.identifier,
 
     // Sequential marker: ~ indicates children are sequential (marker_only archetype)
-    sequential: $ => field('icon', '~'),
+    sequential: _ => field('icon', '~'),
 
     // ID: # followed by a UUID, or a permissive malformed fallback the linter
     // then flags as invalid (E006) or incomplete (W013). (icon_value archetype)
@@ -257,6 +264,6 @@ module.exports = grammar({
       field('value', choice($.uuid_value, $.malformed_id))
     ),
 
-    id_hash: $ => '#',
+    id_hash: _ => '#',
   }
 });

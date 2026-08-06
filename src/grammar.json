@@ -414,6 +414,10 @@
           {
             "type": "SYMBOL",
             "name": "description_text_chunk"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "description_lone_open_bracket"
           }
         ]
       }
@@ -423,6 +427,17 @@
       "content": {
         "type": "STRING",
         "value": "$"
+      }
+    },
+    "description_lone_open_bracket": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[ \\t]*\\["
+        }
       }
     },
     "description_text_chunk": {
@@ -482,11 +497,11 @@
     },
     "link_text": {
       "type": "PATTERN",
-      "value": "[^\\|\\]\\[]+"
+      "value": "[^|\\x5b\\x5d]+"
     },
     "link_url": {
       "type": "PATTERN",
-      "value": "[^\\|\\]\\[]+"
+      "value": "[^|\\x5b\\x5d]+"
     },
     "priority": {
       "type": "SEQ",
