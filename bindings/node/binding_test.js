@@ -18,7 +18,7 @@ test("can load grammar", () => {
 
 test("description prose accepts lone brackets while preserving links", () => {
   const tree = parse(
-    "[ ] brackets $reserved !@%+{} and lone [ or [wrapped] are prose; " +
+    "[ ] brackets $reserved !@%+{} and lone [ or\n[wrapped] are prose; " +
       "[[label|https://example.com]] and [[target]] are links$"
   );
 

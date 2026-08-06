@@ -63,7 +63,7 @@ module.exports = grammar({
       field('close', $.state_close)
     ),
 
-    state_open: _ => '[',
+    state_open: _ => token(prec(1, '[')),
     state_close: _ => ']',
 
     state_not_started: _ => ' ',
@@ -112,18 +112,17 @@ module.exports = grammar({
 
     description_marker: _ => token('$'),
 
-    // A same-line single `[` is ordinary description prose. Making this token
-    // immediate (while owning only horizontal whitespace) prevents an incomplete
-    // multiline link from swallowing the `[` state marker of the next action.
-    // Lower lexical precedence leaves the longer `[[` token to the link rule.
-    description_lone_open_bracket: _ => token.immediate(prec(-1, /[ \t]*\[/)),
+    // A single `[` is ordinary description prose. Its lower lexical precedence
+    // lets the state opener win when recovery reaches the next action, while the
+    // longer `[[` token still belongs to the link rule.
+    description_lone_open_bracket: _ => token(prec(-1, '[')),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
     description_text_chunk: _ => PATTERNS.description_text,
 
     // Link: [[text|url]] or [[url]]
     link: $ => seq(
-      '[[',
+      token(prec(2, '[[')),
       choice(
         // Full form: [[text|url]]
         seq(

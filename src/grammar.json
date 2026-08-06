@@ -261,8 +261,15 @@
       ]
     },
     "state_open": {
-      "type": "STRING",
-      "value": "["
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "STRING",
+          "value": "["
+        }
+      }
     },
     "state_close": {
       "type": "STRING",
@@ -430,13 +437,13 @@
       }
     },
     "description_lone_open_bracket": {
-      "type": "IMMEDIATE_TOKEN",
+      "type": "TOKEN",
       "content": {
         "type": "PREC",
         "value": -1,
         "content": {
-          "type": "PATTERN",
-          "value": "[ \\t]*\\["
+          "type": "STRING",
+          "value": "["
         }
       }
     },
@@ -448,8 +455,15 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "[["
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "STRING",
+              "value": "[["
+            }
+          }
         },
         {
           "type": "CHOICE",
