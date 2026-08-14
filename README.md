@@ -1,6 +1,5 @@
 # Tree Sitter Actions File Format Parser
-===============================
-A simple Tree Sitter parser for the custom `.actions` file format.
+=============================== A simple Tree Sitter parser for the custom `.actions` file format.
 
 ## Usage
 1. Generate the parser:

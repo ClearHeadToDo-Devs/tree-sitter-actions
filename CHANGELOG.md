@@ -8,27 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 Aligned the toolchain and release metadata across every binding.
 
-Before this release the four package manifests disagreed on both the crate
-version (npm `0.10.0`, Cargo `0.9.4`, Python/`tree-sitter.json` `0.1.0`) and the
-supported tree-sitter line. The checked-in parser had already been regenerated
-at ABI 15, but the npm binding still pinned `tree-sitter-cli ^0.22.6` (max ABI
-14), so `npm run test:all` failed immediately with `Incompatible language
-version 15`.
+Before this release the four package manifests disagreed on both the crate version (npm `0.10.0`, Cargo `0.9.4`, Python/`tree-sitter.json` `0.1.0`) and the supported tree-sitter line. The checked-in parser had already been regenerated at ABI 15, but the npm binding still pinned `tree-sitter-cli ^0.22.6` (max ABI 14), so `npm run test:all` failed immediately with `Incompatible language version 15`.
 
-- Unified all manifests (`package.json`, `Cargo.toml`, `pyproject.toml`,
-  `tree-sitter.json`) to `0.10.0`.
-- Leveled the npm binding up to the `0.25.x` tree-sitter line (CLI + runtime),
-  which reads/emits ABI 15 — matching the already-regenerated parser and the
-  Rust consumers (`clearhead-core`/`clearhead-lsp` on the `0.26.x` crate, which
-  reads ABI 15). npm's runtime binding caps at `0.25.1`; the `0.26.x` line is
-  Rust-only.
-- Bumped the Rust dev-dependency to `tree-sitter 0.26.3` and Python's core extra
-  to `tree-sitter~=0.26`.
+- Unified all manifests (`package.json`, `Cargo.toml`, `pyproject.toml`, `tree-sitter.json`) to `0.10.0`.
+- Leveled the npm binding up to the `0.25.x` tree-sitter line (CLI + runtime), which reads/emits ABI 15 — matching the already-regenerated parser and the Rust consumers (`clearhead-core`/`clearhead-lsp` on the `0.26.x` crate, which reads ABI 15). npm's runtime binding caps at `0.25.1`; the `0.26.x` line is Rust-only.
+- Bumped the Rust dev-dependency to `tree-sitter 0.26.3` and Python's core extra to `tree-sitter~=0.26`.
 - Rebuilt the Node native addon for Node 26 (`node-addon-api ^8.9.0`).
 - `clearhead-core` and `clearhead-lsp` now pin the path dependency at `0.10.0`.
 
-The full `npm run test:all` suite (grammar, schema, formatting, highlights, node
-bindings) passes green again.
+The full `npm run test:all` suite (grammar, schema, formatting, highlights, node bindings) passes green again.
 
 ## [0.9.0] - 2025-12-30
 ### Removed

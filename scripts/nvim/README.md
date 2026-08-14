@@ -35,21 +35,15 @@ nvim --headless examples/recurring_log_example.actions +"source scripts/nvim/deb
 ## Common Issues
 
 ### Queries not found
-**Symptom:** `check_queries.lua` shows 0 files found
-**Cause:** The `queries` field in nvim-treesitter parser config points to wrong directory
-**Solution:** Ensure it points to `queries/actions` not `queries` (to avoid double-nesting)
+**Symptom:** `check_queries.lua` shows 0 files found **Cause:** The `queries` field in nvim-treesitter parser config points to wrong directory **Solution:** Ensure it points to `queries/actions` not `queries` (to avoid double-nesting)
 
 ### Captures match but no concealment
-**Symptom:** `test_highlights.lua` shows captures but text doesn't conceal
-**Cause:** Either `concealcursor` setting or missing `#set!` directive
-**Solution:**
+**Symptom:** `test_highlights.lua` shows captures but text doesn't conceal **Cause:** Either `concealcursor` setting or missing `#set!` directive **Solution:**
 - Set `concealcursor=` (empty) to show concealment in normal mode
 - Use `((node) @conceal (#set! conceal "icon"))` with double parens for standalone patterns
 
 ### Anonymous tokens can't be captured
-**Symptom:** Literal strings like `[`, `]`, `>`, `#` don't show in captures
-**Cause:** Anonymous tokens in grammar aren't exposed as nodes in parse tree
-**Solution:** Make them named nodes in `grammar.js`:
+**Symptom:** Literal strings like `[`, `]`, `>`, `#` don't show in captures **Cause:** Anonymous tokens in grammar aren't exposed as nodes in parse tree **Solution:** Make them named nodes in `grammar.js`:
 ```javascript
 // Before
 state: $ => seq('[', $.state_value, ']')
@@ -61,6 +55,4 @@ state_close: $ => ']'
 ```
 
 ### Empty concealment doesn't work
-**Symptom:** Nodes captured with `@conceal` but no metadata still show
-**Cause:** Concealment without metadata just applies highlight group, doesn't hide
-**Solution:** Explicitly set empty concealment: `((node) @conceal (#set! conceal ""))`
+**Symptom:** Nodes captured with `@conceal` but no metadata still show **Cause:** Concealment without metadata just applies highlight group, doesn't hide **Solution:** Explicitly set empty concealment: `((node) @conceal (#set! conceal ""))`
