@@ -6,13 +6,15 @@
   "descriptions": {
     "description_brackets": "Escaped description brackets and links",
     "description_unescaped_bracket": "Unescaped description bracket is an error",
-    "incomplete_description_link": "Incomplete description link preserves the next action"
+    "incomplete_description_link": "Incomplete description link preserves the next action",
+    "description_terminal_backslash": "Escaped terminal backslash preserves delimiter"
   },
   "properties": {
     "with_description": "With Description",
     "with_priority": "With Priority",
     "with_story": "With Story",
     "with_context": "With Context",
+    "terminal_bare_backslash": "Terminal bare backslash remains lenient prose",
     "with_id_no_dash": "With Id no dash",
     "with_id_with_dash": "With Id with dash",
     "with_links": "With Links"

@@ -39,7 +39,7 @@ const notCharsTrimmed = (chars) => {
 // included because tree-sitter's Rust regex engine treats a bare `[` inside a
 // class as the start of a nested class (set operations), not a literal.
 function escapeForCharClass(str) {
-  return str.replace(/[\^\-\]\[\\]/g, '\\$&');
+  return str.replace(/[\^\-\][\\]/g, '\\$&');
 }
 
 // A single escape sequence: a backslash followed by any escapable char — a
@@ -58,6 +58,18 @@ const escapedTextTrimmed = (chars) => {
   const esc = escapeSeq(chars);
   const boundary = `(?:${esc}|[^\\s\\n${excluded}\\[\\]])`;
   const interior = `(?:${esc}|[^\\n${excluded}\\[\\]])`;
+  return new RegExp(`${boundary}(?:${interior}*${boundary})?`);
+};
+
+// Description prose treats a standalone `]` as ordinary text. Only `[` is a
+// structural synchronization point for links, while escaped `\\]` remains
+// accepted for symmetry with the other escaped fields.
+const escapedDescriptionTrimmed = () => {
+  const escapable = escapeForCharClass('$[]\\');
+  const esc = escapeSeq('$');
+  const bareBackslash = `\\\\[^\\n${escapable}]`;
+  const boundary = `(?:${esc}|${bareBackslash}|[^\\s\\n\\\\$\\[])`;
+  const interior = `(?:${esc}|${bareBackslash}|[^\\n\\\\$\\[])`;
   return new RegExp(`${boundary}(?:${interior}*${boundary})?`);
 };
 
@@ -82,7 +94,7 @@ module.exports = {
   // Interior whitespace (including newlines) is still allowed. Unlike
   // safe_text this excludes only $ and [ (not every metadata sigil), because
   // inside a description !@%+ etc. are ordinary text.
-  description_text: /(?:\\[$\[\]\\]|[^\s$\[])(?:(?:\\[$\[\]\\]|[^$\[])*(?:\\[$\[\]\\]|[^\s$\[]))?/,
+  description_text: escapedDescriptionTrimmed(),
 
   // UUID patterns
   // Full hyphenated UUID (standard format)
