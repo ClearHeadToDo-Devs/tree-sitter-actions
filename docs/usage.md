@@ -1,317 +1,88 @@
 # Usage Guide
 
-This guide shows how to use the tree-sitter-actions parser in different contexts.
-
-## As a Command-Line Tool
-
-Parse and inspect `.actions` files using the tree-sitter CLI:
+## Command line
 
 ```bash
-# Parse a file and show the syntax tree
-tree-sitter parse examples/with_priority.actions
-
-# Test the grammar
-tree-sitter test
+tree-sitter generate
+tree-sitter parse ../specifications/examples/actions/with_priority.actions
+CLEARHEAD_SPEC_DIR=../specifications npm run test:grammar
 ```
 
-See the [README](../README.md#development-and-testing) for development workflow details.
+The specification repository owns `.actions` examples. This parser package does
+not bundle them; clone `specifications` or use your own source files.
 
-## As a Rust Library
-
-### Basic Parsing
-
-Add to your `Cargo.toml`:
+## Rust
 
 ```toml
 [dependencies]
-tree-sitter = "0.25"
-tree-sitter-actions = "0.4"
+tree-sitter = "0.26"
+tree-sitter-actions = "0.10"
 ```
 
-Parse `.actions` files:
-
 ```rust
-use tree_sitter::{Parser, TreeCursor};
+use tree_sitter::Parser;
 use tree_sitter_actions::LANGUAGE;
 
-fn main() {
-    let source_code = "[ ] Buy milk\n!1\n";
-
-    let mut parser = Parser::new();
-    parser
-        .set_language(&LANGUAGE.into())
-        .expect("Error loading Actions parser");
-
-    let tree = parser.parse(source_code, None).unwrap();
-    let root_node = tree.root_node();
-
-    println!("{}", root_node.to_sexp());
-}
+let source = "[ ] Buy milk !1\n";
+let mut parser = Parser::new();
+parser.set_language(&LANGUAGE.into()).unwrap();
+let tree = parser.parse(source, None).unwrap();
+assert!(!tree.root_node().has_error());
+println!("{}", tree.root_node().to_sexp());
 ```
 
-### Testing with Examples
+Use Tree-sitter's cursor or query APIs to traverse the CST. The reviewed expected
+node shapes in `test/trees/` are implementation examples; the semantic DSL
+contract lives in the
+[`specifications`](https://github.com/ClearHeadToDo-Devs/specifications)
+repository.
 
-The library includes all example files for testing your parser implementation:
+## JavaScript
 
-```rust
-use tree_sitter_actions::examples;
+Install `tree-sitter-actions` and use the exported language with Tree-sitter.
+The canonical JSON Schema is not bundled by this parser; obtain
+`schemas/actions.schema.json` from `specifications`. Storage projections belong
+to consuming applications and are not exported by the grammar package.
 
-#[test]
-fn test_parse_priority() {
-    let input = examples::properties::WITH_PRIORITY;
-    // input contains: "[x] context test !1\n"
+## Editors
 
-    let parsed = my_parse_to_struct(input);
-    assert_eq!(parsed.priority, Some(1));
-    assert!(parsed.completed);
-}
-
-#[test]
-fn test_parse_children() {
-    let input = examples::children::WITH_CHILDREN;
-    // input contains a parent task with child tasks
-
-    let parsed = my_parse_to_struct(input);
-    assert_eq!(parsed.children.len(), 2);
-    assert_eq!(parsed.children[0].children.len(), 1); // grandchild
-}
-
-#[test]
-fn test_parse_dates() {
-    let input = examples::dates::WITH_DO_DATE;
-
-    let parsed = my_parse_to_struct(input);
-    assert!(parsed.do_date.is_some());
-}
-```
-
-### Available Example Categories
-
-Examples are organized by category:
-
-- `examples::properties::*` - Priority, description, story, context, ID
-  - `WITH_PRIORITY`
-  - `WITH_DESCRIPTION`
-  - `WITH_STORY`
-  - `WITH_CONTEXT`
-  - `WITH_ID_NO_DASH`
-  - `WITH_ID_WITH_DASH`
-
-- `examples::children::*` - Hierarchical task structures
-  - `MINIMAL`
-  - `WITH_CHILDREN`
-  - `WITH_CHILDREN_AND_SECOND_ROOT`
-
-- `examples::dates::*` - Date-related properties
-  - `WITH_DO_DATE`
-  - `WITH_COMPLETED_DATE`
-  - `WITH_RECURRING_DAILY_DO_DATE`
-  - `WITH_RECURRING_WEEKLY_DO_DATE`
-
-- `examples::actions::*` - Complex examples
-  - `WITH_EVERYTHING` - An action with all possible properties
-
-All examples are `&'static str` constants embedded at compile time, so there's no runtime I/O overhead.
-
-### Walking the Syntax Tree
-
-Use tree-sitter's cursor API to traverse parsed actions:
-
-```rust
-use tree_sitter::TreeCursor;
-
-fn walk_tree(cursor: &mut TreeCursor) {
-    loop {
-        let node = cursor.node();
-        println!("{}: {}", node.kind(), node.utf8_text(source).unwrap());
-
-        if cursor.goto_first_child() {
-            walk_tree(cursor);
-            cursor.goto_parent();
-        }
-
-        if !cursor.goto_next_sibling() {
-            break;
-        }
-    }
-}
-```
-
-See the [actions specification](action_specification.md) for details on the grammar and node types.
-- as well as the `test/trees/` directory to see example parse trees
-
-## In Text Editors
-
-Tree-sitter grammars can be used in editors for syntax highlighting, folding, and indentation.
-
-### Neovim
-
-Add to your tree-sitter config:
+Tree-sitter grammars can provide highlighting, folding, and indentation.
+Neovim users can configure the parser source:
 
 ```lua
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.actions = {
   install_info = {
-    url = "https://github.com/clearheadtodo-devs/tree-sitter-actions",
-    files = {"src/parser.c", "src/scanner.c"},
+    url = "https://github.com/ClearHeadToDo-Devs/tree-sitter-actions",
+    files = { "src/parser.c", "src/scanner.c" },
     branch = "master",
   },
   filetype = "actions",
 }
 ```
 
-Then run `:TSInstall actions` in Neovim.
+Other editors can use the same generated parser through their Tree-sitter
+integration.
 
-### Other Editors
+## Syntax validation
 
-Consult your editor's tree-sitter plugin documentation:
-- **Helix**: Add to `languages.toml`
-- **Emacs**: Use `tree-sitter-langs`
-- **VS Code**: Use a tree-sitter extension
-
-## In Other Languages
-
-Tree-sitter has bindings for many languages. The grammar in this repository can be used with:
-
-- **JavaScript/TypeScript**: `npm install tree-sitter-actions`
-- **Python**: Use `py-tree-sitter` with this grammar
-- **Go**: Use `go-tree-sitter`
-- **Rust**: As shown above
-
-The examples in `examples/` directory are available in the published packages and can be used for testing in any language.
-
-### JavaScript/TypeScript Schema Access
-
-Both schemas are available in the npm package:
-
-```javascript
-// Import JSON Schema for validation
-import jsonSchema from 'tree-sitter-actions/schema';
-
-// Validate serialized data
-import Ajv from 'ajv';
-const ajv = new Ajv();
-const validate = ajv.compile(jsonSchema);
-const valid = validate(yourActionsData);
-if (!valid) console.error(validate.errors);
-```
-
-```javascript
-// Import SQL Schema for database initialization
-import { readFileSync } from 'fs';
-import sqlSchema from 'tree-sitter-actions/schema/sql';
-
-// For ESM, you'll need to read it as text
-// The schema is exported as a file path, read it:
-const sql = readFileSync(new URL('tree-sitter-actions/schema/sql', import.meta.url), 'utf-8');
-
-// Or in CommonJS:
-const sql = require('fs').readFileSync(
-  require.resolve('tree-sitter-actions/schema/sql'),
-  'utf-8'
-);
-
-// Apply to SQLite (using better-sqlite3)
-import Database from 'better-sqlite3';
-const db = new Database('tasks.db');
-db.exec(sql);
-```
-
-**Note:** The SQL schema is a reference implementation - customize it for your needs (add user_id, timestamps, custom indexes, etc.).
-
-## Common Patterns
-
-### Validating Actions Files
+A parser consumer can reject syntax recovery at a strict boundary:
 
 ```rust
-fn validate_actions_file(source: &str) -> Result<(), String> {
-    let mut parser = Parser::new();
-    parser.set_language(&LANGUAGE.into()).unwrap();
-
-    let tree = parser.parse(source, None)
-        .ok_or("Failed to parse")?;
-
-    if tree.root_node().has_error() {
-        return Err("Parse errors found".to_string());
-    }
-
-    Ok(())
+fn has_valid_syntax(parser: &mut tree_sitter::Parser, source: &str) -> bool {
+    parser
+        .parse(source, None)
+        .is_some_and(|tree| !tree.root_node().has_error())
 }
 ```
 
-### Converting to Data Structures
+Semantic validation and canonical JSON projection belong to consumers such as
+`clearhead-core`; this crate exposes concrete syntax rather than a second domain
+model.
 
-```rust
-struct Action {
-    completed: bool,
-    title: String,
-    priority: Option<u8>,
-    children: Vec<Action>,
-}
+## Further reading
 
-fn parse_action(node: Node, source: &str) -> Action {
-    // Walk the tree and extract fields
-    // See the specification for node types
-    todo!()
-}
-```
-
-### Using the SQL Schema for Persistent Storage
-
-The library includes a reference SQL schema for applications that need database storage:
-
-```rust
-use tree_sitter_actions::ACTIONS_SQL_SCHEMA;
-use rusqlite::Connection;
-
-fn initialize_database(db_path: &str) -> Result<Connection, Box<dyn std::error::Error>> {
-    // Create or open the database
-    let conn = Connection::open(db_path)?;
-
-    // Apply the reference schema
-    conn.execute_batch(ACTIONS_SQL_SCHEMA)?;
-
-    Ok(conn)
-}
-```
-
-**The SQL schema is a reference implementation** - use it as a starting point and customize as needed:
-
-```rust
-// Option 1: Use it directly
-let conn = initialize_database("tasks.db")?;
-
-// Option 2: Extract and customize it
-use std::fs::File;
-use std::io::Write;
-
-let mut file = File::create("custom_schema.sql")?;
-file.write_all(ACTIONS_SQL_SCHEMA.as_bytes())?;
-// Edit custom_schema.sql to add:
-// - user_id fields for multi-user systems
-// - created_at/updated_at timestamps
-// - deleted_at for soft deletes
-// - Custom indexes for your query patterns
-```
-
-**Why use the reference schema?**
-- Proven normalized structure for actions data
-- Includes indexes for common query patterns
-- Enables interoperability between tools using the same schema
-- Well-documented in the [specification](action_specification.md#sql-storage-schema)
-
-**Dependencies needed:**
-```toml
-[dependencies]
-tree-sitter-actions = "0.4"
-rusqlite = "0.32"  # For SQLite
-# Or use postgres, mysql, etc.
-```
-
-**Note:** The schema is designed for SQLite but can be adapted for PostgreSQL, MySQL, or other databases. See the [SQL Storage Schema documentation](action_specification.md#sql-storage-schema) for adaptation guidelines.
-
-## Further Reading
-
-- [README](../README.md) - Project overview and development workflow
-- [Action Specification](action_specification.md) - Grammar and file format details
-- [Rust Bindings](rust-bindings.md) - How the Rust package is built (maintainers)
+- [README](../README.md)
+- [Contributing](contributing.md)
+- [Canonical specification](https://github.com/ClearHeadToDo-Devs/specifications)
+- [Tree-sitter query patterns](../queries/actions/README.md)

@@ -1,5 +1,5 @@
 ; Find all not-started actions
-; Usage: tree-sitter query queries/actions/not-started.scm examples/
+; Usage: tree-sitter query queries/actions/not-started.scm ../specifications/examples/actions/
 
 (root_action
   state: (state

@@ -1,5 +1,5 @@
 ; Find all actions that have children
-; Usage: tree-sitter query queries/actions/with-children.scm examples/with_children.actions
+; Usage: tree-sitter query queries/actions/with-children.scm ../specifications/examples/actions/with_children.actions
 
 (root_action
   name: (name) @parent.name

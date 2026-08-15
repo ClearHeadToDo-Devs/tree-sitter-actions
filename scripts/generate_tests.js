@@ -1,60 +1,48 @@
 const fs = require('fs');
 const path = require('path');
 
+const ROOT = path.join(__dirname, '..');
+const SPEC_ROOT = process.env.CLEARHEAD_SPEC_DIR
+  ? path.resolve(process.env.CLEARHEAD_SPEC_DIR)
+  : path.resolve(ROOT, '..', 'specifications');
+
 function loadTestDescriptions() {
+  const registryPath = path.join(ROOT, 'test', 'test_descriptions.json');
   try {
-    return JSON.parse(fs.readFileSync('test/test_descriptions.json', 'utf8'));
+    return JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   } catch (error) {
     console.error(`Failed to read test descriptions: ${error.message}`);
     process.exit(1);
   }
 }
 
-const testDescriptions = loadTestDescriptions();
-
-// Process each test category
-for (const [category, tests] of Object.entries(testDescriptions)) {
-  const outputPath = path.join('test', 'corpus', `${category}.txt`);
+for (const [category, tests] of Object.entries(loadTestDescriptions())) {
+  const outputPath = path.join(ROOT, 'test', 'corpus', `${category}.txt`);
   let output = '';
-  
-  for (const [testName, description] of Object.entries(tests)) {
-    // Read the example file
-    const examplePath = path.join('examples', `${testName}.actions`);
-    const sexpPath = path.join('test', 'trees', `${testName}.sexp`);
-    
+
+  for (const [testName, test] of Object.entries(tests)) {
+    const examplePath = path.join(SPEC_ROOT, test.source);
+    const sexpPath = path.join(ROOT, 'test', 'trees', `${testName}.sexp`);
+
     if (!fs.existsSync(examplePath)) {
-      console.error(`Registered example file not found: ${examplePath}`);
+      console.error(`Registered specification fixture not found: ${examplePath}`);
+      console.error('Set CLEARHEAD_SPEC_DIR to a specifications checkout.');
       process.exit(1);
     }
-
     if (!fs.existsSync(sexpPath)) {
       console.error(`Registered expected tree not found: ${sexpPath}`);
       process.exit(1);
     }
-    
+
     const exampleContent = fs.readFileSync(examplePath, 'utf8').trim();
     const sexpContent = fs.readFileSync(sexpPath, 'utf8').trim();
-    
-    // Generate the test case
-    const testCase = `${'='.repeat(description.length)}
-${description}
-${'='.repeat(description.length)}
-${exampleContent}
-
----
-
-${sexpContent}
-
-`;
-
-    output += testCase;
+    const separator = '='.repeat(test.description.length);
+    output += `${separator}\n${test.description}\n${separator}\n${exampleContent}\n\n---\n\n${sexpContent}\n\n`;
   }
 
-  // Corpus files are generated build artifacts, so the directory may not exist
-  // in a fresh checkout.
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, output.trim() + '\n');
-  console.log(`Generated: ${outputPath}`);
+  fs.writeFileSync(outputPath, `${output.trim()}\n`);
+  console.log(`Generated: ${path.relative(ROOT, outputPath)}`);
 }
 
 console.log('Test generation complete!');

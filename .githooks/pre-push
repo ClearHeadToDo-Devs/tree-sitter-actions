@@ -1,8 +1,8 @@
 #!/bin/sh
 #
-# Pre-push gate for tree-sitter-actions: the full suite (grammar, schema,
-# formatting, highlights, and node bindings) must be green before pushing.
-# Assumes deps are installed (npm ci / npm install). This is the local half of
+# Pre-push gate for tree-sitter-actions: grammar, specification-owned
+# formatting forms, highlights, and node bindings must be green before pushing.
+# Assumes deps and a sibling specifications checkout are installed. This is the local half of
 # the tech-debt #2 baseline; CI re-runs the same suite in a clean environment.
 # Bypass in a genuine emergency with:  git push --no-verify
 #

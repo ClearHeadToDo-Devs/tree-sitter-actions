@@ -1,48 +1,130 @@
 {
   "actions": {
-    "with_everything": "With Everything",
-    "conformance_test": "Conformance Test"
+    "with_everything": {
+      "description": "With Everything",
+      "source": "examples/actions/with_everything.actions"
+    },
+    "semantic_edges": {
+      "description": "Decoded reserved text and reference edges",
+      "source": "examples/conformance/parse/semantic_edges.actions"
+    }
   },
   "descriptions": {
-    "description_brackets": "Escaped description brackets and links",
-    "description_unescaped_bracket": "Unescaped description bracket is an error",
-    "incomplete_description_link": "Incomplete description link preserves the next action",
-    "description_terminal_backslash": "Escaped terminal backslash preserves delimiter"
+    "description_brackets": {
+      "description": "Escaped description brackets and links",
+      "source": "examples/conformance/syntax/description_brackets.actions"
+    },
+    "description_unescaped_bracket": {
+      "description": "Unescaped description bracket is an error",
+      "source": "examples/conformance/syntax/description_unescaped_bracket.actions"
+    },
+    "incomplete_description_link": {
+      "description": "Incomplete description link preserves the next action",
+      "source": "examples/conformance/syntax/incomplete_description_link.actions"
+    },
+    "description_terminal_backslash": {
+      "description": "Escaped terminal backslash preserves delimiter",
+      "source": "examples/conformance/syntax/description_terminal_backslash.actions"
+    }
   },
   "properties": {
-    "with_description": "With Description",
-    "with_priority": "With Priority",
-    "with_story": "With Story",
-    "with_context": "With Context",
-    "terminal_bare_backslash": "Terminal bare backslash remains lenient prose",
-    "with_id_no_dash": "With Id no dash",
-    "with_id_with_dash": "With Id with dash",
-    "with_links": "With Links"
+    "with_description": {
+      "description": "With Description",
+      "source": "examples/actions/with_description.actions"
+    },
+    "with_priority": {
+      "description": "With Priority",
+      "source": "examples/actions/with_priority.actions"
+    },
+    "with_story": {
+      "description": "With Story",
+      "source": "examples/actions/with_story.actions"
+    },
+    "with_context": {
+      "description": "With Context",
+      "source": "examples/actions/with_context.actions"
+    },
+    "terminal_bare_backslash": {
+      "description": "Terminal bare backslash remains lenient prose",
+      "source": "examples/conformance/syntax/terminal_bare_backslash.actions"
+    },
+    "with_id_no_dash": {
+      "description": "With Id no dash",
+      "source": "examples/actions/with_id_no_dash.actions"
+    },
+    "with_id_with_dash": {
+      "description": "With Id with dash",
+      "source": "examples/actions/with_id_with_dash.actions"
+    },
+    "with_links": {
+      "description": "With Links",
+      "source": "examples/actions/with_links.actions"
+    }
   },
   "dates": {
-    "with_do_date": "With do-date",
-    "with_completed_date": "with completed date",
-    "with_recurring_daily_do_date": "with recurring daily do-date",
-    "with_recurring_weekly_do_date": "with recurring weekly do-date"
+    "with_do_date": {
+      "description": "With do-date",
+      "source": "examples/actions/with_do_date.actions"
+    },
+    "with_completed_date": {
+      "description": "With completed date",
+      "source": "examples/actions/with_completed_date.actions"
+    }
   },
   "children": {
-    "minimal": "Basic Root Action",
-    "with_children": "With Children",
-    "with_children_and_second_root": "Children Followed by Root Action"
+    "minimal": {
+      "description": "Basic Root Action",
+      "source": "examples/actions/minimal.actions"
+    },
+    "with_children": {
+      "description": "With Children",
+      "source": "examples/actions/with_children.actions"
+    },
+    "with_children_and_second_root": {
+      "description": "Children Followed by Root Action",
+      "source": "examples/actions/with_children_and_second_root.actions"
+    }
   },
   "predecessors": {
-    "laundry_workflow": "Sequential Laundry Workflow",
-    "deployment_workflow": "Multi-step Deployment with Dependencies",
-    "multiple_dependencies": "Multiple Dependencies Workflow"
+    "laundry_workflow": {
+      "description": "Sequential Laundry Workflow",
+      "source": "examples/actions/laundry_workflow.actions"
+    },
+    "deployment_workflow": {
+      "description": "Multi-step Deployment with Dependencies",
+      "source": "examples/actions/deployment_workflow.actions"
+    },
+    "multiple_dependencies": {
+      "description": "Multiple Dependencies Workflow",
+      "source": "examples/actions/multiple_dependencies.actions"
+    }
   },
   "linting": {
-    "linting_e003": "Empty context tag edge cases"
+    "linting_e003": {
+      "description": "Empty context tag edge cases",
+      "source": "examples/linting/E003_empty_context_tag/error.actions"
+    }
   },
   "new_features": {
-    "with_alias": "With Alias",
-    "with_sequential": "With Sequential Children Marker",
-    "with_short_uuid": "With Short UUID References",
-    "with_story_path": "With Hierarchical Story Paths",
-    "with_new_features": "With All New Features Combined"
+    "with_alias": {
+      "description": "With Alias",
+      "source": "examples/actions/with_alias.actions"
+    },
+    "with_sequential": {
+      "description": "With Sequential Children Marker",
+      "source": "examples/actions/with_sequential.actions"
+    },
+    "with_short_uuid": {
+      "description": "With Short UUID References",
+      "source": "examples/actions/with_short_uuid.actions"
+    },
+    "with_story_path": {
+      "description": "With Hierarchical Story Paths",
+      "source": "examples/actions/with_story_path.actions"
+    },
+    "with_new_features": {
+      "description": "With All New Features Combined",
+      "source": "examples/actions/with_new_features.actions"
+    }
   }
 }

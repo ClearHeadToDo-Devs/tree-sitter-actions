@@ -1,5 +1,5 @@
 ; Find all blocked/awaiting actions
-; Usage: tree-sitter query queries/actions/blocked-actions.scm examples/
+; Usage: tree-sitter query queries/actions/blocked-actions.scm ../specifications/examples/actions/
 
 (root_action
   state: (state

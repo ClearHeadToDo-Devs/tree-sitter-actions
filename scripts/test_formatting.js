@@ -2,7 +2,7 @@
  * Formatting Test Suite
  *
  * Tests that the Topiary query produces spec-compliant formatting.
- * Test cases are symlinked from specifications/examples/formatting/
+ * Test cases are read from the specifications repository.
  *
  * Requirements:
  * - topiary CLI must be installed (cargo install topiary-cli)
@@ -14,14 +14,17 @@ const { execSync } = require('child_process');
 
 // Paths
 const ROOT = path.join(__dirname, '..');
-const FORMATTING_EXAMPLES = path.join(ROOT, 'examples', 'formatting');
+const SPEC_ROOT = process.env.CLEARHEAD_SPEC_DIR
+  ? path.resolve(process.env.CLEARHEAD_SPEC_DIR)
+  : path.resolve(ROOT, '..', 'specifications');
+const FORMATTING_EXAMPLES = path.join(SPEC_ROOT, 'examples', 'formatting');
 const TOPIARY_CONFIG = path.join(ROOT, '.topiary', 'languages.ncl');
 const TOPIARY_QUERY = path.join(ROOT, 'queries', 'actions', 'formatting.scm');
 
 // Check if formatting examples exist
 if (!fs.existsSync(FORMATTING_EXAMPLES)) {
   console.error('❌ ERROR: formatting examples not found at:', FORMATTING_EXAMPLES);
-  console.error('Expected: examples/formatting/ (symlink to specifications/examples/formatting/)');
+  console.error('Set CLEARHEAD_SPEC_DIR to a specifications checkout.');
   process.exit(1);
 }
 
@@ -120,8 +123,12 @@ function testCategory(categoryName) {
   }
 }
 
-// Test newlines (the only formatting rule)
-testCategory('newlines');
+const categories = fs.readdirSync(FORMATTING_EXAMPLES)
+  .filter(name => fs.statSync(path.join(FORMATTING_EXAMPLES, name)).isDirectory())
+  .sort();
+for (const category of categories) {
+  testCategory(category);
+}
 
 // Summary
 console.log('\n' + '='.repeat(50));

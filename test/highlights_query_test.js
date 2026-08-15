@@ -3,8 +3,11 @@ const { execFileSync } = require('child_process');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
+const specRoot = process.env.CLEARHEAD_SPEC_DIR
+  ? path.resolve(process.env.CLEARHEAD_SPEC_DIR)
+  : path.resolve(root, '..', 'specifications');
 const queryPath = path.join(root, 'queries', 'actions', 'highlights.scm');
-const examplePath = path.join(root, 'examples', 'with_links.actions');
+const examplePath = path.join(specRoot, 'examples', 'actions', 'with_links.actions');
 
 const output = execFileSync('tree-sitter', ['query', queryPath, examplePath], {
   cwd: root,

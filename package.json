@@ -14,8 +14,7 @@
     ".": "./lib/index.js",
     "./grammar": "./bindings/node/index.js",
     "./parser": "./parser.js",
-    "./patterns": "./patterns.js",
-    "./schema/sql": "./schema/actions.sql"
+    "./patterns": "./patterns.js"
   },
   "keywords": [
     "incremental",
@@ -34,9 +33,7 @@
     "src/**",
     "*.wasm",
     "parser.js",
-    "lib/*",
-    "schema.json",
-    "schema/**"
+    "lib/*"
   ],
   "dependencies": {
     "node-addon-api": "^8.9.0",
@@ -44,8 +41,6 @@
     "tree-sitter": "^0.25.0"
   },
   "devDependencies": {
-    "ajv": "^8.12.0",
-    "n3": "^1.26.0",
     "prebuildify": "^6.0.1",
     "tree-sitter-cli": "^0.25.0"
   },
@@ -62,10 +57,11 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js",
+    "test:spec-sources": "node test/spec_sources_test.js",
     "test:grammar": "npm run regen:corpus && tree-sitter test",
     "test:formatting": "node scripts/test_formatting.js",
     "test:highlights": "node test/highlights_query_test.js",
-    "test:all": "npm run test:grammar && npm run test:formatting && npm run test:highlights && npm test",
+    "test:all": "npm run test:spec-sources && npm run test:grammar && npm run test:formatting && npm run test:highlights && npm test",
     "test-parser": "node --test bindings/node/*_test.js",
     "parse": "node parser.js",
     "parse-simple": "node parser.js test/files/simple.actions",

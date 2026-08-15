@@ -1,5 +1,5 @@
 ; Find all priority 1 actions
-; Usage: tree-sitter query queries/actions/p1-actions.scm examples/with_priority.actions
+; Usage: tree-sitter query queries/actions/p1-actions.scm ../specifications/examples/actions/with_priority.actions
 
 (root_action
   name: (name) @action.name

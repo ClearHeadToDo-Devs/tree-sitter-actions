@@ -5,22 +5,42 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout grammar
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          path: tree-sitter-actions
+          persist-credentials: false
+
+      - name: Checkout specification oracle data
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: ClearHeadToDo-Devs/specifications
+          path: specifications
+          persist-credentials: false
 
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           # Node 26 is the version the native binding was repaired for (see the
           # 0.10.0 CHANGELOG); CI guards that compatibility.
           node-version: '26'
 
       - name: Install dependencies
+        working-directory: tree-sitter-actions
         run: npm ci
 
-      - name: Run full suite
+      - name: Install pinned Topiary formatter
+        run: cargo install topiary-cli --version 0.7.3 --locked
+
+      - name: Run full suite against the specification corpus
+        working-directory: tree-sitter-actions
+        env:
+          CLEARHEAD_SPEC_DIR: ${{ github.workspace }}/specifications
         run: npm run test:all

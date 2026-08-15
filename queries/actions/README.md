@@ -15,15 +15,18 @@ These queries are used by editors for syntax features:
 These queries help filter actions based on common criteria:
 
 ### By State
+
 - **`completed-actions.scm`** - Find all completed actions `[x]`
 - **`not-started.scm`** - Find all not-started actions `[ ]`
 - **`in-progress.scm`** - Find all in-progress actions `[-]`
 - **`blocked-actions.scm`** - Find all blocked/awaiting actions `[=]`
 
 ### By Priority
+
 - **`p1-actions.scm`** - Find all priority 1 actions `!1`
 
 ### By Structure
+
 - **`with-children.scm`** - Find all parent actions that have children
 - **`with_specific_story.scm`** - Find all actions with a story/project `*Story`
 
@@ -33,20 +36,20 @@ These queries help filter actions based on common criteria:
 
 ```bash
 # Find all P1 actions in a file
-tree-sitter query queries/actions/p1-actions.scm examples/with_priority.actions
+tree-sitter query queries/actions/p1-actions.scm ../specifications/examples/actions/with_priority.actions
 
 # Find all completed actions
-tree-sitter query queries/actions/completed-actions.scm examples/with_everything.actions
+tree-sitter query queries/actions/completed-actions.scm ../specifications/examples/actions/with_everything.actions
 
 # Find actions with children
-tree-sitter query queries/actions/with-children.scm examples/with_children.actions
+tree-sitter query queries/actions/with-children.scm ../specifications/examples/actions/with_children.actions
 ```
 
 ### With Multiple Files
 
 ```bash
-# Query across all example files
-for file in examples/*.actions; do
+# Query across the canonical example files
+for file in ../specifications/examples/actions/*.actions; do
   echo "=== $file ==="
   tree-sitter query queries/actions/completed-actions.scm "$file"
 done
@@ -55,6 +58,7 @@ done
 ### Integration with Other Tools
 
 Tree-sitter queries output matches in this format:
+
 ```
 pattern [row, col] - [row, col]
   capture: content
@@ -64,10 +68,10 @@ You can pipe this to other tools:
 
 ```bash
 # Count P1 actions
-tree-sitter query queries/actions/p1-actions.scm examples/*.actions | grep -c "action.name"
+tree-sitter query queries/actions/p1-actions.scm ../specifications/examples/actions/*.actions | grep -c "action.name"
 
 # Extract just the action names
-tree-sitter query queries/actions/completed-actions.scm examples/*.actions \
+tree-sitter query queries/actions/completed-actions.scm ../specifications/examples/actions/*.actions \
   | grep "action.name" \
   | sed 's/.*: //'
 ```
@@ -79,6 +83,7 @@ Tree-sitter queries use a Lisp-like syntax to match AST nodes. See the [tree-sit
 ### Common Patterns
 
 **Match actions with specific metadata:**
+
 ```scheme
 (root_action
   name: (name) @action.name
@@ -87,6 +92,7 @@ Tree-sitter queries use a Lisp-like syntax to match AST nodes. See the [tree-sit
 ```
 
 **Match by state:**
+
 ```scheme
 (root_action
   state: (state
@@ -95,6 +101,7 @@ Tree-sitter queries use a Lisp-like syntax to match AST nodes. See the [tree-sit
 ```
 
 **Match parent-child relationships:**
+
 ```scheme
 (root_action
   name: (name) @parent.name
@@ -111,13 +118,15 @@ Tree-sitter queries use a Lisp-like syntax to match AST nodes. See the [tree-sit
 ## When to Use Tree-Sitter Queries vs. Other Approaches
 
 **Use tree-sitter queries when:**
+
 - You need editor features (syntax highlighting, folding, navigation)
 - You want simple, fast filtering without conversion overhead
 - You're working directly with `.actions` files in their plaintext form
 
 **Consider alternatives when:**
-- **Complex filtering** → Use [jq queries](../../examples/queries/jq/) for multi-criteria filters, aggregations, or transformations
-- **Application storage** → Use [SQL](../../examples/queries/sql/) for persistent storage, indexed queries, or relational operations
-- **Data pipelines** → Use [jq queries](../../examples/queries/jq/) for composable Unix-style processing
+
+- **Complex filtering** → Use the specification's [jq examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/jq) for multi-criteria filters, aggregations, or transformations
+- **Application storage** → Use the specification's [SQL examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/sql) for persistent storage, indexed queries, or relational operations
+- **Data pipelines** → Use those canonical jq examples for composable Unix-style processing
 
 See the [main README](../../README.md#querying-actions) for a complete comparison of query approaches.

@@ -1,282 +1,101 @@
 # Contributing Guide
 
-This guide covers everything you need to know to work on the tree-sitter-actions parser.
+This repository implements the concrete syntax tree for the `.actions` DSL. The
+[`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repository
+owns the language contract, example source, canonical formatting forms, lint
+codes, and JSON Schema. This repository owns `grammar.js`, generated parser
+artifacts, Tree-sitter queries, and parser-specific expected S-expressions.
 
-## Test File Organization
+## Test data boundary
 
-The test system is split into three separate parts to enable reuse by downstream projects:
+The grammar deliberately does not ship a second `.actions` example corpus.
+Tests read inert oracle data from a specifications checkout:
 
-### Directory Structure
+- `test/test_descriptions.json` maps each grammar case to a spec-relative source
+  path and a parser-specific expected tree;
+- `test/trees/*.sexp` contains reviewed CST expectations owned by the grammar;
+- `test/spec_sources_test.js` parses each registered specification file directly
+  and compares its CST without rewriting the source bytes;
+- `test/corpus/*.txt` is a generated Tree-sitter presentation of those cases and
+  is ignored;
+- `specifications/examples/formatting/` contains the formatter's input/expected
+  byte pairs.
 
-- **`examples/`** - Valid `.actions` files that serve as test inputs and are published for downstream use
-- **`test/trees/`** - Expected parse trees (`.sexp` format) for each example
-- **`test/test_descriptions.json`** - Maps categories to test names and descriptions
-- **`test/corpus/`** - Generated test files used by tree-sitter (auto-generated, don't edit)
-- **`scripts/`** - Helper scripts to regenerate test files
+Set `CLEARHEAD_SPEC_DIR` when the specification is not checked out as the
+repository's sibling. The default is `../specifications`.
 
-### Why Split Them Up?
-
-Breaking up the normal tree-sitter test format does some wonderful things:
-
-- **Separate formats**: We can read `.actions` in examples, `.sexp` trees in trees/, and descriptions in test_descriptions - each optimized for its purpose
-- **Easy to read and edit**: Each part can be viewed and modified independently without parsing through giant combined files
-- **Downstream reuse**: Projects using this parser can import the same examples to test their own implementations
-  - Example: This parser tests that trees are correct, while a downstream Rust CLI can test that the same examples parse to correct data structures
-- **Single source of truth**: `test_descriptions.json` drives both the tree-sitter test corpus and the published Rust API
-
-## Development Workflow
-
-### Running Tests
-
-Test the grammar:
+## Running tests
 
 ```bash
-npm run test:grammar
-# or directly:
-tree-sitter test
-```
-
-Run all tests (grammar + formatting + highlights + bindings):
-
-```bash
-npm run test:all
-```
-
-### Regenerating Test Files
-
-When you modify the grammar or add new examples, regenerate the test files:
-
-```bash
-# Regenerate everything and verify tests pass:
-npm run regen:verify
-
-# Or run steps individually:
-npm run regen:trees    # Generate .sexp files from examples
-npm run regen:corpus   # Generate corpus files from trees
-npm run test:grammar   # Run tree-sitter tests
-```
-
-**The workflow:**
-1. **`regen:trees`** - Parses all `.actions` files in `examples/` and generates corresponding `.sexp` tree files
-2. **`regen:corpus`** - Combines examples, trees, and descriptions into test corpus files
-3. **`test:grammar`** - Runs tree-sitter test suite against the corpus
-
-**When to regenerate:**
-- You modify `grammar.js`
-- You add/modify files in `examples/`
-- You update test descriptions
-
-### Adding New Examples
-
-To add a new example:
-
-1. Create the file in `examples/` (e.g., `examples/my_new_example.actions`)
-2. Add an entry to `test/test_descriptions.json` under the appropriate category:
-   ```json
-   {
-     "category_name": {
-       "my_new_example": "My New Example Description"
-     }
-   }
-   ```
-3. Run `npm run regen:verify` to generate trees and corpus
-4. The example is automatically available in:
-   - Tree-sitter tests
-   - Published Rust crate as `examples::category_name::MY_NEW_EXAMPLE`
-
-No manual changes needed to binding code - the build system handles it automatically.
-
-## JSON Schema Generation
-
-### Overview
-
-The repository maintains a single source of truth for regex patterns that are used in both parsing and validation:
-
-```
-Source of Truth        Grammar             Schema
-─────────────────────────────────────────────────────
-patterns.js       →    grammar.js     →    Parser
-```
-
-### How It Works
-
-1. **`patterns.js`** - Defines all regex patterns for fields (name, UUID, datetime, etc.)
-2. **`grammar.js`** - Imports patterns to build the tree-sitter parser
-
-The parser is this repository's responsibility. The canonical JSON Schema for the
-`.actions` serialization format is **not** generated here — it is owned by the
-[`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo, the
-single authority for the DSL. This grammar conforms to that schema rather than
-shipping its own; schema validation lives with the spec and Core, not here. See
-the platform `spec-conformance-gate` charter.
-
-### JSON Serialization Format
-
-The canonical JSON serialization format is documented in [docs/action_specification.md](action_specification.md#json-serialization-format).
-
-## Rust Bindings Build System
-
-### Overview
-
-The Rust bindings use a three-stage process to make examples available to downstream users:
-
-```
-Build Time          Compile Time           Runtime
-─────────────────────────────────────────────────────
-build.rs            include_str!           User code
-  │                      │                     │
-  ├─ Reads               │                     │
-  │  test_descriptions   │                     │
-  │  .json               │                     │
-  │                      │                     │
-  ├─ Generates           │                     │
-  │  generated_tests.rs ─┤                     │
-  │  with include_str!   │                     │
-  │  macros              │                     │
-  │                      │                     │
-  │                      ├─ Embeds             │
-  │                      │  examples/*.actions │
-  │                      │  file contents      │
-  │                      │                     │
-  │                      └─ Creates           ─┤
-  │                         constants          │
-  │                                            │
-  │                                            ├─ Access
-  │                                            │  examples::*
-  │                                            │  constants
-```
-
-### Build Script (bindings/rust/build.rs)
-
-The build script runs before compilation:
-
-1. **Compiles C parser** - Standard tree-sitter process for `src/parser.c` and `src/scanner.c`
-2. **Generates examples module** - Reads `test/test_descriptions.json` and generates `generated_tests.rs`
-
-The generated file creates a module structure:
-
-```rust
-pub mod examples {
-    pub mod properties {
-        pub const WITH_PRIORITY: &str = include_str!(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/examples/with_priority.actions"
-        ));
-        // ... more constants
-    }
-    // ... more modules
-}
-```
-
-**Why generate code?** We need to create a static module structure from dynamic JSON content. The build script bridges build-time file operations with compile-time constants.
-
-**Why `concat!(env!("CARGO_MANIFEST_DIR"), ...)`?** The `include_str!` paths must be absolute. Using `CARGO_MANIFEST_DIR` ensures the path works regardless of where the code is compiled.
-
-### Why This Approach?
-
-**The problem:** Downstream users need the same examples we use for testing, but can't rely on runtime file I/O.
-
-**Alternatives considered:**
-
-| Approach | Pros | Cons |
-|----------|------|------|
-| Runtime file reading | Simple | Requires deploying files, runtime I/O |
-| Manual constants | No build script | Out of sync risk, tedious to maintain |
-| Embed in build.rs | Self-contained | Bloats build.rs, hard to maintain |
-| Procedural macro | Clean API | Complex, compile overhead |
-| **Current: Generated code** | **Auto-sync, clean API, compile-time** | **Requires understanding three stages** |
-
-**Benefits:**
-- Auto-sync: Can't get out of sync with actual files
-- Zero runtime cost: Embedded at compile time
-- Clean API: Organized modules, not HashMaps
-- No deployment complexity: In the binary
-- IDE support: Autocomplete works
-- Single source of truth: JSON drives tests and API
-
-### Package Contents (Cargo.toml)
-
-The `include` field specifies what gets published:
-
-```toml
-include = [
-  "bindings/rust/*",
-  "examples/*",           # Used by include_str!
-  "src/*",                # Generated C parser
-  "test/test_descriptions.json",  # Read by build.rs
-  # ... other files
-]
-```
-
-The build script runs on users' machines when they compile the crate.
-
-## Testing
-
-Run Rust tests:
-
-```bash
+CLEARHEAD_SPEC_DIR=../specifications npm run test:grammar
+CLEARHEAD_SPEC_DIR=../specifications npm run test:formatting
+CLEARHEAD_SPEC_DIR=../specifications npm run test:all
 cargo test
 ```
 
-This verifies:
-- Parser loads correctly
-- Examples module is accessible
-- Generated code compiles
-- Doc examples are valid
+The GitHub workflow checks out the specification explicitly and sets the same
+environment variable. The specification remains inert: the implementation pulls
+in oracle data and proves itself against it.
 
-View generated code:
+## Regenerating parser expectations
 
 ```bash
-cargo clean
-cargo build
-find target -name "generated_tests.rs" -type f | head -1 | xargs cat
+CLEARHEAD_SPEC_DIR=../specifications npm run regen:verify
 ```
 
-## Publishing Checklist
+`regen:trees` parses every source registered in `test/test_descriptions.json` and
+rewrites its `.sexp`. `regen:corpus` combines the spec source, description, and
+expected tree into Tree-sitter corpus files. Review tree changes; regeneration
+is not itself evidence that a changed tree is correct.
 
-Before publishing a new version:
+## Adding a grammar case
 
-1. Ensure all examples are in `test/test_descriptions.json`
-2. Run `npm run regen:verify` - verify test corpus is up to date
-3. Run `npm run test:all` - verify all tests pass (grammar, schema, bindings)
-4. Run `cargo test` - verify Rust tests pass
-5. Run `cargo doc` - verify documentation builds
-6. Update version in `Cargo.toml` and `package.json`
-8. Tag release in git: `git tag v0.x.x`
-9. Run `cargo publish` (Rust crate)
-10. Run `npm publish` (npm package with schema)
+1. Add or reuse the smallest suitable `.actions` fixture in `specifications`.
+   Byte-level parser/recovery cases belong under
+   `examples/conformance/syntax/`; ordinary valid examples belong under
+   `examples/actions/`.
+2. Add an object to `test/test_descriptions.json` with `description` and the
+   spec-relative `source` path.
+3. Run `npm run regen:verify` with `CLEARHEAD_SPEC_DIR` set.
+4. Review the new `test/trees/<name>.sexp` and commit changes in both owning
+   repositories.
 
-The build script runs on users' machines, so ensure `test/test_descriptions.json` and all example files are in the `include` list in `Cargo.toml`.
+Do not copy the fixture into this repository. Expected S-expressions stay here
+because CST node shape is a grammar implementation detail, not part of the DSL
+specification.
 
-For npm publishing, ensure `patterns.js` and `schema/` are included in the `files` array in `package.json`.
+## Schemas and examples
 
-## Project Structure
+The canonical JSON Schema is
+`specifications/schemas/actions.schema.json`; this grammar does not generate or
+publish a competing copy. `patterns.js` remains the source used to construct the
+parser's lexical rules only. Storage schemas belong to consuming applications.
 
-```
+The Rust and npm packages contain the parser and queries, not specification
+fixtures. `bindings/rust/build.rs` compiles the generated C parser; it does not
+generate an examples API.
+
+## Publishing checklist
+
+1. Run `CLEARHEAD_SPEC_DIR=../specifications npm run regen:verify`.
+2. Run `CLEARHEAD_SPEC_DIR=../specifications npm run test:all`.
+3. Run `cargo test` and `cargo doc`.
+4. Inspect `npm pack --dry-run` and `cargo package --list`.
+5. Update versions and changelog, then tag and publish through the release
+   process.
+
+## Project structure
+
+```text
 tree-sitter-actions/
-├── bindings/rust/          # Rust binding code
-│   ├── build.rs           # Build script (generates code)
-│   └── lib.rs             # Main library
-├── examples/              # Example .actions files
-├── test/
-│   ├── trees/            # Expected parse trees
-│   ├── corpus/           # Generated test corpus (don't edit)
-│   └── test_descriptions.json  # Test metadata
-├── scripts/               # Regeneration scripts
-├── schema/                # SQL storage schema (the JSON schema is owned by the specifications repo)
-│   └── actions.sql        # Reference SQL schema for storage
-├── patterns.js            # Single source of truth for regex patterns
-├── grammar.js             # Tree-sitter grammar (imports patterns)
-├── src/                   # Generated C parser code
-└── docs/
-    ├── action_specification.md  # Format spec + JSON serialization
-    ├── usage.md          # For downstream users
-    └── contributing.md   # This file
+├── bindings/              # language bindings and Rust build script
+├── grammar.js             # grammar definition
+├── patterns.js            # parser lexical patterns
+├── queries/               # Tree-sitter and Topiary queries
+├── scripts/               # corpus/expectation generation and checks
+├── src/                   # generated parser source
+└── test/
+    ├── trees/             # reviewed CST expectations
+    ├── corpus/            # generated, ignored Tree-sitter corpus
+    └── test_descriptions.json
 ```
-
-## Getting Help
-
-- Review the [action specification](action_specification.md) for grammar details
-- Check [usage.md](usage.md) for examples of using the parser
-- Look at existing examples in `examples/` for patterns
-- The README covers the project philosophy and inspirations

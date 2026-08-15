@@ -1,5 +1,5 @@
 ; Find all in-progress actions
-; Usage: tree-sitter query queries/actions/in-progress.scm examples/
+; Usage: tree-sitter query queries/actions/in-progress.scm ../specifications/examples/actions/
 
 (root_action
   state: (state
