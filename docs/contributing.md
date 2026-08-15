@@ -36,13 +36,7 @@ npm run test:grammar
 tree-sitter test
 ```
 
-Test the JSON Schema:
-
-```bash
-npm run test:schema
-```
-
-Run all tests (grammar + schema + bindings):
+Run all tests (grammar + formatting + highlights + bindings):
 
 ```bash
 npm run test:all
@@ -113,8 +107,8 @@ The parser is this repository's responsibility. The canonical JSON Schema for th
 `.actions` serialization format is **not** generated here — it is owned by the
 [`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo, the
 single authority for the DSL. This grammar conforms to that schema rather than
-generating a competing one; consolidating the local `schema/actions.schema.json`
-onto the spec is tracked by the platform `spec-conformance-gate` charter.
+shipping its own; schema validation lives with the spec and Core, not here. See
+the platform `spec-conformance-gate` charter.
 
 ### JSON Serialization Format
 
@@ -269,8 +263,8 @@ tree-sitter-actions/
 │   ├── corpus/           # Generated test corpus (don't edit)
 │   └── test_descriptions.json  # Test metadata
 ├── scripts/               # Regeneration scripts
-├── schema/                # JSON Schema (canonical copy owned by specifications repo)
-│   └── actions.schema.json # Validates JSON serialization
+├── schema/                # SQL storage schema (the JSON schema is owned by the specifications repo)
+│   └── actions.sql        # Reference SQL schema for storage
 ├── patterns.js            # Single source of truth for regex patterns
 ├── grammar.js             # Tree-sitter grammar (imports patterns)
 ├── src/                   # Generated C parser code

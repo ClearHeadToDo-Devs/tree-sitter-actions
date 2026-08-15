@@ -62,10 +62,7 @@ This is to serve as a simple file format that can be used in several contexts:
   - Allows the bulk of the parsing to be done by this grammar, with things like the CLI and guis just using the tree to generate data and do their own functionality
     - In particular, being able to parse this data, put it into a proper data structure or even database, and then re-encode the data back into the `.actions` format is a key usecase
 - **Schemas for validation and storage** - The repository provides bundled schemas for downstream tools:
-  - **JSON Schema** - Canonical [JSON Schema](schema/actions.schema.json) for validating serialized `.actions` data
-    - Generated from the same regex patterns used by the parser to ensure consistency
-    - Available in npm package (`tree-sitter-actions/schema`) and Rust crate (`ACTIONS_SCHEMA` constant)
-    - Validates JSON exports match the [canonical format](docs/action_specification.md#json-serialization-format)
+  - **JSON Schema** - the canonical JSON Schema for validating serialized `.actions` data is owned by the [`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo (`schemas/actions.schema.json`), the single authority for the DSL — this grammar no longer ships a competing copy
   - **SQL Schema** - Reference [SQL schema](schema/actions.sql) for persistent database storage
     - Normalized relational schema designed for SQLite (adaptable to PostgreSQL, MySQL, etc.)
     - Available in npm package (`tree-sitter-actions/schema/sql`) and Rust crate (`ACTIONS_SQL_SCHEMA` constant)
@@ -105,7 +102,7 @@ See [`queries/actions/`](queries/actions/) for all available queries and usage e
 
 **Best for:** Ad-hoc queries, Unix pipelines, one-off scripts
 
-After converting `.actions` to JSON (using the canonical [JSON Schema](schema/actions.schema.json)), use `jq` for powerful filtering and transformations:
+After converting `.actions` to JSON (matching the canonical JSON Schema owned by the [`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo), use `jq` for powerful filtering and transformations:
 
 ```bash
 # Find P1 actions (assuming you have actions-to-json converter)

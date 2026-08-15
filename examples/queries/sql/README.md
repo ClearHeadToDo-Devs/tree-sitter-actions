@@ -48,7 +48,7 @@ Contains frequently-used queries organized by category:
 
 ### `import-json.sql`
 
-Shows how to import JSON data (conforming to `schema/actions.schema.json`) into the SQL schema.
+Shows how to import JSON data (conforming to the canonical JSON schema owned by the specifications repo) into the SQL schema.
 
 ## Usage Examples
 

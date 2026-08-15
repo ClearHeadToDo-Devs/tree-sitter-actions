@@ -4,7 +4,7 @@ This directory contains example `jq` queries for filtering and transforming `.ac
 
 ## Prerequisites
 
-These queries work on JSON output that follows the canonical JSON schema (`schema/actions.schema.json`).
+These queries work on JSON output that follows the canonical JSON schema, owned by the [`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo.
 
 ```bash
 # Install jq if you don't have it
@@ -183,8 +183,8 @@ jq -f examples/queries/jq/completion-stats.jq tasks.json
 
 4. **Validate JSON against schema**:
    ```bash
-   # Using ajv-cli or similar
-   ajv validate -s schema/actions.schema.json -d examples/sample.json
+   # Using ajv-cli or similar; the canonical schema lives in the specifications repo
+   ajv validate -s /path/to/specifications/schemas/actions.schema.json -d examples/sample.json
    ```
 
 ## When to Use jq vs. Other Approaches
@@ -207,6 +207,6 @@ See the [main README](../../../README.md#querying-actions) for a complete compar
 
 - [jq Manual](https://jqlang.github.io/jq/manual/)
 - [jq Cookbook](https://github.com/stedolan/jq/wiki/Cookbook)
-- [JSON Schema](../../../schema/actions.schema.json)
+- [JSON Schema](https://github.com/ClearHeadToDo-Devs/specifications) - owned by the specifications repo
 - [Tree-sitter Queries](../../../queries/actions/) - For simpler pattern matching
 - [SQL Queries](../sql/) - For persistent storage and complex queries

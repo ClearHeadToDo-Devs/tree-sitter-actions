@@ -15,7 +15,6 @@
     "./grammar": "./bindings/node/index.js",
     "./parser": "./parser.js",
     "./patterns": "./patterns.js",
-    "./schema": "./schema/actions.schema.json",
     "./schema/sql": "./schema/actions.sql"
   },
   "keywords": [
@@ -64,10 +63,9 @@
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js",
     "test:grammar": "npm run regen:corpus && tree-sitter test",
-    "test:schema": "node test/schema_validation_test.js",
     "test:formatting": "node scripts/test_formatting.js",
     "test:highlights": "node test/highlights_query_test.js",
-    "test:all": "npm run test:grammar && npm run test:schema && npm run test:formatting && npm run test:highlights && npm test",
+    "test:all": "npm run test:grammar && npm run test:formatting && npm run test:highlights && npm test",
     "test-parser": "node --test bindings/node/*_test.js",
     "parse": "node parser.js",
     "parse-simple": "node parser.js test/files/simple.actions",
