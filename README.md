@@ -13,10 +13,7 @@
 3. Use the parser in your project as needed, directly with the CLI is fine
   - we can also build the parser into other apps by using this as a library in a client applications
   - or maybe you have an editor that supports tree-sitter grammars, you can use this grammar to get syntax highlighting and other features for `.actions` files!
-4. For tools that export to JSON, use the included JSON Schema to validate:
-    ```bash
-    npm run generate:schema  # Regenerate schema from patterns
-    ```
+4. For tools that export to JSON, validate against the canonical JSON Schema — owned by the [`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo, the single authority for the `.actions` DSL.
 
 For detailed usage examples (Rust library, editors, JSON validation), see [docs/usage.md](docs/usage.md).
 # Overview

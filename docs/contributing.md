@@ -102,53 +102,23 @@ The repository maintains a single source of truth for regex patterns that are us
 Source of Truth        Grammar             Schema
 ─────────────────────────────────────────────────────
 patterns.js       →    grammar.js     →    Parser
-   │
-   │
-   └──────────────→    generate-schema.js → schema/actions.schema.json
 ```
 
 ### How It Works
 
 1. **`patterns.js`** - Defines all regex patterns for fields (name, UUID, datetime, etc.)
-2. **`grammar.js`** - Imports patterns to generate the tree-sitter parser
-3. **`scripts/generate-schema.js`** - Imports patterns to generate JSON Schema
-4. **`schema/actions.schema.json`** - Validates JSON serialization of parsed data
+2. **`grammar.js`** - Imports patterns to build the tree-sitter parser
 
-### Why This Approach?
-
-Downstream consumers need to:
-- Parse `.actions` files (using tree-sitter parser)
-- Convert parsed AST to JSON/structured data
-- Validate serialized data matches the specification
-
-By generating the JSON Schema from the same patterns used in the grammar, we guarantee that:
-- Parsing rules match validation rules
-- No drift between grammar and schema
-- Single source of truth for all patterns
-- Downstream consumers get both parser and validator
-
-### Schema Generation Commands
-
-```bash
-# Generate schema from patterns
-npm run generate:schema
-
-# Regenerate during parser build
-npm run build:parser
-
-# Generate all artifacts
-npm run generate
-```
-
-The schema is automatically included in published npm packages and can be imported:
-
-```javascript
-import schema from 'tree-sitter-actions/schema';
-```
+The parser is this repository's responsibility. The canonical JSON Schema for the
+`.actions` serialization format is **not** generated here — it is owned by the
+[`specifications`](https://github.com/ClearHeadToDo-Devs/specifications) repo, the
+single authority for the DSL. This grammar conforms to that schema rather than
+generating a competing one; consolidating the local `schema/actions.schema.json`
+onto the spec is tracked by the platform `spec-conformance-gate` charter.
 
 ### JSON Serialization Format
 
-The canonical JSON serialization format is documented in [docs/action_specification.md](action_specification.md#json-serialization-format). The generated schema validates this format.
+The canonical JSON serialization format is documented in [docs/action_specification.md](action_specification.md#json-serialization-format).
 
 ## Rust Bindings Build System
 
@@ -274,11 +244,10 @@ Before publishing a new version:
 
 1. Ensure all examples are in `test/test_descriptions.json`
 2. Run `npm run regen:verify` - verify test corpus is up to date
-3. Run `npm run generate:schema` - regenerate JSON schema from patterns
-4. Run `npm run test:all` - verify all tests pass (grammar, schema, bindings)
-5. Run `cargo test` - verify Rust tests pass
-6. Run `cargo doc` - verify documentation builds
-7. Update version in `Cargo.toml` and `package.json`
+3. Run `npm run test:all` - verify all tests pass (grammar, schema, bindings)
+4. Run `cargo test` - verify Rust tests pass
+5. Run `cargo doc` - verify documentation builds
+6. Update version in `Cargo.toml` and `package.json`
 8. Tag release in git: `git tag v0.x.x`
 9. Run `cargo publish` (Rust crate)
 10. Run `npm publish` (npm package with schema)
@@ -300,8 +269,7 @@ tree-sitter-actions/
 │   ├── corpus/           # Generated test corpus (don't edit)
 │   └── test_descriptions.json  # Test metadata
 ├── scripts/               # Regeneration scripts
-│   └── generate-schema.js # Schema generation from patterns
-├── schema/                # JSON Schema (generated)
+├── schema/                # JSON Schema (canonical copy owned by specifications repo)
 │   └── actions.schema.json # Validates JSON serialization
 ├── patterns.js            # Single source of truth for regex patterns
 ├── grammar.js             # Tree-sitter grammar (imports patterns)
