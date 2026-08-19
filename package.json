@@ -59,7 +59,7 @@
     "test": "node --test bindings/node/*_test.js",
     "test:spec-sources": "node test/spec_sources_test.js",
     "test:grammar": "npm run regen:corpus && tree-sitter test",
-    "test:formatting": "node scripts/test_formatting.js",
+    "test:formatting": "tree-sitter build -o actions.so && node scripts/test_formatting.js",
     "test:highlights": "node test/highlights_query_test.js",
     "test:all": "npm run test:spec-sources && npm run test:grammar && npm run test:formatting && npm run test:highlights && npm test",
     "test-parser": "node --test bindings/node/*_test.js",
