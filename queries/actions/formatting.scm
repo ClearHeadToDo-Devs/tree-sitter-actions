@@ -62,6 +62,16 @@
 (_ name: (_) @prepend_space)
 (_ metadata: (_) @prepend_space)
 
+;; Preserve Description Paragraph Breaks
+;;
+;; Newlines between description children are grammar extras. Re-emit a break
+;; only where the input had one; otherwise this owns the single horizontal
+;; space. Allow an input blank line before the next child so paragraphs survive.
+(description_content
+  (_) @append_input_softline
+  .
+  (_) @allow_blank_line_before)
+
 ;; Spaces Around Links
 ;;
 ;; Links ([[...]]) live inside name/description content, interleaved with text
@@ -71,8 +81,8 @@
 ;; -- but only toward an *existing* sibling, so we never emit a leading space
 ;; (owned by the name: rule), a trailing space at end-of-line, or a doubled
 ;; space before following metadata (owned by the metadata: rule).
-(_ (_) @append_space . (link))
-(_ (link) @append_space . (_))
+(name (_) @append_space . (link))
+(name (link) @append_space . (_))
 
 ;; A link hugging the opening or closing $ of a description has no text sibling
 ;; to anchor against (the $ marker lives one level up, on the description). So a
