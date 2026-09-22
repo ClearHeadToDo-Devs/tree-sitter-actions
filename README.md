@@ -27,7 +27,7 @@ For detailed usage examples (Rust library, editors, JSON validation), see [docs/
 
 # Overview
 
-This is a simple parser for the custom `.actions` [File Format](docs/action_specification.md) to be used in whatever form may be needed.
+This is a simple parser for the custom `.actions` [File Format](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/action_file_format.md) to be used in whatever form may be needed.
 
 Actions can be thought of as planned, intended actions to be taken on by an agent.
 
@@ -66,7 +66,7 @@ In particular, the values are (you can also read this in the file specification 
 - **Tracking**: `%` completed date, `#` UUID
 - **Hierarchy**: `>` child actions (up to 5 levels deep)
 
-See [docs/action_specification.md](docs/action_specification.md) for complete syntax reference.
+See the specifications repo's [action_file_format.md](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/action_file_format.md) for complete syntax reference.
 
 ## Usecases
 
@@ -187,7 +187,7 @@ actions-to-json tasks.actions | \
 
 For complete documentation on querying, see:
 
-- [Action Specification](docs/action_specification.md) - Concrete syntax and serialization guidance
+- [Action Specification](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/action_file_format.md) - Concrete syntax and serialization guidance
 - [`queries/actions/README.md`](queries/actions/README.md) - Tree-sitter query patterns
 - [Specification jq examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/jq)
 - [Specification SQL examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/sql)
@@ -207,7 +207,7 @@ For complete documentation on querying, see:
   - in addition, i feel neorg made many good syntactic decisions as well like the discipline of NOT using whitespace as parsing data.
     - The reason this file format exists rather than using Neorg directly is that Neorg is a big project that tries to do much more than actions, and it didnt feel right using it for this small purpose.
 - [Org Mode](https://orgmode.org/) is the granddaddy of plaintext task and while, like neorg, it tries to do too much for my purpose, one cannot deny the power that org mode users enjoy and i believe that comes directly from a strong plaintext format specification that has built upon over decades from brilliant users.
-- [todo.txt](todotxt.org) to show the power of simplicity in plaintext task management and being something that ive seen inspire many great engineers when using the most simple tools
+- [todo.txt](https://todotxt.org) to show the power of simplicity in plaintext task management and being something that ive seen inspire many great engineers when using the most simple tools
   - Still, for this purpose, we needed more things than what we got
 
 # Formatting
