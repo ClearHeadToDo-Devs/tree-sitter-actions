@@ -55,7 +55,7 @@ parser_config.actions = {
   install_info = {
     url = "https://github.com/ClearHeadToDo-Devs/tree-sitter-actions",
     files = { "src/parser.c", "src/scanner.c" },
-    branch = "master",
+    branch = "main",
   },
   filetype = "actions",
 }

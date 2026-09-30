@@ -125,8 +125,8 @@ Tree-sitter queries use a Lisp-like syntax to match AST nodes. See the [tree-sit
 
 **Consider alternatives when:**
 
-- **Complex filtering** → Use the specification's [jq examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/jq) for multi-criteria filters, aggregations, or transformations
-- **Application storage** → Use the specification's [SQL examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/sql) for persistent storage, indexed queries, or relational operations
+- **Complex filtering** → Use the specification's [jq examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/main/examples/queries/jq) for multi-criteria filters, aggregations, or transformations
+- **Application storage** → Use the specification's [SQL examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/main/examples/queries/sql) for persistent storage, indexed queries, or relational operations
 - **Data pipelines** → Use those canonical jq examples for composable Unix-style processing
 
 See the [main README](../../README.md#querying-actions) for a complete comparison of query approaches.

@@ -27,7 +27,7 @@ For detailed usage examples (Rust library, editors, JSON validation), see [docs/
 
 # Overview
 
-This is a simple parser for the custom `.actions` [File Format](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/action_file_format.md) to be used in whatever form may be needed.
+This is a simple parser for the custom `.actions` [File Format](https://github.com/ClearHeadToDo-Devs/specifications/blob/main/action_file_format.md) to be used in whatever form may be needed.
 
 Actions can be thought of as planned, intended actions to be taken on by an agent.
 
@@ -66,7 +66,7 @@ In particular, the values are (you can also read this in the file specification 
 - **Tracking**: `%` completed date, `#` UUID
 - **Hierarchy**: `>` child actions (up to 5 levels deep)
 
-See the specifications repo's [action_file_format.md](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/action_file_format.md) for complete syntax reference.
+See the specifications repo's [action_file_format.md](https://github.com/ClearHeadToDo-Devs/specifications/blob/main/action_file_format.md) for complete syntax reference.
 
 ## Usecases
 
@@ -133,7 +133,7 @@ jq -f ../specifications/examples/queries/jq/by-context.jq --arg ctx "work" tasks
 - Aggregations: `completion-stats.jq`, `priority-summary.jq`
 - Transformations: `flatten-all.jq`, `with-children.jq`
 
-See the specification's [`examples/queries/jq/`](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/jq) for the canonical examples and usage patterns.
+See the specification's [`examples/queries/jq/`](https://github.com/ClearHeadToDo-Devs/specifications/tree/main/examples/queries/jq) for the canonical examples and usage patterns.
 
 ## SQL (Application Storage)
 
@@ -163,7 +163,7 @@ WHERE story IS NOT NULL
 GROUP BY story;
 ```
 
-The grammar does not prescribe or package that application schema. The specification's [`examples/queries/sql/`](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/sql) illustrate one possible projection without making SQL part of the DSL contract.
+The grammar does not prescribe or package that application schema. The specification's [`examples/queries/sql/`](https://github.com/ClearHeadToDo-Devs/specifications/tree/main/examples/queries/sql) illustrate one possible projection without making SQL part of the DSL contract.
 
 ## Which Approach to Use?
 
@@ -187,10 +187,10 @@ actions-to-json tasks.actions | \
 
 For complete documentation on querying, see:
 
-- [Action Specification](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/action_file_format.md) - Concrete syntax and serialization guidance
+- [Action Specification](https://github.com/ClearHeadToDo-Devs/specifications/blob/main/action_file_format.md) - Concrete syntax and serialization guidance
 - [`queries/actions/README.md`](queries/actions/README.md) - Tree-sitter query patterns
-- [Specification jq examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/jq)
-- [Specification SQL examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/master/examples/queries/sql)
+- [Specification jq examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/main/examples/queries/jq)
+- [Specification SQL examples](https://github.com/ClearHeadToDo-Devs/specifications/tree/main/examples/queries/sql)
 
 # Inspirations
 
@@ -242,7 +242,7 @@ The formatter gives each action its own line, indents child depth by two spaces,
   >[ ] Child
 ```
 
-See the canonical [formatting specification](https://github.com/ClearHeadToDo-Devs/specifications/blob/master/formatting.md) for the complete integrity gate and spacing rules.
+See the canonical [formatting specification](https://github.com/ClearHeadToDo-Devs/specifications/blob/main/formatting.md) for the complete integrity gate and spacing rules.
 
 ## Testing the Formatter
 
