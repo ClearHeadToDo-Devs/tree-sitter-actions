@@ -73,5 +73,9 @@
     "regen:corpus": "node scripts/generate_tests.js",
     "regen:test": "node scripts/regenerate_all.js",
     "regen:verify": "npm run regen:test && npm run test:grammar"
+  },
+  "allowScripts": {
+    "tree-sitter@0.25.1": true,
+    "tree-sitter-cli@0.25.10": true
   }
 }
