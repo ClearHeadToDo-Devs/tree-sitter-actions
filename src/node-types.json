@@ -652,22 +652,22 @@
     "type": "do_date",
     "named": true,
     "fields": {
-      "datetime": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "datetime",
-            "named": true
-          }
-        ]
-      },
       "duration": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "duration",
+            "named": true
+          }
+        ]
+      },
+      "end": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "datetime",
             "named": true
           }
         ]
@@ -681,6 +681,16 @@
             "named": false
           }
         ]
+      },
+      "start": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "datetime",
+            "named": true
+          }
+        ]
       }
     }
   },
@@ -688,16 +698,6 @@
     "type": "due_date",
     "named": true,
     "fields": {
-      "duration": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "duration",
-            "named": true
-          }
-        ]
-      },
       "end": {
         "multiple": false,
         "required": true,

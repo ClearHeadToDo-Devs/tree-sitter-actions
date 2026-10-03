@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Changed
+`do_date` accepts an ISO 8601 interval, `@start/end`, a planned block (platform Decision 51). Its fields are now `start` (the planned start; a lone date/time) and `end` (optional, the block's end); the old `datetime` field is gone, so consumers that read `do_date datetime:` must read `start:`. A trailing `D<minutes>` still parses on `do_date` so files migrate, and no longer on `due_date`, where it never had a meaning.
+
 `due_date` accepts an ISO 8601 interval, `:start/end` (platform Decision 48). Its fields are now `start` (optional, the window's lower bound) and `end` (the deadline); the old `datetime` field is gone, so queries and consumers that read `due_date datetime:` must read `end:`.
 
 ## [0.10.0] - 2026-08-03

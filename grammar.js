@@ -166,11 +166,14 @@ module.exports = grammar({
     // Individual context tag
     tag: $ => PATTERNS.tag_text,
 
-    // Do-date/time: @ followed by ISO 8601 date/time, optional duration
-    // (icon_composite archetype)
+    // Do-date: @ followed by a planned start, or an ISO 8601 interval
+    // start/end, a planned block (Decision 51); a lone date/time is the
+    // start. A trailing D<minutes> is the retired duration, read only so
+    // files migrate (icon_composite archetype)
     do_date: $ => seq(
       field('icon', '@'),
-      field('datetime', $.datetime),
+      field('start', $.datetime),
+      optional(seq('/', field('end', $.datetime))),
       optional(field('duration', $.duration))
     ),
 
@@ -180,14 +183,13 @@ module.exports = grammar({
     due_date: $ => seq(
       field('icon', ':'),
       optional(seq(field('start', $.datetime), '/')),
-      field('end', $.datetime),
-      optional(field('duration', $.duration))
+      field('end', $.datetime)
     ),
 
     // ISO 8601 datetime: YYYY-MM-DD or YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS with optional timezone
     datetime: $ => /[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\.[0-9]+)?)?(Z|[+-][0-9]{2}:?[0-9]{2})?)?/,
 
-    // Duration: D followed by number of minutes
+    // Retired duration (Decision 51): D followed by number of minutes
     duration: $ => seq(
       'D',
       field('minutes', $.minutes)

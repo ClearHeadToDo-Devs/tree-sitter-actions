@@ -20,9 +20,8 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes)))
+      start: (datetime)
+      end: (datetime))
     metadata: (created_date
       datetime: (datetime))
     metadata: (predecessor
@@ -56,9 +55,8 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes)))
+      start: (datetime)
+      end: (datetime))
     metadata: (created_date
       datetime: (datetime))
     metadata: (predecessor
@@ -89,9 +87,8 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes)))
+      start: (datetime)
+      end: (datetime))
     metadata: (created_date
       datetime: (datetime))
     metadata: (predecessor
@@ -119,7 +116,7 @@
     metadata: (context
       item: (tag))
     metadata: (do_date
-      datetime: (datetime))
+      start: (datetime))
     metadata: (created_date
       datetime: (datetime))
     metadata: (id

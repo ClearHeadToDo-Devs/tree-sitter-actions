@@ -73,6 +73,10 @@
     "due_window": {
       "description": "Due window as an ISO 8601 interval",
       "source": "examples/linting/W015_planned_outside_window/error.actions"
+    },
+    "legacy_duration": {
+      "description": "Retired D duration still parses on a do-date",
+      "source": "examples/conformance/parse/legacy_duration.actions"
     }
   },
   "children": {

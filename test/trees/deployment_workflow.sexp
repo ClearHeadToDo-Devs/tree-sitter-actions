@@ -21,9 +21,8 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes)))
+      start: (datetime)
+      end: (datetime))
     metadata: (description
       icon: (description_marker)
       text: (description_content
@@ -47,9 +46,8 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes))))
+      start: (datetime)
+      end: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -68,9 +66,8 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime)
-      duration: (duration
-        minutes: (minutes))))
+      start: (datetime)
+      end: (datetime)))
   (root_action
     state: (state
       open: (state_open)
@@ -85,4 +82,4 @@
     metadata: (context
       item: (tag))
     metadata: (do_date
-      datetime: (datetime))))
+      start: (datetime))))

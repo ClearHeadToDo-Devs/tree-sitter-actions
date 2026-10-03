@@ -25,7 +25,7 @@
       item: (tag)
       item: (tag))
     metadata: (do_date
-      datetime: (datetime))
+      start: (datetime))
     metadata: (due_date
       end: (datetime))
     metadata: (id

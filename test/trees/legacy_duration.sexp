@@ -2,10 +2,14 @@
   (root_action
     state: (state
       open: (state_open)
-      value: (state_completed)
+      value: (state_not_started)
       close: (state_close))
     name: (name
       (name_text_chunk))
     metadata: (do_date
       start: (datetime)
-      end: (datetime))))
+      duration: (duration
+        minutes: (minutes)))
+    metadata: (id
+      icon: (id_hash)
+      value: (uuid_value))))
