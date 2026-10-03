@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [Unreleased]
+### Changed
+`due_date` accepts an ISO 8601 interval, `:start/end` (platform Decision 48). Its fields are now `start` (optional, the window's lower bound) and `end` (the deadline); the old `datetime` field is gone, so queries and consumers that read `due_date datetime:` must read `end:`.
+
 ## [0.10.0] - 2026-08-03
 ### Changed
 Aligned the toolchain and release metadata across every binding.

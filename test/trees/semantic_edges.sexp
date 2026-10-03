@@ -27,7 +27,7 @@
     metadata: (do_date
       datetime: (datetime))
     metadata: (due_date
-      datetime: (datetime))
+      end: (datetime))
     metadata: (id
       icon: (id_hash)
       value: (uuid_value))

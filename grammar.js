@@ -174,11 +174,13 @@ module.exports = grammar({
       optional(field('duration', $.duration))
     ),
 
-    // Due-date/time: : followed by ISO 8601 date/time, optional duration
+    // Due window: : followed by a deadline, or an ISO 8601 interval
+    // start/end (Decision 48); a lone date/time is the end
     // (icon_composite archetype)
     due_date: $ => seq(
       field('icon', ':'),
-      field('datetime', $.datetime),
+      optional(seq(field('start', $.datetime), '/')),
+      field('end', $.datetime),
       optional(field('duration', $.duration))
     ),
 

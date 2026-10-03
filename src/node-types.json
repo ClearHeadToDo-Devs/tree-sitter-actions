@@ -688,22 +688,22 @@
     "type": "due_date",
     "named": true,
     "fields": {
-      "datetime": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "datetime",
-            "named": true
-          }
-        ]
-      },
       "duration": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "duration",
+            "named": true
+          }
+        ]
+      },
+      "end": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "datetime",
             "named": true
           }
         ]
@@ -715,6 +715,16 @@
           {
             "type": ":",
             "named": false
+          }
+        ]
+      },
+      "start": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "datetime",
+            "named": true
           }
         ]
       }
@@ -1149,6 +1159,10 @@
   },
   {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": "/",
     "named": false
   },
   {
