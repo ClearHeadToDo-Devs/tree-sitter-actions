@@ -12,7 +12,7 @@ edition = "2021"
 autoexamples = false
 build = "bindings/rust/build.rs"
 include = [
-  "LICENSE",
+  "/LICENSE",
   "bindings/rust/*",
   "grammar.js",
   "patterns.js",
