@@ -83,6 +83,61 @@ for (const input of ['R:', 'R:FREQ=', 'R:FREQ=DAILY;', 'R:FREQ=DAILY;BYDAY=']) {
   });
 }
 
+// action_file_format.md:19: whitespace is tolerant and markers own boundaries.
+for (const gap of ['', ' ', '\t', '\n']) {
+  for (const afterMarker of ['', ' ', '\t', '\n']) {
+    test(`recurrence tolerates whitespace ${JSON.stringify([gap, afterMarker])}`, () => {
+      const root = parse(`[ ] Habit @2026-10-25${gap}R:${afterMarker}FREQ=DAILY\n`);
+      assert.equal(root.hasError, false, root.toString());
+      const date = root.descendantsOfType('do_date')[0];
+      const recurrence = date.childForFieldName('recurrence');
+      assert.equal(recurrence.childForFieldName('rrule').text, 'FREQ=DAILY');
+    });
+  }
+}
+
+for (const { input, errorText, errorTree, recurrences, childName } of [
+  {
+    input: '[ ] Habit R:FREQ=DAILY',
+    errorText: ':FREQ=DAILY',
+    errorTree: '(ERROR (rrule))',
+    recurrences: 0,
+  },
+  {
+    input: '[ ] Habit @2026-10-25 R:FREQ=DAILY R:FREQ=WEEKLY',
+    errorText: 'R:FREQ=WEEKLY',
+    errorTree: '(ERROR (malformed_id) (rrule))',
+    recurrences: 1,
+  },
+  {
+    input: '[ ] Habit @2026-10-25 R:FREQ=DAILY\n> [ ] Child R:FREQ=WEEKLY',
+    errorText: ':FREQ=WEEKLY',
+    errorTree: '(ERROR (rrule))',
+    recurrences: 1,
+    childName: 'Child R',
+  },
+]) {
+  test(`misplaced recurrence remains quarantined: ${input}`, () => {
+    const root = parse(`${input}\n[ ] Next root\n`);
+    assert.equal(root.hasError, true, root.toString());
+    const errors = root.descendantsOfType('ERROR');
+    assert.equal(errors.length, 1, root.toString());
+    assert.equal(errors[0].text, errorText);
+    assert.equal(errors[0].toString(), errorTree);
+    assert.equal(errors[0].parent.type, 'source_file');
+    assert.equal(root.descendantsOfType('recurrence').length, recurrences);
+    const actions = root.descendantsOfType('root_action');
+    assert.equal(actions.length, 2, root.toString());
+    assert.equal(actions[1].childForFieldName('name').text, 'Next root');
+    if (childName) {
+      const child = actions[0].childrenForFieldName('child')[0];
+      assert.equal(child.type, 'depth1_action');
+      assert.equal(child.childForFieldName('name').text, childName);
+      assert.equal(child.descendantsOfType('recurrence').length, 0);
+    }
+  });
+}
+
 test('plain @ dates and ranges still have no recurrence', () => {
   const root = parse('[ ] One @2026-10-25\n[ ] Two @2026-10-25/2026-10-26\n');
   assert.equal(root.hasError, false, root.toString());
