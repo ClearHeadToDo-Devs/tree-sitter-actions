@@ -52,3 +52,21 @@ assert.match(
 console.log('✓ Shorthand link URLs receive URL highlighting');
 
 console.log('\n✅ Highlights query link tests passed!');
+
+const registry = require('./test_descriptions.json');
+for (const [name, rule] of [
+  ['daily_review_habit', 'FREQ=DAILY'],
+  ['weekly_review_habit', 'FREQ=WEEKLY;BYDAY=MO'],
+]) {
+  const source = path.join(specRoot, registry.dates[name].source);
+  const captures = execFileSync('tree-sitter', ['query', queryPath, source], {
+    cwd: root,
+    encoding: 'utf8',
+  }).split('\n').filter(line => line.includes('capture:'));
+  for (const [highlight, text] of [['keyword', 'R:'], ['string.special', rule]]) {
+    assert.equal(captures.filter(line =>
+      line.includes(` - ${highlight},`) && line.endsWith(`text: \`${text}\``)
+    ).length, 1, `${name}: ${text} must receive exactly one ${highlight} capture`);
+  }
+  console.log(`✓ ${name}: R: keyword and RRULE string.special highlights`);
+}

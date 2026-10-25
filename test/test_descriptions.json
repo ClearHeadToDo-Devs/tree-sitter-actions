@@ -62,6 +62,14 @@
     }
   },
   "dates": {
+    "daily_review_habit": {
+      "description": "Daily habit with template child",
+      "source": "examples/actions/habits/daily-review.habits.actions"
+    },
+    "weekly_review_habit": {
+      "description": "Weekly habit with datetime range and due time",
+      "source": "examples/actions/habits/weekly-review.habits.actions"
+    },
     "with_do_date": {
       "description": "With do-date",
       "source": "examples/actions/with_do_date.actions"
