@@ -54,3 +54,4 @@
 (completed_date) @prepend_space
 (created_date) @prepend_space
 (predecessor) @prepend_space
+(do_date recurrence: (recurrence) @prepend_space)

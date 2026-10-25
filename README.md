@@ -62,7 +62,7 @@ In particular, the values are (you can also read this in the file specification 
 
 - **States**: `[ ]` not started, `[x]` completed, `[-]` in-progress, `[=]` blocked, `[_]` cancelled
 - **Metadata**: `$` description, `!` priority, `*` story/project, `+` contexts (tags)
-- **Scheduling**: `@` do-date/time, `D` duration (minutes); recurring schedules are represented in `.ics` files
+- **Scheduling**: `@` do-date/time or start/end block, legacy `D` duration (minutes). The unreleased Decision 57 grammar restores `R:` RFC 5545 RRULE text immediately after the `@` block, e.g. `@2026-10-25 R:FREQ=WEEKLY;BYDAY=MO,FR`. The named `recurrence` node is a child of `do_date`, with an `rrule` field holding the rule text. Habit-file eligibility and semantic recurrence validation belong to linting; the parser neither checks filenames nor expands recurrence. Publication remains coupled to `spec-habits`, before Core adoption.
 - **Tracking**: `%` completed date, `#` UUID
 - **Hierarchy**: `>` child actions (up to 5 levels deep)
 

@@ -663,8 +663,49 @@
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "recurrence",
+              "content": {
+                "type": "SYMBOL",
+                "name": "recurrence"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
+    },
+    "recurrence": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "icon",
+          "content": {
+            "type": "STRING",
+            "value": "R:"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "rrule",
+          "content": {
+            "type": "SYMBOL",
+            "name": "rrule"
+          }
+        }
+      ]
+    },
+    "rrule": {
+      "type": "PATTERN",
+      "value": "[A-Za-z]+=[A-Za-z0-9,+-]+(;[A-Za-z]+=[A-Za-z0-9,+-]+)*"
     },
     "due_date": {
       "type": "SEQ",

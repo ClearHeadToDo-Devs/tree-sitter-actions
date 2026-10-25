@@ -70,6 +70,8 @@
 (do_date start: (datetime) @number)
 (do_date end: (datetime) @number)
 (do_date duration: (duration) @number)
+(recurrence "R:" @keyword)
+(recurrence rrule: (rrule) @string.special)
 (due_date start: (datetime) @number)
 (due_date end: (datetime) @number)
 

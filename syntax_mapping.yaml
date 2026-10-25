@@ -170,51 +170,13 @@ properties:
     example: "D30"
 
   # === RECURRENCE ===
-  recurrenceFrequency:
-    symbol: "R"
-    rule_type: choice
-    grammar_rule_name: recurrance
-    context: any_level
-    values: ["D", "W", "M", "Y"]
-    format_hint: "Recurrence: RD=daily, RW=weekly, RM=monthly, RY=yearly"
-    example: "RW"
-
-  byDay:
-    symbol: ""
-    rule_type: choice
-    grammar_rule_name: weekly_recurrance_days
-    context: any_level
-    values: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    can_repeat: true
-    format_hint: "Days for weekly recurrence"
-    example: "Mon Tue"
-
-  recurrenceInterval:
-    symbol: "I"
-    rule_type: integer
-    grammar_rule_name: recurrence_interval
-    context: any_level
-    min_value: 1
-    default_value: "1"
-    format_hint: "Recurrence interval: I2 = every 2nd occurrence"
-    example: "I2"
-
-  recurrenceCount:
-    symbol: "C"
-    rule_type: integer
-    grammar_rule_name: recurrence_count
-    context: any_level
-    min_value: 1
-    format_hint: "Max recurrence count: C10"
-    example: "C10"
-
-  recurrenceUntil:
-    symbol: "U"
-    rule_type: date_time
-    grammar_rule_name: recurrence_until
-    context: any_level
-    format_hint: "Recurrence end date: U2025-12-31"
-    example: "U2025-12-31"
+  recurrence:
+    symbol: "R:"
+    rule_type: string
+    grammar_rule_name: recurrence
+    context: do_date
+    format_hint: "RFC 5545 RRULE text after the @ block; rrule field contains the value. Filename eligibility and semantic validation belong to linting."
+    example: "R:FREQ=WEEKLY;BYDAY=MO,WE,FR"
 
 computed_properties:
   - depth

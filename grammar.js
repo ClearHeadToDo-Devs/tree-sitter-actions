@@ -169,13 +169,24 @@ module.exports = grammar({
     // Do-date: @ followed by a planned start, or an ISO 8601 interval
     // start/end, a planned block (Decision 51); a lone date/time is the
     // start. A trailing D<minutes> is the retired duration, read only so
-    // files migrate (icon_composite archetype)
+    // files migrate. An optional R: rule follows the complete @ block
+    // (icon_composite archetype).
     do_date: $ => seq(
       field('icon', '@'),
       field('start', $.datetime),
       optional(seq('/', field('end', $.datetime))),
-      optional(field('duration', $.duration))
+      optional(field('duration', $.duration)),
+      optional(field('recurrence', $.recurrence))
     ),
+
+    // RFC 5545 rule text attached to its DTSTART anchor. Filename eligibility
+    // and recurrence semantics are lint concerns, not grammar constraints.
+    recurrence: $ => seq(
+      field('icon', 'R:'),
+      field('rrule', $.rrule)
+    ),
+
+    rrule: $ => /[A-Za-z]+=[A-Za-z0-9,+-]+(;[A-Za-z]+=[A-Za-z0-9,+-]+)*/,
 
     // Due window: : followed by a deadline, or an ISO 8601 interval
     // start/end (Decision 48); a lone date/time is the end
