@@ -62,7 +62,6 @@
 (_ name: (_) @prepend_space)
 (_ metadata: (_) @prepend_space)
 (do_date recurrence: (recurrence) @prepend_space)
-(do_date recurrence: (recurrence) @prepend_space)
 
 ;; Preserve Description Paragraph Breaks
 ;;
