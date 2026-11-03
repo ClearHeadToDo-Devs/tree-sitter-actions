@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
+## [0.11.0] - 2026-11-03
+
+Published together with specification v0.5.0. Core adoption follows separately.
+
+### Added
+
+Anchored RFC 5545 `R:` recurrence after the complete `@` block, including planned ranges and independent due windows. The grammar parses recurrence regardless of file suffix; Habit scope is a semantic lint owned by the specification and consumers. Approved shared Habit source and formatting fixtures drive CST, corpus, round-trip, idempotence and highlight checks without copied fixtures.
+
 ### Changed
 `do_date` accepts an ISO 8601 interval, `@start/end`, a planned block (platform Decision 51). Its fields are now `start` (the planned start; a lone date/time) and `end` (optional, the block's end); the old `datetime` field is gone, so consumers that read `do_date datetime:` must read `start:`. A trailing `D<minutes>` still parses on `do_date` so files migrate, and no longer on `due_date`, where it never had a meaning.
 

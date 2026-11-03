@@ -1,7 +1,7 @@
 [project]
 name = "tree-sitter-actions"
 description = "parser for the actions file as defined by the specification therein"
-version = "0.10.0"
+version = "0.11.0"
 keywords = ["actions", "incremental", "parsing", "tree-sitter"]
 classifiers = [
   "Intended Audience :: Developers",
