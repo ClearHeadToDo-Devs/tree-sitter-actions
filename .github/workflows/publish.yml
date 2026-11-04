@@ -33,6 +33,9 @@ jobs:
             exit 1
           }
 
+      - name: Check linked grammar metadata and Rust binding
+        run: cargo test
+
       - name: Get a crates.io token
         uses: rust-lang/crates-io-auth-action@3268eb413133e2960fa4ae0e963ca76380c54cd9 # v1.0.6
         id: auth

@@ -11,4 +11,7 @@ set -eu
 echo "pre-push > npm run test:all"
 npm run test:all
 
+echo "pre-push > cargo test"
+cargo test
+
 echo "pre-push > all checks passed"

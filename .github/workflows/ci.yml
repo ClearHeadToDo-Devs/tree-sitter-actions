@@ -44,3 +44,7 @@ jobs:
         env:
           CLEARHEAD_SPEC_DIR: ${{ github.workspace }}/specifications
         run: npm run test:all
+
+      - name: Check linked grammar metadata and Rust binding
+        working-directory: tree-sitter-actions
+        run: cargo test
