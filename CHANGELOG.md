@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [0.11.1] - 2026-11-04
+
+### Fixed
+
+Regenerate the parser's embedded language-version metadata after the release bump. Version 0.11.0 shipped correct recurrence syntax but still identified itself as 0.10.0 through Tree-sitter metadata, which Core and the CLI display. A Rust regression now compares linked grammar metadata with the package version. No syntax, CST, formatting or specification contract changes.
+
 ## [0.11.0] - 2026-11-03
 
 Published together with specification v0.5.0. Core adoption follows separately.

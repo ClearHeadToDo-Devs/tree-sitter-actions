@@ -38,3 +38,22 @@ pub const INDENTS_QUERY: &str = include_str!("../../queries/actions/indents.scm"
 
 /// The formatting query for this grammar.
 pub const FORMATTING_QUERY: &str = include_str!("../../queries/actions/formatting.scm");
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn linked_metadata_matches_package_version() {
+        let language: tree_sitter::Language = super::LANGUAGE.into();
+        let metadata = language
+            .metadata()
+            .expect("grammar supplies version metadata");
+        assert_eq!(
+            format!(
+                "{}.{}.{}",
+                metadata.major_version, metadata.minor_version, metadata.patch_version
+            ),
+            env!("CARGO_PKG_VERSION"),
+            "regenerate the parser after changing the release version"
+        );
+    }
+}
