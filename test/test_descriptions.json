@@ -113,6 +113,10 @@
     "multiple_dependencies": {
       "description": "Multiple Dependencies Workflow",
       "source": "examples/actions/multiple_dependencies.actions"
+    },
+    "with_typed_predecessor": {
+      "description": "With Typed Predecessor References",
+      "source": "examples/actions/with_typed_predecessor.actions"
     }
   },
   "linting": {

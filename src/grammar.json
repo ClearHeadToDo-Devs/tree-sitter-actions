@@ -854,9 +854,24 @@
         },
         {
           "type": "SYMBOL",
+          "name": "typed_reference"
+        },
+        {
+          "type": "SYMBOL",
           "name": "predecessor_name"
         }
       ]
+    },
+    "typed_reference": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 3,
+        "content": {
+          "type": "PATTERN",
+          "value": "[ac]:[A-Za-z_][A-Za-z0-9_\\/.-]*"
+        }
+      }
     },
     "predecessor_name": {
       "type": "PATTERN",

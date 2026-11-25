@@ -899,6 +899,10 @@
           "named": true
         },
         {
+          "type": "typed_reference",
+          "named": true
+        },
+        {
           "type": "uuid_value",
           "named": true
         }
@@ -1315,6 +1319,10 @@
   },
   {
     "type": "tag",
+    "named": true
+  },
+  {
+    "type": "typed_reference",
     "named": true
   },
   {

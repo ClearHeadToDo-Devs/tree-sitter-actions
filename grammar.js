@@ -230,8 +230,15 @@ module.exports = grammar({
     predecessor_reference: $ => choice(
       $.uuid_value,
       $.short_uuid_value,
+      $.typed_reference,
       $.predecessor_name
     ),
+
+    // Typed reference - c: (charter) or a: (action) then an alias or path.
+    // A letter must follow the colon and a datetime starts with a digit, so
+    // `<c:2026-12-01` stays predecessor `c` and a due date.
+    // prec(3): wins over predecessor_name, which stops at the colon
+    typed_reference: $ => token(prec(3, /[ac]:[A-Za-z_][A-Za-z0-9_\/.-]*/)),
 
     // Predecessor name - action name reference (not UUID)
     // Excludes characters that would indicate UUID format and metadata markers

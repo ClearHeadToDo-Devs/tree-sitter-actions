@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [Unreleased]
+
+### Added
+
+`typed_reference`, a predecessor reference with a `c:` (charter) or `a:` (action) prefix followed by an alias or path, as in `<c:groceries` or `<c:home/groceries`. A letter must follow the colon, and a datetime starts with a digit, so `<c:2026-12-01` still parses as predecessor `c` with a due date. The specification's `with_typed_predecessor.actions` fixture drives the corpus test.
+
 ## [0.11.1] - 2026-11-04
 
 ### Fixed
