@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## [Unreleased]
+## [0.12.0] - 2026-11-25
+
+Published with the specification's typed predecessor rule (specifications 4545f27). Core adoption follows in the same session.
 
 ### Added
 
