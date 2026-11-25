@@ -1,35 +1,43 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ClearHeadToDo-Devs/specifications/v0.1.0/schemas/charter_metadata.schema.json",
+  "$schema": "https://clearhead.dev/schemas/v0.8.0/charter_metadata.schema.json",
   "charter": {
     "id": "019fd521-e09c-7313-b6bd-33cbd43fe4d5"
   },
   "actions": {
     "019e604b-ef3f-74a2-989f-ddcb5f745b57": {
-      "created": "2026-05-26T00:13:28.167390966-07:00"
+      "created": "2026-05-26T07:13:28.167390966Z"
     },
     "019e604c-8121-7b92-b5f9-e04ada47e3b0": {
-      "created": "2026-05-26T00:13:28.167392523-07:00"
+      "created": "2026-05-26T07:13:28.167392523Z"
     },
     "019e6da7-d1e4-7dd2-bbca-2da7ab9ce2ed": {
-      "created": "2026-05-28T01:16:15.332-07:00"
+      "created": "2026-05-28T08:16:15.332Z"
     },
     "019f28c7-c3e8-7ee2-87e4-ba8cd020da43": {
-      "created": "2026-07-03T09:20:08.296-07:00"
+      "created": "2026-07-03T16:20:08.296Z"
     },
     "019f30e3-751e-74b2-8865-771b7ca2aafb": {
-      "created": "2026-07-04T23:07:20.862-07:00"
+      "created": "2026-07-05T06:07:20.862Z"
     },
     "019f30e4-0c29-76e1-b37f-023ebaad45b2": {
-      "created": "2026-07-04T23:07:59.529-07:00"
+      "created": "2026-07-05T06:07:59.529Z"
     },
     "019f335b-5899-70e1-8ab5-347633eaabce": {
-      "created": "2026-07-05T10:37:32.313-07:00"
+      "created": "2026-07-05T17:37:32.313Z"
     },
     "019f76e0-ea98-7e73-9301-d7f1d7945722": {
-      "created": "2026-07-18T13:17:59.448-07:00"
+      "created": "2026-07-18T20:17:59.448Z"
     },
     "019fd565-201c-7932-8a05-8ede31a25d97": {
-      "created": "2026-08-05T21:46:42.204-07:00"
+      "created": "2026-08-06T04:46:42.204Z"
     }
+  },
+  "notes": {
+    "01a0b29b-0e4c-7a44-b9d8-dda5bdc1f015": [
+      {
+        "at": "2026-09-22T23:13:00-07:00",
+        "text": "AM/PM overlay is editor-feasible without changing the ISO action grammar; research action 019e604c closed."
+      }
+    ]
   }
 }
