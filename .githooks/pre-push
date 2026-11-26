@@ -8,6 +8,11 @@
 #
 set -eu
 
+# Rebuild the native binding so npm test runs the parser being pushed, not a
+# stale build (0.13.0's binding tests passed locally against the old parser).
+echo "pre-push > node-gyp rebuild"
+npx node-gyp rebuild --silent
+
 echo "pre-push > npm run test:all"
 npm run test:all
 

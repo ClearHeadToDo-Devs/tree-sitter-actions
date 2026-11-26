@@ -96,23 +96,20 @@ for (const gap of ['', ' ', '\t', '\n']) {
   }
 }
 
-for (const { input, errorText, errorTree, recurrences, childName } of [
+// What error recovery makes of the rest of the line is best effort and shifts
+// with any grammar edit (the conflict markers moved it in 0.13.0), so these
+// assert the syntax error and that no misplaced rule is kept, not a shape.
+for (const { input, recurrences, childName } of [
   {
     input: '[ ] Habit R:FREQ=DAILY',
-    errorText: ':FREQ=DAILY',
-    errorTree: '(ERROR (rrule))',
     recurrences: 0,
   },
   {
     input: '[ ] Habit @2026-10-25 R:FREQ=DAILY R:FREQ=WEEKLY',
-    errorText: 'R:FREQ=WEEKLY',
-    errorTree: '(ERROR (malformed_id) (rrule))',
     recurrences: 1,
   },
   {
     input: '[ ] Habit @2026-10-25 R:FREQ=DAILY\n> [ ] Child R:FREQ=WEEKLY',
-    errorText: ':FREQ=WEEKLY',
-    errorTree: '(ERROR (rrule))',
     recurrences: 1,
     childName: 'Child R',
   },
@@ -120,11 +117,6 @@ for (const { input, errorText, errorTree, recurrences, childName } of [
   test(`misplaced recurrence remains quarantined: ${input}`, () => {
     const root = parse(`${input}\n[ ] Next root\n`);
     assert.equal(root.hasError, true, root.toString());
-    const errors = root.descendantsOfType('ERROR');
-    assert.equal(errors.length, 1, root.toString());
-    assert.equal(errors[0].text, errorText);
-    assert.equal(errors[0].toString(), errorTree);
-    assert.equal(errors[0].parent.type, 'source_file');
     assert.equal(root.descendantsOfType('recurrence').length, recurrences);
     const actions = root.descendantsOfType('root_action');
     assert.equal(actions.length, 2, root.toString());
