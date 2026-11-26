@@ -56,6 +56,9 @@
 (name) @markup.strong
 (description) @text.note
 
+; A git merge conflict marker line: the file is unresolved until it is gone
+(conflict_marker) @comment.error
+
 ; Metadata icons - replace markers with icons
 (priority "!" @conceal (#set! conceal "󰀦"))
 (story "*" @conceal (#set! conceal "󰙨"))

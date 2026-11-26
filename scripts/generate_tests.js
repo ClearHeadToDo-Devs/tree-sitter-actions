@@ -36,8 +36,10 @@ for (const [category, tests] of Object.entries(loadTestDescriptions())) {
 
     const exampleContent = fs.readFileSync(examplePath, 'utf8').trim();
     const sexpContent = fs.readFileSync(sexpPath, 'utf8').trim();
-    const separator = '='.repeat(test.description.length);
-    output += `${separator}\n${test.description}\n${separator}\n${exampleContent}\n\n---\n\n${sexpContent}\n\n`;
+    // The ||| suffix keeps a fixture's own ======= lines (conflict markers,
+    // Markdown underlines) from being read as test separators.
+    const separator = `${'='.repeat(test.description.length)}|||`;
+    output += `${separator}\n${test.description}\n${separator}\n${exampleContent}\n\n---|||\n\n${sexpContent}\n\n`;
   }
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });

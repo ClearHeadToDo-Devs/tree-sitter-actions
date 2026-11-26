@@ -426,8 +426,52 @@
       }
     },
     "description_text_chunk": {
-      "type": "PATTERN",
-      "value": "(?:\\\\[$\\[\\]\\\\]|\\\\[^\\n$\\[\\]\\\\]|[^\\s\\n\\\\$\\[])(?:(?:\\\\[$\\[\\]\\\\]|\\\\[^\\n$\\[\\]\\\\]|[^\\n\\\\$\\[])*(?:\\\\[$\\[\\]\\\\]|\\\\[^\\n$\\[\\]\\\\]|[^\\s\\n\\\\$\\[]))?"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "PATTERN",
+          "value": "(?:\\\\[$\\[\\]\\\\]|\\\\[^\\n$\\[\\]\\\\]|[^\\s\\n\\\\$\\[])(?:(?:\\\\[$\\[\\]\\\\]|\\\\[^\\n$\\[\\]\\\\]|[^\\n\\\\$\\[])*(?:\\\\[$\\[\\]\\\\]|\\\\[^\\n$\\[\\]\\\\]|[^\\s\\n\\\\$\\[]))?"
+        }
+      }
+    },
+    "conflict_marker": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "<<<<<<<"
+                },
+                {
+                  "type": "STRING",
+                  "value": "|||||||"
+                },
+                {
+                  "type": "STRING",
+                  "value": "======="
+                },
+                {
+                  "type": "STRING",
+                  "value": ">>>>>>>"
+                }
+              ]
+            },
+            {
+              "type": "PATTERN",
+              "value": "[^\\n]*"
+            }
+          ]
+        }
+      }
     },
     "link": {
       "type": "SEQ",
@@ -1006,6 +1050,10 @@
     {
       "type": "PATTERN",
       "value": "\\s"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "conflict_marker"
     }
   ],
   "conflicts": [],

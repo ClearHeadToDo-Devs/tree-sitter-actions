@@ -1246,6 +1246,11 @@
     "named": true
   },
   {
+    "type": "conflict_marker",
+    "named": true,
+    "extra": true
+  },
+  {
     "type": "datetime",
     "named": true
   },

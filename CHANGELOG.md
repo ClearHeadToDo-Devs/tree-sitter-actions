@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## [Unreleased]
+
+Implements the specification's Merge Conflict Markers (specifications v0.9.0). Core adoption follows.
+
+### Added
+
+`conflict_marker`, an extra for git's `<<<<<<<`, `|||||||`, `=======` and `>>>>>>>` lines, so a conflicted file parses between actions at any depth. Description text outranks it, so a marker-like line inside a description (a Markdown `=======` underline) stays `description_text_chunk`; it outranks name text, so a diff3 `|||||||` line after a name is not read as more of that name. Line start is not enforced: that needs an external scanner, which would also fire inside descriptions. Mid-line, a marker was a syntax error or empty aliases before. Highlights capture it as `@comment.error`. Four specification fixtures drive the corpus tests, and the corpus generator now writes `|||`-suffixed separators so a fixture's own `=======` lines are not read as test headers.
+
+### Changed
+
+A run of seven `=` after an action, which parsed as seven empty aliases, is now a `conflict_marker` (accepted in the specification, 2026-11-26). Release check: all 247 valid `.actions` files under `~/Products` parse to identical trees with the old and new parsers, built separately; only error recovery inside three invalid lint fixtures (E004, E005, I012) differs. The recovery shift also makes "Incomplete description link preserves the next action" produce its reviewed tree again.
+
 ## [0.12.0] - 2026-11-25
 
 Published with the specification's typed predecessor rule (specifications 4545f27). Core adoption follows in the same session.

@@ -29,6 +29,7 @@ module.exports = grammar({
 
   extras: $ => [
     /\s/, // Allow whitespace anywhere
+    $.conflict_marker,
   ],
 
   rules: {
@@ -112,7 +113,20 @@ module.exports = grammar({
     description_marker: $ => token('$'),
 
     // Text chunk within description (excludes metadata markers except $ and excludes [)
-    description_text_chunk: $ => PATTERNS.description_text,
+    // prec(2): wins over conflict_marker, so a marker-like line inside a
+    // description (a Markdown ======= underline) stays description text.
+    description_text_chunk: $ => token(prec(2, PATTERNS.description_text)),
+
+    // A git merge conflict marker line (specification: Merge Conflict Markers).
+    // An extra, so it may stand between actions at any depth. prec(1): wins over
+    // name_text_chunk, so a diff3 ||||||| line after a name is not read as more
+    // of that name. Line start cannot be required without an external scanner,
+    // which would also fire inside descriptions, so a marker is accepted where
+    // a token starts; mid-line that was a syntax error or empty aliases before.
+    conflict_marker: $ => token(prec(1, seq(
+      choice('<<<<<<<', '|||||||', '=======', '>>>>>>>'),
+      /[^\n]*/
+    ))),
 
     // Link: [[text|url]] or [[url]]
     link: $ => seq(

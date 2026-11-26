@@ -146,5 +146,23 @@
       "description": "With All New Features Combined",
       "source": "examples/actions/with_new_features.actions"
     }
+  },
+  "conflicts": {
+    "conflict_root_actions": {
+      "description": "Conflict between root actions",
+      "source": "examples/conformance/syntax/conflict_root_actions.actions"
+    },
+    "conflict_children_base": {
+      "description": "Conflict between children with a base section after a name",
+      "source": "examples/conformance/syntax/conflict_children_base.actions"
+    },
+    "conflict_like_description": {
+      "description": "Marker-like lines inside a description stay description text",
+      "source": "examples/conformance/syntax/conflict_like_description.actions"
+    },
+    "conflict_seven_equals": {
+      "description": "A run of seven equals signs after an action is a marker",
+      "source": "examples/conformance/syntax/conflict_seven_equals.actions"
+    }
   }
 }
